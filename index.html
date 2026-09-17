@@ -623,6 +623,7 @@
         let selectedIncomingLot = null;
         let selectedInventoryItem = null;
         let suppliersList = ['209', '211', '252', '216', '100'];
+        let countrySuppliersList = ['10', '11', '12', '13', '14', '15'];
 
         let dbData = {
             products: [],
@@ -633,7 +634,8 @@
             incoming_items: [],
             todos: [],
             notes: [],
-            personal_exports: []
+            personal_exports: [],
+            country_suppliers: []
         };
 
         // Security function to prevent XSS
@@ -681,7 +683,8 @@
                             incoming_items: Array.isArray(parsed.incoming_items) ? parsed.incoming_items : [],
                             todos: Array.isArray(parsed.todos) ? parsed.todos : [],
                             notes: Array.isArray(parsed.notes) ? parsed.notes : [],
-                            personal_exports: Array.isArray(parsed.personal_exports) ? parsed.personal_exports : []
+                            personal_exports: Array.isArray(parsed.personal_exports) ? parsed.personal_exports : [],
+                            country_suppliers: Array.isArray(parsed.country_suppliers) ? parsed.country_suppliers : []
                         };
                     }
                 }
@@ -690,9 +693,15 @@
                 dbData = {
                     products: [], lots: [], exports: [], claims: [],
                     incoming_lots: [], incoming_items: [], todos: [],
-                    notes: [], personal_exports: []
+                    notes: [], personal_exports: [], country_suppliers: []
                 };
             }
+        }
+
+        // Get merged list of country suppliers
+        function getCountrySuppliers() {
+            const set = new Set([...countrySuppliersList, ...(dbData.country_suppliers || [])]);
+            return Array.from(set);
         }
 
         // Generate safe unique ID for items
@@ -761,7 +770,8 @@
                                 incoming_items: Array.isArray(importedData.incoming_items) ? importedData.incoming_items : [],
                                 todos: Array.isArray(importedData.todos) ? importedData.todos : [],
                                 notes: Array.isArray(importedData.notes) ? importedData.notes : [],
-                                personal_exports: Array.isArray(importedData.personal_exports) ? importedData.personal_exports : []
+                                personal_exports: Array.isArray(importedData.personal_exports) ? importedData.personal_exports : [],
+                                country_suppliers: Array.isArray(importedData.country_suppliers) ? importedData.country_suppliers : []
                             };
                             saveToLocalDB();
                             refreshCurrentView();
@@ -783,7 +793,7 @@
                 dbData = {
                     products: [], lots: [], exports: [], claims: [],
                     incoming_lots: [], incoming_items: [], todos: [],
-                    notes: [], personal_exports: []
+                    notes: [], personal_exports: [], country_suppliers: []
                 };
                 saveToLocalDB();
                 refreshCurrentView();
@@ -996,6 +1006,7 @@
         }
 
         function openAddProductModal() {
+            const countryList = getCountrySuppliers();
             openModal(`
                 <div class="p-6">
                     <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-box text-blue-600 mr-2"></i>เพิ่มสินค้าใหม่</h3>
@@ -1009,10 +1020,11 @@
                             <input type="text" id="m-prod-compare" placeholder="เช่น COMP-001" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพประเทศ</label>
-                            <select id="m-prod-supplier" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                                <option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option>
-                            </select>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพประเทศ (พิมพ์หรือเลือกเพิ่มใหม่ได้)</label>
+                            <input type="text" id="m-prod-supplier" list="country-list-options" value="10" required placeholder="พิมพ์หรือเลือกซัพประเทศ" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <datalist id="country-list-options">
+                                ${countryList.map(c => `<option value="${escapeHTML(c)}">`).join('')}
+                            </datalist>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
@@ -1033,14 +1045,19 @@
             const compareEl = document.getElementById('m-prod-compare');
             const supplierEl = document.getElementById('m-prod-supplier');
             const notesEl = document.getElementById('m-prod-notes');
-            if (!nameEl) return;
+            if (!nameEl || !supplierEl) return;
+
+            const supVal = supplierEl.value.trim();
+            if (supVal && !dbData.country_suppliers.includes(supVal) && !countrySuppliersList.includes(supVal)) {
+                dbData.country_suppliers.push(supVal);
+            }
 
             const productData = {
                 id: generateId(),
                 created_at: new Date().toISOString(),
                 name: nameEl.value.trim().toUpperCase(),
                 compare_code: compareEl ? compareEl.value.trim() : '',
-                supplier_type: supplierEl ? String(supplierEl.value) : '10',
+                supplier_type: supVal || '10',
                 notes: notesEl ? notesEl.value.trim() : ''
             };
 
@@ -1054,6 +1071,7 @@
         function openEditProductModal(id) {
             const p = dbData.products.find(x => String(x.id) === String(id));
             if (!p) return;
+            const countryList = getCountrySuppliers();
             openModal(`
                 <div class="p-6">
                     <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-pen text-blue-600 mr-2"></i>แก้ไขข้อมูลสินค้า</h3>
@@ -1067,10 +1085,11 @@
                             <input type="text" id="m-prod-compare" value="${escapeHTML(p.compare_code || '')}" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพประเทศ</label>
-                            <select id="m-prod-supplier" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                                ${[10,11,12,13,14,15].map(n => `<option value="${n}" ${p.supplier_type == n ? 'selected' : ''}>${n}</option>`).join('')}
-                            </select>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพประเทศ (พิมพ์หรือเลือกเพิ่มใหม่ได้)</label>
+                            <input type="text" id="m-prod-supplier" list="country-list-options" value="${escapeHTML(p.supplier_type || '10')}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <datalist id="country-list-options">
+                                ${countryList.map(c => `<option value="${escapeHTML(c)}">`).join('')}
+                            </datalist>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
@@ -1091,12 +1110,17 @@
             const compareEl = document.getElementById('m-prod-compare');
             const supplierEl = document.getElementById('m-prod-supplier');
             const notesEl = document.getElementById('m-prod-notes');
-            if (!nameEl) return;
+            if (!nameEl || !supplierEl) return;
+
+            const supVal = supplierEl.value.trim();
+            if (supVal && !dbData.country_suppliers.includes(supVal) && !countrySuppliersList.includes(supVal)) {
+                dbData.country_suppliers.push(supVal);
+            }
 
             const updated = {
                 name: nameEl.value.trim().toUpperCase(),
                 compare_code: compareEl ? compareEl.value.trim() : '',
-                supplier_type: supplierEl ? String(supplierEl.value) : '10',
+                supplier_type: supVal || '10',
                 notes: notesEl ? notesEl.value.trim() : ''
             };
             const idx = dbData.products.findIndex(x => String(x.id) === String(id));
@@ -1217,9 +1241,7 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท</label>
-                            <select id="m-lot-supplier" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                                ${suppliersList.map(s => `<option value="${s}">${s}</option>`).join('')}
-                            </select>
+                            <input type="text" id="m-lot-supplier" required value="${suppliersList[0]}" placeholder="พิมพ์รหัสบริษัท เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">จำนวนทั้งล็อต</label>
@@ -1250,14 +1272,19 @@
             const totEl = document.getElementById('m-lot-total');
             const probEl = document.getElementById('m-lot-problem');
             const notesEl = document.getElementById('m-lot-notes');
-            if (!dateEl) return;
+            if (!dateEl || !supEl) return;
+
+            const supVal = supEl.value.trim().toUpperCase();
+            if (supVal && !suppliersList.includes(supVal)) {
+                suppliersList.push(supVal);
+            }
 
             const lotData = {
                 id: generateId(),
                 created_at: new Date().toISOString(),
                 product_id: selectedProductForLots.id,
                 lot_date: dateEl.value.trim(),
-                company_supplier: supEl ? supEl.value : suppliersList[0],
+                company_supplier: supVal || suppliersList[0],
                 total_qty: totEl ? (parseInt(totEl.value) || 1) : 1,
                 problem_qty: probEl ? (parseInt(probEl.value) || 0) : 0,
                 notes: notesEl ? notesEl.value.trim() : ''
@@ -1282,9 +1309,7 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท</label>
-                            <select id="m-lot-supplier" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                                ${suppliersList.map(s => `<option value="${s}" ${l.company_supplier == s ? 'selected' : ''}>${s}</option>`).join('')}
-                            </select>
+                            <input type="text" id="m-lot-supplier" required value="${escapeHTML(l.company_supplier || '')}" placeholder="พิมพ์รหัสบริษัท เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">จำนวนทั้งล็อต</label>
@@ -1314,11 +1339,16 @@
             const totEl = document.getElementById('m-lot-total');
             const probEl = document.getElementById('m-lot-problem');
             const notesEl = document.getElementById('m-lot-notes');
-            if (!dateEl) return;
+            if (!dateEl || !supEl) return;
+
+            const supVal = supEl.value.trim().toUpperCase();
+            if (supVal && !suppliersList.includes(supVal)) {
+                suppliersList.push(supVal);
+            }
 
             const updated = {
                 lot_date: dateEl.value.trim(),
-                company_supplier: supEl ? supEl.value : suppliersList[0],
+                company_supplier: supVal || suppliersList[0],
                 total_qty: totEl ? (parseInt(totEl.value) || 1) : 1,
                 problem_qty: probEl ? (parseInt(probEl.value) || 0) : 0,
                 notes: notesEl ? notesEl.value.trim() : ''
@@ -1399,9 +1429,7 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท</label>
-                            <select id="m-exp-supplier" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                                ${suppliersList.map(s => `<option value="${s}">${s}</option>`).join('')}
-                            </select>
+                            <input type="text" id="m-exp-supplier" required value="${suppliersList[0]}" placeholder="พิมพ์รหัสบริษัท เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
@@ -1423,7 +1451,12 @@
             const qtyEl = document.getElementById('m-exp-qty');
             const supEl = document.getElementById('m-exp-supplier');
             const notesEl = document.getElementById('m-exp-notes');
-            if (!dateEl || !nameEl) return;
+            if (!dateEl || !nameEl || !supEl) return;
+
+            const supVal = supEl.value.trim().toUpperCase();
+            if (supVal && !suppliersList.includes(supVal)) {
+                suppliersList.push(supVal);
+            }
 
             const item = {
                 id: generateId(),
@@ -1431,7 +1464,7 @@
                 export_date: dateEl.value.trim(),
                 product_name: nameEl.value.trim().toUpperCase(),
                 qty: qtyEl ? (parseInt(qtyEl.value) || 0) : 0,
-                supplier: supEl ? supEl.value : suppliersList[0],
+                supplier: supVal || suppliersList[0],
                 notes: notesEl ? notesEl.value.trim() : ''
             };
             dbData.exports.push(item);
@@ -1462,9 +1495,7 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท</label>
-                            <select id="m-exp-supplier" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                                ${suppliersList.map(s => `<option value="${s}" ${item.supplier == s ? 'selected' : ''}>${s}</option>`).join('')}
-                            </select>
+                            <input type="text" id="m-exp-supplier" required value="${escapeHTML(item.supplier || '')}" placeholder="พิมพ์รหัสบริษัท เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
@@ -1486,13 +1517,18 @@
             const qtyEl = document.getElementById('m-exp-qty');
             const supEl = document.getElementById('m-exp-supplier');
             const notesEl = document.getElementById('m-exp-notes');
-            if (!dateEl || !nameEl) return;
+            if (!dateEl || !nameEl || !supEl) return;
+
+            const supVal = supEl.value.trim().toUpperCase();
+            if (supVal && !suppliersList.includes(supVal)) {
+                suppliersList.push(supVal);
+            }
 
             const updated = {
                 export_date: dateEl.value.trim(),
                 product_name: nameEl.value.trim().toUpperCase(),
                 qty: qtyEl ? (parseInt(qtyEl.value) || 0) : 0,
-                supplier: supEl ? supEl.value : suppliersList[0],
+                supplier: supVal || suppliersList[0],
                 notes: notesEl ? notesEl.value.trim() : ''
             };
             const idx = dbData.exports.findIndex(x => String(x.id) === String(id));
@@ -1574,9 +1610,7 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท</label>
-                            <select id="m-clm-supplier" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                                ${suppliersList.map(s => `<option value="${s}">${s}</option>`).join('')}
-                            </select>
+                            <input type="text" id="m-clm-supplier" required value="${suppliersList[0]}" placeholder="พิมพ์รหัสบริษัท เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">ปัญหาที่พบ</label>
@@ -1608,7 +1642,12 @@
             const probEl = document.getElementById('m-clm-problem');
             const qtyEl = document.getElementById('m-clm-qty');
             const notesEl = document.getElementById('m-clm-notes');
-            if (!dateEl || !nameEl) return;
+            if (!dateEl || !nameEl || !supEl) return;
+
+            const supVal = supEl.value.trim().toUpperCase();
+            if (supVal && !suppliersList.includes(supVal)) {
+                suppliersList.push(supVal);
+            }
 
             const item = {
                 id: generateId(),
@@ -1616,7 +1655,7 @@
                 claim_date: dateEl.value,
                 product_name: nameEl.value.trim().toUpperCase(),
                 lot: lotEl ? lotEl.value.trim() : '',
-                supplier: supEl ? supEl.value : suppliersList[0],
+                supplier: supVal || suppliersList[0],
                 problem: probEl ? probEl.value.trim() : '',
                 qty: qtyEl ? (parseInt(qtyEl.value) || 0) : 0,
                 notes: notesEl ? notesEl.value.trim() : ''
@@ -1649,9 +1688,7 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท</label>
-                            <select id="m-clm-supplier" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                                ${suppliersList.map(s => `<option value="${s}" ${item.supplier == s ? 'selected' : ''}>${s}</option>`).join('')}
-                            </select>
+                            <input type="text" id="m-clm-supplier" required value="${escapeHTML(item.supplier || '')}" placeholder="พิมพ์รหัสบริษัท เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">ปัญหาที่พบ</label>
@@ -1683,13 +1720,18 @@
             const probEl = document.getElementById('m-clm-problem');
             const qtyEl = document.getElementById('m-clm-qty');
             const notesEl = document.getElementById('m-clm-notes');
-            if (!dateEl || !nameEl) return;
+            if (!dateEl || !nameEl || !supEl) return;
+
+            const supVal = supEl.value.trim().toUpperCase();
+            if (supVal && !suppliersList.includes(supVal)) {
+                suppliersList.push(supVal);
+            }
 
             const updated = {
                 claim_date: dateEl.value,
                 product_name: nameEl.value.trim().toUpperCase(),
                 lot: lotEl ? lotEl.value.trim() : '',
-                supplier: supEl ? supEl.value : suppliersList[0],
+                supplier: supVal || suppliersList[0],
                 problem: probEl ? probEl.value.trim() : '',
                 qty: qtyEl ? (parseInt(qtyEl.value) || 0) : 0,
                 notes: notesEl ? notesEl.value.trim() : ''
@@ -1755,6 +1797,7 @@
 
         function openAddIncomingLotModal() {
             const todayStr = new Date().toLocaleDateString('th-TH');
+            const countryList = getCountrySuppliers();
             openModal(`
                 <div class="p-6">
                     <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-dolly text-blue-600 mr-2"></i>เพิ่มล็อตของเข้าใหม่</h3>
@@ -1764,16 +1807,15 @@
                             <input type="text" id="m-inc-date" required value="${todayStr}" placeholder="เช่น 17/09/2026" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท (เช่น 209)</label>
-                            <select id="m-inc-supplier" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                                ${suppliersList.map(s => `<option value="${s}">บริษัท ${s}</option>`).join('')}
-                            </select>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท</label>
+                            <input type="text" id="m-inc-supplier" required value="${suppliersList[0]}" placeholder="พิมพ์รหัสบริษัท เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพประเทศ (เช่น 11)</label>
-                            <select id="m-inc-country" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                                <option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option>
-                            </select>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพประเทศ (เลือกหรือพิมพ์เพิ่มใหม่ได้)</label>
+                            <input type="text" id="m-inc-country" list="country-list-options-inc" value="10" required placeholder="พิมพ์หรือเลือกซัพประเทศ" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <datalist id="country-list-options-inc">
+                                ${countryList.map(c => `<option value="${escapeHTML(c)}">`).join('')}
+                            </datalist>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
@@ -1794,14 +1836,24 @@
             const supEl = document.getElementById('m-inc-supplier');
             const countryEl = document.getElementById('m-inc-country');
             const notesEl = document.getElementById('m-inc-notes');
-            if (!dateEl) return;
+            if (!dateEl || !supEl || !countryEl) return;
+
+            const supVal = supEl.value.trim().toUpperCase();
+            if (supVal && !suppliersList.includes(supVal)) {
+                suppliersList.push(supVal);
+            }
+
+            const countryVal = countryEl.value.trim();
+            if (countryVal && !dbData.country_suppliers.includes(countryVal) && !countrySuppliersList.includes(countryVal)) {
+                dbData.country_suppliers.push(countryVal);
+            }
 
             const item = {
                 id: generateId(),
                 created_at: new Date().toISOString(),
                 date: dateEl.value.trim(),
-                supplier: supEl ? supEl.value : suppliersList[0],
-                country_supplier: countryEl ? countryEl.value : '10',
+                supplier: supVal || suppliersList[0],
+                country_supplier: countryVal || '10',
                 notes: notesEl ? notesEl.value.trim() : ''
             };
             dbData.incoming_lots.push(item);
@@ -1814,6 +1866,7 @@
         function openEditIncomingLotModal(id) {
             const l = dbData.incoming_lots.find(x => String(x.id) === String(id));
             if (!l) return;
+            const countryList = getCountrySuppliers();
             openModal(`
                 <div class="p-6">
                     <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-pen text-blue-600 mr-2"></i>แก้ไขล็อตของเข้า</h3>
@@ -1823,16 +1876,15 @@
                             <input type="text" id="m-inc-date" required value="${escapeHTML(l.date || '')}" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท (เช่น 209)</label>
-                            <select id="m-inc-supplier" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                                ${suppliersList.map(s => `<option value="${s}" ${l.supplier == s ? 'selected' : ''}>บริษัท ${s}</option>`).join('')}
-                            </select>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท</label>
+                            <input type="text" id="m-inc-supplier" required value="${escapeHTML(l.supplier || '')}" placeholder="พิมพ์รหัสบริษัท เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพประเทศ (เช่น 11)</label>
-                            <select id="m-inc-country" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                                ${[10,11,12,13,14,15].map(n => `<option value="${n}" ${l.country_supplier == n ? 'selected' : ''}>${n}</option>`).join('')}
-                            </select>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพประเทศ (เลือกหรือพิมพ์เพิ่มใหม่ได้)</label>
+                            <input type="text" id="m-inc-country" list="country-list-options-inc" value="${escapeHTML(l.country_supplier || '10')}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <datalist id="country-list-options-inc">
+                                ${countryList.map(c => `<option value="${escapeHTML(c)}">`).join('')}
+                            </datalist>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
@@ -1846,921 +1898,3 @@
                 </div>
             `);
         }
-
-        function updateIncomingLot(e, id) {
-            e.preventDefault();
-            const dateEl = document.getElementById('m-inc-date');
-            const supEl = document.getElementById('m-inc-supplier');
-            const countryEl = document.getElementById('m-inc-country');
-            const notesEl = document.getElementById('m-inc-notes');
-            if (!dateEl) return;
-
-            const updated = {
-                date: dateEl.value.trim(),
-                supplier: supEl ? supEl.value : suppliersList[0],
-                country_supplier: countryEl ? countryEl.value : '10',
-                notes: notesEl ? notesEl.value.trim() : ''
-            };
-            const idx = dbData.incoming_lots.findIndex(x => String(x.id) === String(id));
-            if (idx !== -1) {
-                dbData.incoming_lots[idx] = { ...dbData.incoming_lots[idx], ...updated };
-                saveToLocalDB();
-            }
-            closeModal();
-            renderPage4();
-            showAlert('สำเร็จ', 'แก้ไขล็อตของเข้าเรียบร้อยแล้ว');
-        }
-
-        function promptDeleteIncomingLot(id) {
-            showConfirmModal('ยืนยันการลบล็อตของเข้านี้หรือไม่? (รายการสินค้าภายในจะถูกลบด้วย)', () => {
-                dbData.incoming_lots = dbData.incoming_lots.filter(x => String(x.id) !== String(id));
-                dbData.incoming_items = dbData.incoming_items.filter(x => String(x.lot_id) !== String(id));
-                saveToLocalDB();
-                renderPage4();
-                showAlert('สำเร็จ', 'ลบล็อตของเข้าเรียบร้อยแล้ว');
-            });
-        }
-
-        function openIncomingLotDetail(lotId) {
-            selectedIncomingLot = dbData.incoming_lots.find(x => String(x.id) === String(lotId));
-            if (!selectedIncomingLot) return;
-            const mainView = document.getElementById('p4-main-view');
-            const detailView = document.getElementById('p4-detail-view');
-            const titleEl = document.getElementById('incoming-detail-title');
-            if (mainView) mainView.classList.add('hidden');
-            if (detailView) detailView.classList.remove('hidden');
-            if (titleEl) titleEl.innerText = `รายการในล็อต: ${escapeHTML(selectedIncomingLot.date)}-${escapeHTML(selectedIncomingLot.supplier)}`;
-            renderIncomingItemsView();
-        }
-
-        function backToIncomingLotList() {
-            selectedIncomingLot = null;
-            const mainView = document.getElementById('p4-main-view');
-            const detailView = document.getElementById('p4-detail-view');
-            if (detailView) detailView.classList.add('hidden');
-            if (mainView) mainView.classList.remove('hidden');
-            renderPage4();
-        }
-
-        function renderIncomingItemsView() {
-            if (!selectedIncomingLot) return;
-            const tbody = document.getElementById('incoming-item-table-body');
-            const emptyEl = document.getElementById('incoming-item-empty');
-            if (!tbody || !emptyEl) return;
-
-            const items = dbData.incoming_items.filter(i => String(i.lot_id) === String(selectedIncomingLot.id));
-
-            tbody.innerHTML = '';
-            if (items.length === 0) {
-                emptyEl.classList.remove('hidden');
-            } else {
-                emptyEl.classList.add('hidden');
-                items.forEach((item, index) => {
-                    let statusBadge = '';
-                    if (item.status === 'ผ่าน') statusBadge = '<span class="bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded text-xs font-bold">ผ่าน</span>';
-                    else if (item.status === 'ไม่ผ่าน') statusBadge = '<span class="bg-red-100 text-red-800 px-2.5 py-1 rounded text-xs font-bold">ไม่ผ่าน</span>';
-                    else statusBadge = '<span class="bg-amber-100 text-amber-800 px-2.5 py-1 rounded text-xs font-bold">ไม่ทราบ</span>';
-
-                    tbody.innerHTML += `
-                        <tr class="hover:bg-slate-50 transition border-b border-slate-100">
-                            <td class="p-4 font-semibold text-slate-700">${index + 1}</td>
-                            <td class="p-4 font-semibold text-slate-800">${escapeHTML(item.name)}</td>
-                            <td class="p-4 text-slate-600">${escapeHTML(item.compare_code || '-')}</td>
-                            <td class="p-4 font-bold text-blue-600">${escapeHTML(item.qty || 1)}</td>
-                            <td class="p-4 text-slate-600">${escapeHTML(item.details || '-')}</td>
-                            <td class="p-4">${statusBadge}</td>
-                            <td class="p-4 text-slate-600">${escapeHTML(item.notes || '-')}</td>
-                            <td class="p-4 text-center space-x-2">
-                                <button onclick="openEditIncomingItemModal('${escapeHTML(item.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button onclick="promptDeleteIncomingItem('${escapeHTML(item.id)}')" class="text-red-600 hover:text-red-800 p-1" title="ลบ"><i class="fa-solid fa-trash"></i></button>
-                            </td>
-                        </tr>
-                    `;
-                });
-            }
-        }
-
-        function openAddIncomingItemModal() {
-            openModal(`
-                <div class="p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-box-archive text-blue-600 mr-2"></i>เพิ่มรายการสินค้าในล็อต</h3>
-                    <form onsubmit="saveIncomingItem(event)" class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อสินค้า (เช่น KH 123)</label>
-                            <input type="text" id="m-item-name" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">เบอร์เทียบ</label>
-                            <input type="text" id="m-item-compare" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm" placeholder="เช่น COMP-999">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">จำนวน</label>
-                            <input type="number" id="m-item-qty" min="1" value="1" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">รายละเอียดเพิ่มเติม</label>
-                            <input type="text" id="m-item-details" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">สถานะ</label>
-                            <select id="m-item-status" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                                <option value="ผ่าน">ผ่าน</option><option value="ไม่ทราบ" selected>ไม่ทราบ</option><option value="ไม่ผ่าน">ไม่ผ่าน</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
-                            <textarea id="m-item-notes" rows="3" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm"></textarea>
-                        </div>
-                        <div class="flex justify-end space-x-2 pt-2">
-                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">ยกเลิก</button>
-                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">บันทึก</button>
-                        </div>
-                    </form>
-                </div>
-            `);
-        }
-
-        function syncProductFromIncoming(name, compare_code, country_supplier) {
-            if (!name) return;
-            const upperName = name.toUpperCase();
-            let existing = dbData.products.find(p => p.name.toUpperCase() === upperName);
-            if (!existing) {
-                dbData.products.push({
-                    id: generateId(),
-                    created_at: new Date().toISOString(),
-                    name: upperName,
-                    compare_code: compare_code || '',
-                    supplier_type: country_supplier || '10',
-                    notes: ''
-                });
-            } else {
-                if (!existing.compare_code && compare_code) {
-                    existing.compare_code = compare_code;
-                }
-            }
-        }
-
-        function saveIncomingItem(e) {
-            e.preventDefault();
-            if (!selectedIncomingLot) return;
-            const nameEl = document.getElementById('m-item-name');
-            const compareEl = document.getElementById('m-item-compare');
-            const qtyEl = document.getElementById('m-item-qty');
-            const detailsEl = document.getElementById('m-item-details');
-            const statusEl = document.getElementById('m-item-status');
-            const notesEl = document.getElementById('m-item-notes');
-            if (!nameEl) return;
-
-            const productName = nameEl.value.trim().toUpperCase();
-            const productCompare = compareEl ? compareEl.value.trim() : '';
-            const itemQty = qtyEl ? (parseInt(qtyEl.value) || 1) : 1;
-            const itemDetails = detailsEl ? detailsEl.value.trim() : '';
-            const itemStatus = statusEl ? statusEl.value : 'ไม่ทราบ';
-            const itemNotes = notesEl ? notesEl.value.trim() : '';
-
-            syncProductFromIncoming(productName, productCompare, selectedIncomingLot.country_supplier);
-
-            const item = {
-                id: generateId(),
-                created_at: new Date().toISOString(),
-                lot_id: selectedIncomingLot.id,
-                name: productName,
-                compare_code: productCompare,
-                qty: itemQty,
-                details: itemDetails,
-                status: itemStatus,
-                notes: itemNotes
-            };
-            dbData.incoming_items.push(item);
-            saveToLocalDB();
-            closeModal();
-            renderIncomingItemsView();
-            showAlert('สำเร็จ', 'เพิ่มรายการสินค้าเรียบร้อยแล้ว');
-        }
-
-        function openEditIncomingItemModal(id) {
-            const item = dbData.incoming_items.find(x => String(x.id) === String(id));
-            if (!item) return;
-            openModal(`
-                <div class="p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-pen text-blue-600 mr-2"></i>แก้ไขรายการสินค้า</h3>
-                    <form onsubmit="updateIncomingItem(event, '${escapeHTML(id)}')" class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อสินค้า</label>
-                            <input type="text" id="m-item-name" value="${escapeHTML(item.name)}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">เบอร์เทียบ</label>
-                            <input type="text" id="m-item-compare" value="${escapeHTML(item.compare_code || '')}" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">จำนวน</label>
-                            <input type="number" id="m-item-qty" min="1" value="${item.qty || 1}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">รายละเอียดเพิ่มเติม</label>
-                            <input type="text" id="m-item-details" value="${escapeHTML(item.details || '')}" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">สถานะ</label>
-                            <select id="m-item-status" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                                <option value="ผ่าน" ${item.status === 'ผ่าน' ? 'selected' : ''}>ผ่าน</option>
-                                <option value="ไม่ทราบ" ${item.status === 'ไม่ทราบ' ? 'selected' : ''}>ไม่ทราบ</option>
-                                <option value="ไม่ผ่าน" ${item.status === 'ไม่ผ่าน' ? 'selected' : ''}>ไม่ผ่าน</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
-                            <textarea id="m-item-notes" rows="3" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">${escapeHTML(item.notes || '')}</textarea>
-                        </div>
-                        <div class="flex justify-end space-x-2 pt-2">
-                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">ยกเลิก</button>
-                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">บันทึกการแก้ไข</button>
-                        </div>
-                    </form>
-                </div>
-            `);
-        }
-
-        function updateIncomingItem(e, id) {
-            e.preventDefault();
-            const nameEl = document.getElementById('m-item-name');
-            const compareEl = document.getElementById('m-item-compare');
-            const qtyEl = document.getElementById('m-item-qty');
-            const detailsEl = document.getElementById('m-item-details');
-            const statusEl = document.getElementById('m-item-status');
-            const notesEl = document.getElementById('m-item-notes');
-            if (!nameEl) return;
-
-            const updated = {
-                name: nameEl.value.trim().toUpperCase(),
-                compare_code: compareEl ? compareEl.value.trim() : '',
-                qty: qtyEl ? (parseInt(qtyEl.value) || 1) : 1,
-                details: detailsEl ? detailsEl.value.trim() : '',
-                status: statusEl ? statusEl.value : 'ไม่ทราบ',
-                notes: notesEl ? notesEl.value.trim() : ''
-            };
-            const idx = dbData.incoming_items.findIndex(x => String(x.id) === String(id));
-            if (idx !== -1) {
-                dbData.incoming_items[idx] = { ...dbData.incoming_items[idx], ...updated };
-                
-                const itemLot = dbData.incoming_lots.find(x => String(x.id) === String(dbData.incoming_items[idx].lot_id));
-                if (itemLot) {
-                    syncProductFromIncoming(updated.name, updated.compare_code, itemLot.country_supplier);
-                }
-
-                saveToLocalDB();
-            }
-            closeModal();
-            renderIncomingItemsView();
-            showAlert('สำเร็จ', 'แก้ไขรายการสินค้าเรียบร้อยแล้ว');
-        }
-
-        function promptDeleteIncomingItem(id) {
-            showConfirmModal('ยืนยันการลบรายการสินค้านี้หรือไม่?', () => {
-                dbData.incoming_items = dbData.incoming_items.filter(x => String(x.id) !== String(id));
-                saveToLocalDB();
-                renderIncomingItemsView();
-                showAlert('สำเร็จ', 'ลบรายการสินค้าเรียบร้อยแล้ว');
-            });
-        }
-
-        // ================= PAGE 5: สินค้าคงเหลือ =================
-        function renderPage5() {
-            const searchQuery = document.getElementById('search-page-5')?.value || '';
-            const tbody = document.getElementById('inventory-table-body');
-            const emptyEl = document.getElementById('inventory-empty');
-            if (!tbody || !emptyEl) return;
-
-            const inventoryMap = {};
-
-            dbData.incoming_items.forEach(item => {
-                const rawName = (item.name || '').trim();
-                const key = rawName.toLowerCase();
-                if (!key) return;
-
-                if (!inventoryMap[key]) {
-                    inventoryMap[key] = {
-                        name: rawName,
-                        totalIn: 0,
-                        totalOut: 0,
-                        totalProb: 0
-                    };
-                }
-                inventoryMap[key].totalIn += (item.qty || 0);
-            });
-
-            dbData.exports.forEach(exp => {
-                const expName = (exp.product_name || '').trim();
-                const key = expName.toLowerCase();
-                
-                if (!inventoryMap[key]) {
-                    inventoryMap[key] = { name: expName, totalIn: 0, totalOut: 0, totalProb: 0 };
-                }
-                inventoryMap[key].totalOut += (exp.qty || 0);
-            });
-
-            dbData.claims.forEach(claim => {
-                const claimName = (claim.product_name || '').trim();
-                const key = claimName.toLowerCase();
-
-                if (!inventoryMap[key]) {
-                    inventoryMap[key] = { name: claimName, totalIn: 0, totalOut: 0, totalProb: 0 };
-                }
-                inventoryMap[key].totalProb += (claim.qty || 0);
-            });
-
-            let inventoryList = Object.values(inventoryMap);
-
-            if (searchQuery) {
-                inventoryList = inventoryList.filter(inv => matchSearch(searchQuery, inv.name));
-            }
-
-            inventoryList.sort((a, b) => b.name.localeCompare(a.name));
-
-            tbody.innerHTML = '';
-            if (inventoryList.length === 0) {
-                emptyEl.classList.remove('hidden');
-            } else {
-                emptyEl.classList.add('hidden');
-                inventoryList.forEach(inv => {
-                    const balance = inv.totalIn - inv.totalOut;
-                    let balColor = 'text-emerald-600 font-bold';
-                    if (balance < 0) balColor = 'text-red-600 font-bold';
-                    else if (balance === 0) balColor = 'text-slate-600 font-bold';
-
-                    const encodedName = encodeURIComponent(inv.name);
-
-                    tbody.innerHTML += `
-                        <tr class="hover:bg-slate-50 transition border-b border-slate-100 cursor-pointer" onclick="openInventoryDetail('${escapeHTML(encodedName)}')">
-                            <td class="p-4 font-semibold text-blue-600 hover:underline"><i class="fa-solid fa-box mr-2"></i>${escapeHTML(inv.name)}</td>
-                            <td class="p-4 font-bold text-blue-600">${escapeHTML(inv.totalIn)}</td>
-                            <td class="p-4 font-bold text-amber-600">${escapeHTML(inv.totalOut)}</td>
-                            <td class="p-4 font-bold text-red-500">${escapeHTML(inv.totalProb)}</td>
-                            <td class="p-4 ${balColor}">${escapeHTML(balance)}</td>
-                        </tr>
-                    `;
-                });
-            }
-        }
-
-        function openInventoryDetail(encodedName) {
-            const productName = decodeURIComponent(encodedName);
-            const key = productName.toLowerCase();
-
-            let totalIn = 0;
-            let totalOut = 0;
-            let totalProb = 0;
-            const incomingRecords = [];
-            const exportRecords = [];
-            const claimRecords = [];
-
-            dbData.incoming_items.forEach(item => {
-                if ((item.name || '').trim().toLowerCase() === key) {
-                    totalIn += (item.qty || 0);
-                    const lot = dbData.incoming_lots.find(l => String(l.id) === String(item.lot_id));
-                    incomingRecords.push({
-                        lotName: lot ? lot.date : '-',
-                        supplier: lot ? lot.supplier : '-',
-                        qty: item.qty || 0
-                    });
-                }
-            });
-
-            dbData.exports.forEach(exp => {
-                if ((exp.product_name || '').trim().toLowerCase() === key) {
-                    totalOut += (exp.qty || 0);
-                    exportRecords.push({
-                        date: exp.export_date || '-',
-                        supplier: exp.supplier || '-',
-                        qty: exp.qty || 0
-                    });
-                }
-            });
-
-            dbData.claims.forEach(claim => {
-                if ((claim.product_name || '').trim().toLowerCase() === key) {
-                    totalProb += (claim.qty || 0);
-                    const displayDate = claim.claim_date ? claim.claim_date.split('-').reverse().join('/') : '-';
-                    claimRecords.push({
-                        date: displayDate,
-                        supplier: claim.supplier || '-',
-                        qty: claim.qty || 0
-                    });
-                }
-            });
-
-            const balance = totalIn - totalOut;
-
-            selectedInventoryItem = productName;
-            const mainView = document.getElementById('p5-main-view');
-            const detailView = document.getElementById('p5-detail-view');
-            const titleEl = document.getElementById('inventory-detail-title');
-            if (mainView) mainView.classList.add('hidden');
-            if (detailView) detailView.classList.remove('hidden');
-            if (titleEl) titleEl.innerText = `รายละเอียดสินค้าคงเหลือ: ${escapeHTML(productName)}`;
-
-            const sumIn = document.getElementById('inv-sum-in');
-            const sumOut = document.getElementById('inv-sum-out');
-            const sumProb = document.getElementById('inv-sum-prob');
-            const sumBal = document.getElementById('inv-sum-bal');
-            if (sumIn) sumIn.innerText = escapeHTML(totalIn);
-            if (sumOut) sumOut.innerText = escapeHTML(totalOut);
-            if (sumProb) sumProb.innerText = escapeHTML(totalProb);
-            if (sumBal) sumBal.innerText = escapeHTML(balance);
-
-            const inTbody = document.getElementById('inv-incoming-tbody');
-            if (inTbody) {
-                inTbody.innerHTML = '';
-                if (incomingRecords.length === 0) {
-                    inTbody.innerHTML = `<tr><td colspan="3" class="p-3 text-center text-slate-400">ไม่มีข้อมูลของเข้า</td></tr>`;
-                } else {
-                    incomingRecords.forEach(r => {
-                        inTbody.innerHTML += `
-                            <tr class="border-b border-slate-50">
-                                <td class="p-2.5 font-medium text-slate-700">ล็อต ${escapeHTML(r.lotName)}</td>
-                                <td class="p-2.5 text-slate-600">บริษัท ${escapeHTML(r.supplier)}</td>
-                                <td class="p-2.5 font-bold text-blue-600">${escapeHTML(r.qty)}</td>
-                            </tr>
-                        `;
-                    });
-                }
-            }
-
-            const outTbody = document.getElementById('inv-export-tbody');
-            if (outTbody) {
-                outTbody.innerHTML = '';
-                if (exportRecords.length === 0) {
-                    outTbody.innerHTML = `<tr><td colspan="3" class="p-3 text-center text-slate-400">ยังไม่มีการส่งออก</td></tr>`;
-                } else {
-                    exportRecords.forEach(r => {
-                        outTbody.innerHTML += `
-                            <tr class="border-b border-slate-50">
-                                <td class="p-2.5 font-medium text-slate-700">${escapeHTML(r.date)}</td>
-                                <td class="p-2.5 text-slate-600">บริษัท ${escapeHTML(r.supplier)}</td>
-                                <td class="p-2.5 font-bold text-amber-600">${escapeHTML(r.qty)}</td>
-                            </tr>
-                        `;
-                    });
-                }
-            }
-
-            const claimTbody = document.getElementById('inv-claim-tbody');
-            if (claimTbody) {
-                claimTbody.innerHTML = '';
-                if (claimRecords.length === 0) {
-                    claimTbody.innerHTML = `<tr><td colspan="3" class="p-3 text-center text-slate-400">ยังไม่มีการเคลม</td></tr>`;
-                } else {
-                    claimRecords.forEach(r => {
-                        claimTbody.innerHTML += `
-                            <tr class="border-b border-slate-50">
-                                <td class="p-2.5 font-medium text-slate-700">${escapeHTML(r.date)}</td>
-                                <td class="p-2.5 text-slate-600">บริษัท ${escapeHTML(r.supplier)}</td>
-                                <td class="p-2.5 font-bold text-red-500">${escapeHTML(r.qty)}</td>
-                            </tr>
-                        `;
-                    });
-                }
-            }
-        }
-
-        function backToInventoryList() {
-            selectedInventoryItem = null;
-            const mainView = document.getElementById('p5-main-view');
-            const detailView = document.getElementById('p5-detail-view');
-            if (detailView) detailView.classList.add('hidden');
-            if (mainView) mainView.classList.remove('hidden');
-            renderPage5();
-        }
-
-        // ================= PAGE 6: ข้อมูลส่วนตัว =================
-        function renderPage6() {
-            renderTodosTable();
-            renderNotesTable();
-            renderPersonalExportsTable();
-        }
-
-        function renderTodosTable() {
-            const tbody = document.getElementById('personal-todo-table-body');
-            const emptyEl = document.getElementById('todo-empty');
-            if (!tbody || !emptyEl) return;
-            tbody.innerHTML = '';
-            
-            const userTodos = dbData.todos.filter(t => t.user_id === currentUser);
-
-            if (userTodos.length === 0) {
-                emptyEl.classList.remove('hidden');
-            } else {
-                emptyEl.classList.add('hidden');
-                userTodos.forEach(t => {
-                    tbody.innerHTML += `
-                        <tr class="hover:bg-slate-50 transition border-b border-slate-100">
-                            <td class="p-3 text-center">
-                                <input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTodo('${escapeHTML(t.id)}', this.checked)" class="h-4 w-4 text-blue-600 rounded">
-                            </td>
-                            <td class="p-3 font-semibold ${t.completed ? 'line-through text-slate-400' : 'text-slate-800'}">${escapeHTML(t.text)}</td>
-                            <td class="p-3 text-slate-600">${escapeHTML(t.notes || '-')}</td>
-                            <td class="p-3 text-center space-x-1">
-                                <button onclick="openEditTodoModal('${escapeHTML(t.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข"><i class="fa-solid fa-pen"></i></button>
-                                <button onclick="promptDeleteTodo('${escapeHTML(t.id)}')" class="text-red-500 hover:text-red-700 p-1" title="ลบ"><i class="fa-solid fa-trash"></i></button>
-                            </td>
-                        </tr>
-                    `;
-                });
-            }
-        }
-
-        function openPersonalTodoModal() {
-            openModal(`
-                <div class="p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-list-check text-blue-600 mr-2"></i>เพิ่มสิ่งที่ต้องทำ</h3>
-                    <form onsubmit="saveTodo(event)" class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">รายการสิ่งที่ต้องทำ</label>
-                            <input type="text" id="m-todo-text" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
-                            <textarea id="m-todo-notes" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm"></textarea>
-                        </div>
-                        <div class="flex justify-end space-x-2 pt-2">
-                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">ยกเลิก</button>
-                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">บันทึก</button>
-                        </div>
-                    </form>
-                </div>
-            `);
-        }
-
-        function saveTodo(e) {
-            e.preventDefault();
-            const textEl = document.getElementById('m-todo-text');
-            const notesEl = document.getElementById('m-todo-notes');
-            if (!textEl) return;
-
-            const item = {
-                id: generateId(),
-                created_at: new Date().toISOString(),
-                user_id: currentUser,
-                text: textEl.value.trim(),
-                notes: notesEl ? notesEl.value.trim() : '',
-                completed: false
-            };
-            dbData.todos.push(item);
-            saveToLocalDB();
-            closeModal();
-            renderTodosTable();
-        }
-
-        function openEditTodoModal(id) {
-            const item = dbData.todos.find(x => String(x.id) === String(id));
-            if (!item) return;
-            openModal(`
-                <div class="p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-pen text-blue-600 mr-2"></i>แก้ไขสิ่งที่ต้องทำ</h3>
-                    <form onsubmit="updateTodo(event, '${escapeHTML(id)}')" class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">รายการสิ่งที่ต้องทำ</label>
-                            <input type="text" id="m-todo-text" value="${escapeHTML(item.text)}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
-                            <textarea id="m-todo-notes" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">${escapeHTML(item.notes || '')}</textarea>
-                        </div>
-                        <div class="flex justify-end space-x-2 pt-2">
-                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">ยกเลิก</button>
-                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">บันทึก</button>
-                        </div>
-                    </form>
-                </div>
-            `);
-        }
-
-        function updateTodo(e, id) {
-            e.preventDefault();
-            const textEl = document.getElementById('m-todo-text');
-            const notesEl = document.getElementById('m-todo-notes');
-            if (!textEl) return;
-
-            const updated = {
-                text: textEl.value.trim(),
-                notes: notesEl ? notesEl.value.trim() : ''
-            };
-            const idx = dbData.todos.findIndex(x => String(x.id) === String(id));
-            if (idx !== -1) {
-                dbData.todos[idx] = { ...dbData.todos[idx], ...updated };
-                saveToLocalDB();
-            }
-            closeModal();
-            renderTodosTable();
-        }
-
-        function toggleTodo(id, completed) {
-            const idx = dbData.todos.findIndex(x => String(x.id) === String(id));
-            if (idx !== -1) {
-                dbData.todos[idx].completed = completed;
-                saveToLocalDB();
-            }
-            renderTodosTable();
-        }
-
-        function promptDeleteTodo(id) {
-            showConfirmModal('ยืนยันการลบสิ่งที่ต้องทำนี้หรือไม่?', () => {
-                dbData.todos = dbData.todos.filter(x => String(x.id) !== String(id));
-                saveToLocalDB();
-                renderTodosTable();
-            });
-        }
-
-        function renderNotesTable() {
-            const tbody = document.getElementById('personal-note-table-body');
-            const emptyEl = document.getElementById('note-empty');
-            if (!tbody || !emptyEl) return;
-            tbody.innerHTML = '';
-            
-            const userNotes = dbData.notes.filter(n => n.user_id === currentUser);
-
-            if (userNotes.length === 0) {
-                emptyEl.classList.remove('hidden');
-            } else {
-                emptyEl.classList.add('hidden');
-                userNotes.forEach(n => {
-                    tbody.innerHTML += `
-                        <tr class="hover:bg-slate-50 transition border-b border-slate-100">
-                            <td class="p-3 text-center">
-                                <input type="checkbox" ${n.completed ? 'checked' : ''} onchange="toggleNote('${escapeHTML(n.id)}', this.checked)" class="h-4 w-4 text-blue-600 rounded">
-                            </td>
-                            <td class="p-3 font-semibold ${n.completed ? 'line-through text-slate-400' : 'text-slate-800'}">${escapeHTML(n.product_name)}</td>
-                            <td class="p-3 font-bold text-blue-600">${escapeHTML(n.qty)}</td>
-                            <td class="p-3 text-slate-600">${escapeHTML(n.note_text || '-')}</td>
-                            <td class="p-3 text-center space-x-1">
-                                <button onclick="openEditNoteModal('${escapeHTML(n.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข"><i class="fa-solid fa-pen"></i></button>
-                                <button onclick="promptDeleteNote('${escapeHTML(n.id)}')" class="text-red-500 hover:text-red-700 p-1" title="ลบ"><i class="fa-solid fa-trash"></i></button>
-                            </td>
-                        </tr>
-                    `;
-                });
-            }
-        }
-
-        function openPersonalNoteModal() {
-            openModal(`
-                <div class="p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-note-sticky text-blue-600 mr-2"></i>เพิ่มบันทึกส่วนตัวสินค้า</h3>
-                    <form onsubmit="saveNote(event)" class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อสินค้า</label>
-                            <input type="text" id="m-note-name" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">จำนวน</label>
-                            <input type="number" id="m-note-qty" min="1" value="1" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
-                            <textarea id="m-note-text" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm"></textarea>
-                        </div>
-                        <div class="flex justify-end space-x-2 pt-2">
-                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">ยกเลิก</button>
-                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">บันทึก</button>
-                        </div>
-                    </form>
-                </div>
-            `);
-        }
-
-        function saveNote(e) {
-            e.preventDefault();
-            const nameEl = document.getElementById('m-note-name');
-            const qtyEl = document.getElementById('m-note-qty');
-            const textEl = document.getElementById('m-note-text');
-            if (!nameEl) return;
-
-            const item = {
-                id: generateId(),
-                created_at: new Date().toISOString(),
-                user_id: currentUser,
-                product_name: nameEl.value.trim(),
-                qty: qtyEl ? (parseInt(qtyEl.value) || 1) : 1,
-                note_text: textEl ? textEl.value.trim() : '',
-                completed: false
-            };
-            dbData.notes.push(item);
-            saveToLocalDB();
-            closeModal();
-            renderNotesTable();
-        }
-
-        function openEditNoteModal(id) {
-            const item = dbData.notes.find(x => String(x.id) === String(id));
-            if (!item) return;
-            openModal(`
-                <div class="p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-pen text-blue-600 mr-2"></i>แก้ไขบันทึกส่วนตัวสินค้า</h3>
-                    <form onsubmit="updateNote(event, '${escapeHTML(id)}')" class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อสินค้า</label>
-                            <input type="text" id="m-note-name" value="${escapeHTML(item.product_name)}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">จำนวน</label>
-                            <input type="number" id="m-note-qty" min="1" value="${item.qty || 1}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
-                            <textarea id="m-note-text" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">${escapeHTML(item.note_text || '')}</textarea>
-                        </div>
-                        <div class="flex justify-end space-x-2 pt-2">
-                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">ยกเลิก</button>
-                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">บันทึก</button>
-                        </div>
-                    </form>
-                </div>
-            `);
-        }
-
-        function updateNote(e, id) {
-            e.preventDefault();
-            const nameEl = document.getElementById('m-note-name');
-            const qtyEl = document.getElementById('m-note-qty');
-            const textEl = document.getElementById('m-note-text');
-            if (!nameEl) return;
-
-            const updated = {
-                product_name: nameEl.value.trim(),
-                qty: qtyEl ? (parseInt(qtyEl.value) || 1) : 1,
-                note_text: textEl ? textEl.value.trim() : ''
-            };
-            const idx = dbData.notes.findIndex(x => String(x.id) === String(id));
-            if (idx !== -1) {
-                dbData.notes[idx] = { ...dbData.notes[idx], ...updated };
-                saveToLocalDB();
-            }
-            closeModal();
-            renderNotesTable();
-        }
-
-        function toggleNote(id, completed) {
-            const idx = dbData.notes.findIndex(x => String(x.id) === String(id));
-            if (idx !== -1) {
-                dbData.notes[idx].completed = completed;
-                saveToLocalDB();
-            }
-            renderNotesTable();
-        }
-
-        function promptDeleteNote(id) {
-            showConfirmModal('ยืนยันการลบบันทึกสินค้านี้หรือไม่?', () => {
-                dbData.notes = dbData.notes.filter(x => String(x.id) !== String(id));
-                saveToLocalDB();
-                renderNotesTable();
-            });
-        }
-
-        function renderPersonalExportsTable() {
-            const tbody = document.getElementById('personal-export-table-body');
-            const emptyEl = document.getElementById('p-export-empty');
-            if (!tbody || !emptyEl) return;
-            tbody.innerHTML = '';
-            
-            const userPExports = dbData.personal_exports.filter(pe => pe.user_id === currentUser);
-
-            if (userPExports.length === 0) {
-                emptyEl.classList.remove('hidden');
-            } else {
-                emptyEl.classList.add('hidden');
-                userPExports.forEach(item => {
-                    const formattedDate = new Date(item.created_at).toLocaleString('th-TH');
-                    const optionsText = (item.options || []).join(', ');
-                    tbody.innerHTML += `
-                        <tr class="hover:bg-slate-50 transition border-b border-slate-100">
-                            <td class="p-3 font-semibold text-slate-800">${escapeHTML(item.product_name)}</td>
-                            <td class="p-3 font-bold text-blue-600">${escapeHTML(item.qty || 1)}</td>
-                            <td class="p-3 text-slate-700">${escapeHTML(item.box_type)} ${item.box_detail ? '('+escapeHTML(item.box_detail)+')' : ''}</td>
-                            <td class="p-3"><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-xs font-bold">${escapeHTML(item.sticker)}</span></td>
-                            <td class="p-3"><span class="bg-slate-100 text-slate-800 px-2 py-0.5 rounded text-xs font-bold">${escapeHTML(item.bag)}</span></td>
-                            <td class="p-3 text-slate-600 text-xs">${escapeHTML(optionsText || '-')}</td>
-                            <td class="p-3 text-slate-600 text-xs">
-                                <div>${escapeHTML(item.notes || '-')}</div>
-                                <div class="text-[10px] text-slate-400 mt-1"><i class="fa-regular fa-clock mr-1"></i>${escapeHTML(formattedDate)}</div>
-                            </td>
-                            <td class="p-3 text-center">
-                                <button onclick="promptDeletePersonalExport('${escapeHTML(item.id)}')" class="text-red-500 hover:text-red-700 p-1" title="ลบ"><i class="fa-solid fa-trash"></i></button>
-                            </td>
-                        </tr>
-                    `;
-                });
-            }
-        }
-
-        function openPersonalExportModal() {
-            openModal(`
-                <div class="p-6 max-h-[85vh] overflow-y-auto">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-file-export text-blue-600 mr-2"></i>บันทึกข้อมูลส่งออกส่วนตัว</h3>
-                    <form onsubmit="savePersonalExport(event)" class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อสินค้า</label>
-                            <input type="text" id="m-pe-name" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">จำนวน</label>
-                            <input type="number" id="m-pe-qty" min="1" value="1" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">กล่องเล็กบริษัทหรือโรงงาน</label>
-                            <div class="space-y-2 mt-1">
-                                <label class="flex items-center space-x-2 text-sm">
-                                    <input type="radio" name="m-pe-box" value="โรงงาน" checked onchange="toggleBoxDetailInput(false)"> <span>โรงงาน</span>
-                                </label>
-                                <label class="flex items-center space-x-2 text-sm">
-                                    <input type="radio" name="m-pe-box" value="บริษัท" onchange="toggleBoxDetailInput(true)"> <span>บริษัท</span>
-                                </label>
-                            </div>
-                            <div id="m-pe-box-detail-container" class="mt-2 hidden">
-                                <input type="text" id="m-pe-box-detail" placeholder="พิมพ์ข้อความชื่อบริษัท..." class="w-full p-2 border border-slate-300 rounded-lg text-sm">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">สติ้กเกอร์</label>
-                            <input type="text" id="m-pe-sticker" required placeholder="เช่น A2, A3B, A4R" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">ถุง</label>
-                            <select id="m-pe-bag" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
-                                <option value="PF12">PF12</option><option value="PF14">PF14</option><option value="PF20">PF20</option><option value="PE30">PE30</option><option value="2PE30">2PE30</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">ตัวเลือกเพิ่มเติม</label>
-                            <div class="space-y-1.5 text-sm">
-                                <label class="flex items-center space-x-2"><input type="checkbox" name="m-pe-opt" value="ไม่มี" class="rounded"> <span>ไม่มี</span></label>
-                                <label class="flex items-center space-x-2"><input type="checkbox" name="m-pe-opt" value="กล่องเรา" class="rounded"> <span>กล่องเรา</span></label>
-                                <label class="flex items-center space-x-2"><input type="checkbox" name="m-pe-opt" value="สติ้กเกอร์(มีแค่A4B)" class="rounded"> <span>สติ้กเกอร์(มีแค่A4B)</span></label>
-                                <label class="flex items-center space-x-2"><input type="checkbox" name="m-pe-opt" value="เทป" class="rounded"> <span>เทป</span></label>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
-                            <textarea id="m-pe-notes" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm"></textarea>
-                        </div>
-                        <div class="flex justify-end space-x-2 pt-2">
-                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">ยกเลิก</button>
-                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">บันทึก</button>
-                        </div>
-                    </form>
-                </div>
-            `);
-        }
-
-        function toggleBoxDetailInput(show) {
-            const container = document.getElementById('m-pe-box-detail-container');
-            if (!container) return;
-            if (show) container.classList.remove('hidden');
-            else container.classList.add('hidden');
-        }
-
-        function savePersonalExport(e) {
-            e.preventDefault();
-            const boxRadio = document.querySelector('input[name="m-pe-box"]:checked');
-            const boxDetailEl = document.getElementById('m-pe-box-detail');
-            const nameEl = document.getElementById('m-pe-name');
-            const qtyEl = document.getElementById('m-pe-qty');
-            const stickerEl = document.getElementById('m-pe-sticker');
-            const bagEl = document.getElementById('m-pe-bag');
-            const notesEl = document.getElementById('m-pe-notes');
-            if (!boxRadio || !nameEl) return;
-
-            const boxType = boxRadio.value;
-            const boxDetail = boxType === 'บริษัท' && boxDetailEl ? boxDetailEl.value.trim() : '';
-            const checkedOpts = Array.from(document.querySelectorAll('input[name="m-pe-opt"]:checked')).map(el => el.value);
-
-            const item = {
-                id: generateId(),
-                user_id: currentUser,
-                product_name: nameEl.value.trim().toUpperCase(),
-                qty: qtyEl ? (parseInt(qtyEl.value) || 1) : 1,
-                box_type: boxType,
-                box_detail: boxDetail,
-                sticker: stickerEl ? stickerEl.value.trim() : '',
-                bag: bagEl ? bagEl.value : 'PF12',
-                options: checkedOpts,
-                notes: notesEl ? notesEl.value.trim() : '',
-                created_at: new Date().toISOString()
-            };
-
-            dbData.personal_exports.push(item);
-            saveToLocalDB();
-            closeModal();
-            renderPersonalExportsTable();
-        }
-
-        function promptDeletePersonalExport(id) {
-            showConfirmModal('ยืนยันการลบข้อมูลส่งออกส่วนตัวนี้หรือไม่?', () => {
-                dbData.personal_exports = dbData.personal_exports.filter(x => String(x.id) !== String(id));
-                saveToLocalDB();
-                renderPersonalExportsTable();
-            });
-        }
-    </script>
-</body>
-</html>
