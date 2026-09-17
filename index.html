@@ -6,8 +6,6 @@
     <title>ERP SYSTEM</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
         body { font-family: 'Sarabun', sans-serif; }
@@ -20,7 +18,7 @@
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 border-t-8 border-blue-600">
             <div class="text-center mb-8">
                 <div class="bg-blue-100 text-blue-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold shadow-inner">
-                    <i class="fa-solid fa-boxes-stacked"></i>
+                    <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24"><path d="M21 16.5C21 16.88 20.79 17.21 20.47 17.38L12.57 21.82C12.41 21.94 12.21 22 12 22C11.79 22 11.59 21.94 11.43 21.82L3.53 17.38C3.21 17.21 3 16.88 3 16.5V7.5C3 7.12 3.21 6.79 3.53 6.62L11.43 2.18C11.59 2.06 11.79 2 12 2C12.21 2 12.41 2.06 12.57 2.18L20.47 6.62C20.79 6.79 21 7.12 21 7.5V16.5M12 4.15L5 8.09V15.91L12 19.85L19 15.91V8.09L12 4.15Z"/></svg>
                 </div>
                 <h1 class="text-2xl font-bold text-slate-800">ERP SYSTEM</h1>
             </div>
@@ -29,17 +27,18 @@
                     <label class="block text-sm font-medium text-slate-700 mb-2">ใส่รหัส</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-                            <i class="fa-solid fa-lock"></i>
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18 8H17V6C17 3.24 14.76 1 12 1C9.24 1 7 3.24 7 6V8H6C4.9 8 4 8.9 4 10V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V10C20 8.9 19.1 8 18 8M12 3C13.65 3 15 4.35 15 6V8H9V6C9 4.35 10.35 3 12 3M18 20H6V10H18V20M12 16C13.1 16 14 15.1 14 14C14 12.9 13.1 12 12 12C10.9 12 10 12.9 10 14C10 15.1 10.9 16 12 16Z"/></svg>
                         </span>
                         <input type="text" id="erp-code-input" required placeholder="" 
                             class="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg uppercase font-semibold">
                     </div>
                 </div>
                 <div id="login-error" class="text-red-500 text-sm text-center hidden font-medium bg-red-50 p-2 rounded-lg">
-                    <i class="fa-solid fa-circle-exclamation mr-1"></i> รหัส ERP ไม่ถูกต้อง
+                    <svg class="w-4 h-4 inline mr-1 fill-current" viewBox="0 0 24 24"><path d="M13 14H11V9H13M13 18H11V16H13M1 21H23L12 2L1 21Z"/></svg> รหัส ERP ไม่ถูกต้อง
                 </div>
-                <button type="submit" id="login-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition shadow-lg shadow-blue-600/30 text-lg">
-                    เข้าสู่ระบบ <i class="fa-solid fa-arrow-right ml-2"></i>
+                <button type="submit" id="login-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition shadow-lg shadow-blue-600/30 text-lg flex items-center justify-center space-x-2">
+                    <span>เข้าสู่ระบบ</span> 
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M5 13H16.17L11.29 17.88C10.9 18.27 10.9 18.91 11.29 19.3C11.68 19.69 12.31 19.69 12.7 19.3L19.29 12.71C19.68 12.32 19.68 11.69 19.29 11.3L12.7 4.71C12.31 4.32 11.68 4.32 11.29 4.71C10.9 5.1 10.9 5.73 11.29 6.12L16.17 11H5C4.45 11 4 11.45 4 12C4 12.55 4.45 13 5 13Z"/></svg>
                 </button>
             </form>
         </div>
@@ -51,15 +50,17 @@
         <header class="bg-blue-700 text-white shadow-md">
             <div class="container mx-auto px-4 py-3 flex flex-wrap justify-between items-center">
                 <div class="flex items-center space-x-3">
-                    <i class="fa-solid fa-boxes-stacked text-2xl bg-blue-800 p-2 rounded-lg"></i>
+                    <span class="bg-blue-800 p-2 rounded-lg inline-flex items-center justify-center">
+                        <svg class="w-6 h-6 fill-current text-white" viewBox="0 0 24 24"><path d="M21 16.5C21 16.88 20.79 17.21 20.47 17.38L12.57 21.82C12.41 21.94 12.21 22 12 22C11.79 22 11.59 21.94 11.43 21.82L3.53 17.38C3.21 17.21 3 16.88 3 16.5V7.5C3 7.12 3.21 6.79 3.53 6.62L11.43 2.18C11.59 2.06 11.79 2 12 2C12.21 2 12.41 2.06 12.57 2.18L20.47 6.62C20.79 6.79 21 7.12 21 7.5V16.5M12 4.15L5 8.09V15.91L12 19.85L19 15.91V8.09L12 4.15Z"/></svg>
+                    </span>
                     <span class="text-xl font-bold tracking-wider">ERP SYSTEM (LOCAL)</span>
                 </div>
                 <div class="flex items-center space-x-4 mt-2 sm:mt-0">
-                    <span id="user-badge" class="bg-blue-800 text-blue-100 px-3 py-1 rounded-full text-sm font-medium border border-blue-600">
-                        <i class="fa-solid fa-user-shield mr-1"></i> ผู้ใช้งาน: -
+                    <span id="user-badge" class="bg-blue-800 text-blue-100 px-3 py-1 rounded-full text-sm font-medium border border-blue-600 flex items-center">
+                        <svg class="w-4 h-4 mr-1.5 fill-current" viewBox="0 0 24 24"><path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1M12 11.99H19C18.47 16.11 15.72 19.78 12 20.92V12H5V6.3L12 3.19V11.99Z"/></svg> ผู้ใช้งาน: -
                     </span>
                     <button onclick="handleLogout()" class="bg-blue-800 hover:bg-blue-900 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition flex items-center space-x-1">
-                        <i class="fa-solid fa-right-from-bracket"></i> <span>ออกจากระบบ</span>
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M16 17V14H9V10H16V7L21 12L16 17M14 2H5C3.9 2 3 2.9 3 4V20C3 21.1 3.9 22 5 22H14C15.1 22 16 21.1 16 20V18H14V20H5V4H14V6H16V4C16 2.9 15.1 2 14 2Z"/></svg> <span>ออกจากระบบ</span>
                     </button>
                 </div>
             </div>
@@ -67,22 +68,22 @@
             <div class="bg-blue-800 border-t border-blue-600">
                 <div class="container mx-auto px-4 flex overflow-x-auto space-x-2 py-2">
                     <button onclick="switchTab(1)" id="tab-btn-1" class="tab-btn whitespace-nowrap px-4 py-2 rounded-lg text-sm font-medium bg-white text-blue-950 shadow transition flex items-center space-x-2">
-                        <i class="fa-solid fa-box"></i> <span>หน้า 1: ข้อมูลสินค้า</span>
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3M11 5V11H5V5H11M5 13H11V19H5V13M19 19H13V13H19V19M19 11H13V5H19V11Z"/></svg> <span>หน้า 1: ข้อมูลสินค้า</span>
                     </button>
                     <button onclick="switchTab(2)" id="tab-btn-2" class="tab-btn whitespace-nowrap px-4 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-700 transition flex items-center space-x-2">
-                        <i class="fa-solid fa-truck-ramp-box"></i> <span>หน้า 2: การส่งออก</span>
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M20 8H17V4H3C1.9 4 1 4.9 1 6V17H3C3 18.66 4.34 20 6 20S9 18.66 9 17H15C15 18.66 16.34 20 18 20S21 18.66 21 17H23V12L20 8M6 18.5C5.17 18.5 4.5 17.83 4.5 17S5.17 15.5 6 15.5 7.5 16.17 7.5 17 6.83 18.5 6 18.5M18 18.5C17.17 18.5 16.5 17.83 16.5 17S17.17 15.5 18 15.5 19.5 16.17 19.5 17 18.83 18.5 18 18.5M19.5 10.5L21.33 13H17V10.5H19.5Z"/></svg> <span>หน้า 2: การส่งออก</span>
                     </button>
                     <button onclick="switchTab(3)" id="tab-btn-3" class="tab-btn whitespace-nowrap px-4 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-700 transition flex items-center space-x-2">
-                        <i class="fa-solid fa-triangle-exclamation"></i> <span>หน้า 3: เคลมและรีพอร์ต</span>
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2L1 21H23M12 6L19.53 19H4.47M11 10V14H13V10M11 16V18H13V16Z"/></svg> <span>หน้า 3: เคลมและรีพอร์ต</span>
                     </button>
                     <button onclick="switchTab(4)" id="tab-btn-4" class="tab-btn whitespace-nowrap px-4 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-700 transition flex items-center space-x-2">
-                        <i class="fa-solid fa-dolly"></i> <span>หน้า 4: ของเข้า</span>
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M18 18.5C16.62 18.5 15.5 17.38 15.5 16S16.62 13.5 18 13.5 20.5 14.62 20.5 16 19.38 18.5 18 18.5M19.5 9.5H17V6.5C17 5.67 16.33 5 15.5 5H3.5C2.67 5 2 5.67 2 6.5V17.5C2 18.33 2.67 19 3.5 19H6.18C6.68 20.16 7.84 21 9.2 21S11.72 20.16 12.22 19H14.78C15.28 20.16 16.44 21 17.8 21S20.32 20.16 20.82 19H22V13L19.5 9.5M4 7H15V14H4V7Z"/></svg> <span>หน้า 4: ของเข้า</span>
                     </button>
                     <button onclick="switchTab(5)" id="tab-btn-5" class="tab-btn whitespace-nowrap px-4 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-700 transition flex items-center space-x-2">
-                        <i class="fa-solid fa-scale-balanced"></i> <span>หน้า 5: สินค้าคงเหลือ</span>
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 3C7.03 3 3 7.03 3 12S7.03 21 12 21 21 16.97 21 12 16.97 3 12 3M12 19C8.13 19 5 15.87 5 12S8.13 5 12 5 19 8.13 19 12 15.87 19 12 19M11 7H13V13H11V7M11 15H13V17H11V15Z"/></svg> <span>หน้า 5: สินค้าคงเหลือ</span>
                     </button>
                     <button onclick="switchTab(6)" id="tab-btn-6" class="tab-btn whitespace-nowrap px-4 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-700 transition flex items-center space-x-2">
-                        <i class="fa-solid fa-user-gear"></i> <span>ข้อมูลส่วนตัว/ตั้งค่า</span>
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 4A4 4 0 0 1 16 8A4 4 0 0 1 12 12A4 4 0 0 1 8 8A4 4 0 0 1 12 4M12 14C16.42 14 20 15.79 20 18V20H4V18C4 15.79 7.58 14 12 14Z"/></svg> <span>ข้อมูลส่วนตัว/ตั้งค่า</span>
                     </button>
                 </div>
             </div>
@@ -102,13 +103,13 @@
                         <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                             <div class="relative flex-grow sm:w-64">
                                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/></svg>
                                 </span>
                                 <input type="text" id="search-page-1" oninput="renderPage1()" placeholder="ค้นหาสินค้าหน้า 1..." 
                                     class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
                             </div>
                             <button onclick="openAddProductModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition shadow-sm flex items-center justify-center space-x-1 whitespace-nowrap">
-                                <i class="fa-solid fa-plus"></i> <span>เพิ่มสินค้า</span>
+                                <svg class="w-4 h-4 fill-current inline mr-1" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg> <span>เพิ่มสินค้า</span>
                             </button>
                         </div>
                     </div>
@@ -129,7 +130,6 @@
                             </table>
                         </div>
                         <div id="product-empty" class="text-center py-12 hidden">
-                            <i class="fa-solid fa-box-open text-4xl text-slate-300 mb-3"></i>
                             <p class="text-slate-500 font-medium">ไม่พบข้อมูลสินค้า</p>
                         </div>
                     </div>
@@ -138,8 +138,8 @@
                 <div id="p1-detail-view" class="space-y-6 hidden">
                     <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex justify-between items-center">
                         <div class="flex items-center space-x-3">
-                            <button onclick="backToProductList()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg text-sm font-medium transition">
-                                <i class="fa-solid fa-arrow-left mr-1"></i> ย้อนกลับ
+                            <button onclick="backToProductList()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg text-sm font-medium transition flex items-center">
+                                <svg class="w-4 h-4 mr-1 fill-current" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/></svg> ย้อนกลับ
                             </button>
                             <div>
                                 <h2 id="detail-product-title" class="text-xl font-bold text-slate-800">รายละเอียดสินค้า: -</h2>
@@ -147,7 +147,7 @@
                             </div>
                         </div>
                         <button onclick="openAddLotModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition shadow-sm flex items-center space-x-1">
-                            <i class="fa-solid fa-plus"></i> <span>เพิ่มล็อตสินค้า</span>
+                            <svg class="w-4 h-4 fill-current inline mr-1" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg> <span>เพิ่มล็อตสินค้า</span>
                         </button>
                     </div>
 
@@ -168,7 +168,6 @@
                             </table>
                         </div>
                         <div id="lot-empty" class="text-center py-12 hidden">
-                            <i class="fa-solid fa-boxes-stacked text-4xl text-slate-300 mb-3"></i>
                             <p class="text-slate-500 font-medium">ยังไม่มีข้อมูลล็อตสำหรับสินค้านี้</p>
                         </div>
                     </div>
@@ -185,13 +184,13 @@
                     <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                         <div class="relative flex-grow sm:w-64">
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/></svg>
                             </span>
                             <input type="text" id="search-page-2" oninput="renderPage2()" placeholder="ค้นหาข้อมูลส่งออกหน้า 2..." 
                                 class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
                         </div>
                         <button onclick="openAddExportModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition shadow-sm flex items-center justify-center space-x-1 whitespace-nowrap">
-                            <i class="fa-solid fa-plus"></i> <span>เพิ่มรายการส่งออก</span>
+                            <svg class="w-4 h-4 fill-current inline mr-1" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg> <span>เพิ่มรายการส่งออก</span>
                         </button>
                     </div>
                 </div>
@@ -213,7 +212,6 @@
                         </table>
                     </div>
                     <div id="export-empty" class="text-center py-12 hidden">
-                        <i class="fa-solid fa-file-invoice text-4xl text-slate-300 mb-3"></i>
                         <p class="text-slate-500 font-medium">ไม่พบข้อมูลการส่งออก</p>
                     </div>
                 </div>
@@ -229,13 +227,13 @@
                     <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                         <div class="relative flex-grow sm:w-64">
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/></svg>
                             </span>
                             <input type="text" id="search-page-3" oninput="renderPage3()" placeholder="ค้นหาข้อมูลหน้า 3..." 
                                 class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
                         </div>
                         <button onclick="openAddClaimModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition shadow-sm flex items-center justify-center space-x-1 whitespace-nowrap">
-                            <i class="fa-solid fa-plus"></i> <span>เพิ่มรายการเคลม</span>
+                            <svg class="w-4 h-4 fill-current inline mr-1" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg> <span>เพิ่มรายการเคลม</span>
                         </button>
                     </div>
                 </div>
@@ -259,7 +257,6 @@
                         </table>
                     </div>
                     <div id="claim-empty" class="text-center py-12 hidden">
-                        <i class="fa-solid fa-triangle-exclamation text-4xl text-slate-300 mb-3"></i>
                         <p class="text-slate-500 font-medium">ไม่พบข้อมูลการเคลมและรีพอร์ต</p>
                     </div>
                 </div>
@@ -276,13 +273,13 @@
                         <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                             <div class="relative flex-grow sm:w-64">
                                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/></svg>
                                 </span>
                                 <input type="text" id="search-page-4" oninput="renderPage4()" placeholder="ค้นหาล็อตของเข้า..." 
                                     class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
                             </div>
                             <button onclick="openAddIncomingLotModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition shadow-sm flex items-center justify-center space-x-1 whitespace-nowrap">
-                                <i class="fa-solid fa-plus"></i> <span>เพิ่มล็อตของเข้า</span>
+                                <svg class="w-4 h-4 fill-current inline mr-1" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg> <span>เพิ่มล็อตของเข้า</span>
                             </button>
                         </div>
                     </div>
@@ -304,7 +301,6 @@
                             </table>
                         </div>
                         <div id="incoming-lot-empty" class="text-center py-12 hidden">
-                            <i class="fa-solid fa-dolly text-4xl text-slate-300 mb-3"></i>
                             <p class="text-slate-500 font-medium">ไม่พบข้อมูลล็อตของเข้า</p>
                         </div>
                     </div>
@@ -313,8 +309,8 @@
                 <div id="p4-detail-view" class="space-y-6 hidden">
                     <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex justify-between items-center">
                         <div class="flex items-center space-x-3">
-                            <button onclick="backToIncomingLotList()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg text-sm font-medium transition">
-                                <i class="fa-solid fa-arrow-left mr-1"></i> ย้อนกลับ
+                            <button onclick="backToIncomingLotList()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg text-sm font-medium transition flex items-center">
+                                <svg class="w-4 h-4 mr-1 fill-current" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/></svg> ย้อนกลับ
                             </button>
                             <div>
                                 <h2 id="incoming-detail-title" class="text-xl font-bold text-slate-800">รายการในล็อต: -</h2>
@@ -322,7 +318,7 @@
                             </div>
                         </div>
                         <button onclick="openAddIncomingItemModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition shadow-sm flex items-center space-x-1">
-                            <i class="fa-solid fa-plus"></i> <span>เพิ่มรายการสินค้า</span>
+                            <svg class="w-4 h-4 fill-current inline mr-1" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg> <span>เพิ่มรายการสินค้า</span>
                         </button>
                     </div>
 
@@ -345,7 +341,6 @@
                             </table>
                         </div>
                         <div id="incoming-item-empty" class="text-center py-12 hidden">
-                            <i class="fa-solid fa-box-archive text-4xl text-slate-300 mb-3"></i>
                             <p class="text-slate-500 font-medium">ยังไม่มีรายการสินค้าในล็อตนี้</p>
                         </div>
                     </div>
@@ -363,7 +358,7 @@
                         <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                             <div class="relative flex-grow sm:w-64">
                                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/></svg>
                                 </span>
                                 <input type="text" id="search-page-5" oninput="renderPage5()" placeholder="ค้นหารหัสหรือชื่อสินค้า..." 
                                     class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
@@ -387,7 +382,6 @@
                             </table>
                         </div>
                         <div id="inventory-empty" class="text-center py-12 hidden">
-                            <i class="fa-solid fa-scale-balanced text-4xl text-slate-300 mb-3"></i>
                             <p class="text-slate-500 font-medium">ยังไม่มีข้อมูลสินค้าของเข้าสำหรับคำนวณสินค้าคงเหลือ</p>
                         </div>
                     </div>
@@ -396,8 +390,8 @@
                 <div id="p5-detail-view" class="space-y-6 hidden">
                     <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex justify-between items-center">
                         <div class="flex items-center space-x-3">
-                            <button onclick="backToInventoryList()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg text-sm font-medium transition">
-                                <i class="fa-solid fa-arrow-left mr-1"></i> ย้อนกลับ
+                            <button onclick="backToInventoryList()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg text-sm font-medium transition flex items-center">
+                                <svg class="w-4 h-4 mr-1 fill-current" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/></svg> ย้อนกลับ
                             </button>
                             <div>
                                 <h2 id="inventory-detail-title" class="text-xl font-bold text-slate-800">รายละเอียดสินค้าคงเหลือ: -</h2>
@@ -427,7 +421,7 @@
 
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
-                            <h3 class="font-bold text-slate-800 text-md border-b pb-2"><i class="fa-solid fa-dolly text-blue-600 mr-2"></i>รายการของเข้าที่นำมาคำนวณ</h3>
+                            <h3 class="font-bold text-slate-800 text-md border-b pb-2">รายการของเข้าที่นำมาคำนวณ</h3>
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left border-collapse text-sm">
                                     <thead>
@@ -443,7 +437,7 @@
                         </div>
 
                         <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
-                            <h3 class="font-bold text-slate-800 text-md border-b pb-2"><i class="fa-solid fa-truck-ramp-box text-blue-600 mr-2"></i>รายการส่งออกที่นำมาคำนวณ</h3>
+                            <h3 class="font-bold text-slate-800 text-md border-b pb-2">รายการส่งออกที่นำมาคำนวณ</h3>
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left border-collapse text-sm">
                                     <thead>
@@ -459,7 +453,7 @@
                         </div>
 
                         <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
-                            <h3 class="font-bold text-slate-800 text-md border-b pb-2"><i class="fa-solid fa-triangle-exclamation text-red-500 mr-2"></i>รายการเคลม (จากหน้า 3)</h3>
+                            <h3 class="font-bold text-slate-800 text-md border-b pb-2">รายการเคลม (จากหน้า 3)</h3>
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left border-collapse text-sm">
                                     <thead>
@@ -487,19 +481,19 @@
                 <!-- Database Management Section (Backup & Restore) -->
                 <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 space-y-4">
                     <div class="flex justify-between items-center">
-                        <h3 class="font-bold text-slate-800 text-lg"><i class="fa-solid fa-database text-blue-600 mr-2"></i>จัดการข้อมูลระบบ (Backup & Restore)</h3>
+                        <h3 class="font-bold text-slate-800 text-lg">จัดการข้อมูลระบบ (Backup & Restore)</h3>
                     </div>
                     <p class="text-sm text-slate-500">สำรองข้อมูลทั้งหมดของระบบ (ข้อมูลสินค้า, ส่งออก, ล็อตของเข้า ฯลฯ) เก็บไว้ในรูปแบบไฟล์ JSON เพื่อป้องกันข้อมูลสูญหาย หรือใช้สำหรับย้ายเครื่อง</p>
                     <div class="flex flex-col sm:flex-row gap-3 pt-2 border-t border-slate-100">
                         <button onclick="exportDatabase()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition flex items-center justify-center space-x-2">
-                            <i class="fa-solid fa-download"></i> <span>สำรองข้อมูล (Export Data)</span>
+                            <span>สำรองข้อมูล (Export Data)</span>
                         </button>
                         <label class="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition flex items-center justify-center space-x-2 cursor-pointer">
-                            <i class="fa-solid fa-upload"></i> <span>กู้คืนข้อมูล (Import Data)</span>
+                            <span>กู้คืนข้อมูล (Import Data)</span>
                             <input type="file" id="import-file" class="hidden" accept=".json" onchange="importDatabase(event)">
                         </label>
                         <button onclick="clearDatabase()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition flex items-center justify-center space-x-2 sm:ml-auto">
-                            <i class="fa-solid fa-triangle-exclamation"></i> <span>ล้างข้อมูลทั้งหมด</span>
+                            <span>ล้างข้อมูลทั้งหมด</span>
                         </button>
                     </div>
                 </div>
@@ -507,9 +501,9 @@
                 <!-- Section 1: สิ่งที่ต้องทำ -->
                 <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 space-y-4">
                     <div class="flex justify-between items-center">
-                        <h3 class="font-bold text-slate-800 text-lg"><i class="fa-solid fa-list-check text-blue-600 mr-2"></i>สิ่งที่ต้องทำ</h3>
+                        <h3 class="font-bold text-slate-800 text-lg">สิ่งที่ต้องทำ</h3>
                         <button onclick="openPersonalTodoModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-2 rounded-lg text-sm font-medium transition flex items-center space-x-1">
-                            <i class="fa-solid fa-plus"></i> <span>เพิ่มสิ่งที่ต้องทำ</span>
+                            <svg class="w-4 h-4 fill-current inline mr-1" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg> <span>เพิ่มสิ่งที่ต้องทำ</span>
                         </button>
                     </div>
                     <div class="overflow-x-auto">
@@ -531,9 +525,9 @@
                 <!-- Section 2: บันทึกส่วนตัวของสินค้า -->
                 <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 space-y-4">
                     <div class="flex justify-between items-center">
-                        <h3 class="font-bold text-slate-800 text-lg"><i class="fa-solid fa-note-sticky text-blue-600 mr-2"></i>บันทึกส่วนตัวสินค้า</h3>
+                        <h3 class="font-bold text-slate-800 text-lg">บันทึกส่วนตัวสินค้า</h3>
                         <button onclick="openPersonalNoteModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-2 rounded-lg text-sm font-medium transition flex items-center space-x-1">
-                            <i class="fa-solid fa-plus"></i> <span>เพิ่มบันทึกสินค้า</span>
+                            <svg class="w-4 h-4 fill-current inline mr-1" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg> <span>เพิ่มบันทึกสินค้า</span>
                         </button>
                     </div>
                     <div class="overflow-x-auto">
@@ -556,9 +550,9 @@
                 <!-- Section 3: บันทึกข้อมูลส่งออก -->
                 <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 space-y-4">
                     <div class="flex justify-between items-center">
-                        <h3 class="font-bold text-slate-800 text-lg"><i class="fa-solid fa-file-export text-blue-600 mr-2"></i>บันทึกข้อมูลส่งออกส่วนตัว (รีเซ็ตทุก 3 วัน)</h3>
+                        <h3 class="font-bold text-slate-800 text-lg">บันทึกข้อมูลส่งออกส่วนตัว (รีเซ็ตทุก 3 วัน)</h3>
                         <button onclick="openPersonalExportModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-2 rounded-lg text-sm font-medium transition flex items-center space-x-1">
-                            <i class="fa-solid fa-plus"></i> <span>เพิ่มข้อมูลส่งออก</span>
+                            <svg class="w-4 h-4 fill-current inline mr-1" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg> <span>เพิ่มข้อมูลส่งออก</span>
                         </button>
                     </div>
                     <div class="overflow-x-auto">
@@ -593,9 +587,6 @@
     <!-- CONFIRMATION MODAL -->
     <div id="confirm-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center z-[70] p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 text-center space-y-4 border border-slate-200">
-            <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto text-xl font-bold bg-amber-100 text-amber-600">
-                <i class="fa-solid fa-triangle-exclamation"></i>
-            </div>
             <h3 class="text-lg font-bold text-slate-800">ยืนยันการทำรายการ</h3>
             <p id="confirm-message" class="text-sm text-slate-600">ยืนยันการทำรายการนี้หรือไม่?</p>
             <div class="flex space-x-3 pt-2">
@@ -847,7 +838,7 @@
             }
             const userBadge = document.getElementById('user-badge');
             const userTag = document.getElementById('current-user-tag');
-            if (userBadge) userBadge.innerHTML = `<i class="fa-solid fa-user-shield mr-1"></i> ผู้ใช้งาน: ${escapeHTML(currentUser)}`;
+            if (userBadge) userBadge.innerHTML = `<svg class="w-4 h-4 mr-1.5 fill-current" viewBox="0 0 24 24"><path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1M12 11.99H19C18.47 16.11 15.72 19.78 12 20.92V12H5V6.3L12 3.19V11.99Z"/></svg> ผู้ใช้งาน: ${escapeHTML(currentUser)}`;
             if (userTag) userTag.innerText = escapeHTML(currentUser);
             switchTab(1);
         }
@@ -906,10 +897,10 @@
             msgEl.innerText = message;
             if (isError) {
                 icon.className = "w-12 h-12 rounded-full flex items-center justify-center mx-auto text-xl font-bold bg-red-100 text-red-600";
-                icon.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+                icon.innerHTML = '<svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M13 14H11V9H13M13 18H11V16H13M1 21H23L12 2L1 21Z"/></svg>';
             } else {
                 icon.className = "w-12 h-12 rounded-full flex items-center justify-center mx-auto text-xl font-bold bg-emerald-100 text-emerald-600";
-                icon.innerHTML = '<i class="fa-solid fa-check"></i>';
+                icon.innerHTML = '<svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>';
             }
             modal.classList.remove('hidden');
             modal.classList.add('flex');
@@ -999,8 +990,8 @@
                             <td class="p-4"><span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-1 rounded-md">ซัพประเทศ ${escapeHTML(p.supplier_type || '10')}</span></td>
                             <td class="p-4 text-slate-600">${escapeHTML(p.notes || '-')}</td>
                             <td class="p-4 text-center space-x-2">
-                                <button onclick="openEditProductModal('${escapeHTML(p.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button onclick="promptDeleteProduct('${escapeHTML(p.id)}')" class="text-red-600 hover:text-red-800 p-1" title="ลบ"><i class="fa-solid fa-trash"></i></button>
+                                <button onclick="openEditProductModal('${escapeHTML(p.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข">✏️</button>
+                                <button onclick="promptDeleteProduct('${escapeHTML(p.id)}')" class="text-red-600 hover:text-red-800 p-1" title="ลบ">🗑️</button>
                             </td>
                         </tr>
                     `;
@@ -1012,7 +1003,7 @@
             const countryList = getCountrySuppliers();
             openModal(`
                 <div class="p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-box text-blue-600 mr-2"></i>เพิ่มสินค้าใหม่</h3>
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">เพิ่มสินค้าใหม่</h3>
                     <form onsubmit="saveProduct(event)" class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อสินค้า</label>
@@ -1077,7 +1068,7 @@
             const countryList = getCountrySuppliers();
             openModal(`
                 <div class="p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-pen text-blue-600 mr-2"></i>แก้ไขข้อมูลสินค้า</h3>
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">แก้ไขข้อมูลสินค้า</h3>
                     <form onsubmit="updateProduct(event, '${escapeHTML(id)}')" class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อสินค้า</label>
@@ -1207,12 +1198,12 @@
 
                     if (l.source === 'page1') {
                         actionButtons = `
-                            <button onclick="openEditLotModal('${escapeHTML(l.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button onclick="promptDeleteLot('${escapeHTML(l.id)}')" class="text-red-600 hover:text-red-800 p-1" title="ลบ"><i class="fa-solid fa-trash"></i></button>
+                            <button onclick="openEditLotModal('${escapeHTML(l.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข">✏️</button>
+                            <button onclick="promptDeleteLot('${escapeHTML(l.id)}')" class="text-red-600 hover:text-red-800 p-1" title="ลบ">🗑️</button>
                         `;
                     } else {
-                        sourceBadge = `<span class="ml-2 bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded text-[10px] font-bold"><i class="fa-solid fa-link mr-1"></i>ซิงค์จากหน้า 4</span>`;
-                        actionButtons = `<span class="text-[11px] text-slate-400 bg-slate-50 px-2 py-1 rounded border border-slate-200 cursor-not-allowed" title="ต้องแก้ไขจากหน้า 4">แก้ไขในหน้า 4</span>`;
+                        sourceBadge = `<span class="ml-2 bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded text-[10px] font-bold">ซิงค์จากหน้า 4</span>`;
+                        actionButtons = `<span class="text-[11px] text-slate-400 bg-slate-50 px-2 py-1 rounded border border-slate-200 cursor-not-allowed">แก้ไขในหน้า 4</span>`;
                     }
 
                     tbody.innerHTML += `
@@ -1236,15 +1227,18 @@
             const todayStr = new Date().toLocaleDateString('th-TH');
             openModal(`
                 <div class="p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-boxes-stacked text-blue-600 mr-2"></i>เพิ่มล็อตสินค้าสำหรับ ${escapeHTML(selectedProductForLots.name)}</h3>
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">เพิ่มล็อตสินค้าสำหรับ ${escapeHTML(selectedProductForLots.name)}</h3>
                     <form onsubmit="saveLot(event)" class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">วันที่ล็อต</label>
                             <input type="text" id="m-lot-date" required value="${todayStr}" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท</label>
-                            <input type="text" id="m-lot-supplier" required value="${suppliersList[0]}" placeholder="พิมพ์รหัสบริษัท เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท (พิมพ์รหัสบริษัทได้เลย)</label>
+                            <input type="text" id="m-lot-supplier" required list="sup-list-options-lot" value="${suppliersList[0]}" placeholder="เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <datalist id="sup-list-options-lot">
+                                ${suppliersList.map(s => `<option value="${escapeHTML(s)}">`).join('')}
+                            </datalist>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">จำนวนทั้งล็อต</label>
@@ -1304,15 +1298,18 @@
             if (!l) return;
             openModal(`
                 <div class="p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-pen text-blue-600 mr-2"></i>แก้ไขล็อตสินค้า</h3>
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">แก้ไขล็อตสินค้า</h3>
                     <form onsubmit="updateLot(event, '${escapeHTML(id)}')" class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">วันที่ล็อต</label>
                             <input type="text" id="m-lot-date" required value="${escapeHTML(l.lot_date || '')}" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท</label>
-                            <input type="text" id="m-lot-supplier" required value="${escapeHTML(l.company_supplier || '')}" placeholder="พิมพ์รหัสบริษัท เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท (พิมพ์รหัสบริษัทได้เลย)</label>
+                            <input type="text" id="m-lot-supplier" required list="sup-list-options-lot" value="${escapeHTML(l.company_supplier || '')}" placeholder="เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <datalist id="sup-list-options-lot">
+                                ${suppliersList.map(s => `<option value="${escapeHTML(s)}">`).join('')}
+                            </datalist>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">จำนวนทั้งล็อต</label>
@@ -1403,8 +1400,8 @@
                             <td class="p-4"><span class="bg-slate-100 px-2.5 py-1 rounded text-xs font-semibold">บริษัท ${escapeHTML(item.supplier)}</span></td>
                             <td class="p-4 text-slate-600">${escapeHTML(item.notes || '-')}</td>
                             <td class="p-4 text-center space-x-2">
-                                <button onclick="openEditExportModal('${escapeHTML(item.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button onclick="promptDeleteExport('${escapeHTML(item.id)}')" class="text-red-600 hover:text-red-800 p-1" title="ลบ"><i class="fa-solid fa-trash"></i></button>
+                                <button onclick="openEditExportModal('${escapeHTML(item.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข">✏️</button>
+                                <button onclick="promptDeleteExport('${escapeHTML(item.id)}')" class="text-red-600 hover:text-red-800 p-1" title="ลบ">🗑️</button>
                             </td>
                         </tr>
                     `;
@@ -1416,7 +1413,7 @@
             const todayStr = new Date().toLocaleDateString('th-TH');
             openModal(`
                 <div class="p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-truck-ramp-box text-blue-600 mr-2"></i>เพิ่มรายการส่งออก</h3>
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">เพิ่มรายการส่งออก</h3>
                     <form onsubmit="saveExport(event)" class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">วันที่ส่งออก</label>
@@ -1431,8 +1428,11 @@
                             <input type="number" id="m-exp-qty" min="1" value="1" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท</label>
-                            <input type="text" id="m-exp-supplier" required value="${suppliersList[0]}" placeholder="พิมพ์รหัสบริษัท เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท (พิมพ์รหัสบริษัทได้เลย)</label>
+                            <input type="text" id="m-exp-supplier" required list="sup-list-options-exp" value="${suppliersList[0]}" placeholder="เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <datalist id="sup-list-options-exp">
+                                ${suppliersList.map(s => `<option value="${escapeHTML(s)}">`).join('')}
+                            </datalist>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
@@ -1482,7 +1482,7 @@
             if (!item) return;
             openModal(`
                 <div class="p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-pen text-blue-600 mr-2"></i>แก้ไขรายการส่งออก</h3>
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">แก้ไขรายการส่งออก</h3>
                     <form onsubmit="updateExport(event, '${escapeHTML(id)}')" class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">วันที่ส่งออก</label>
@@ -1497,8 +1497,11 @@
                             <input type="number" id="m-exp-qty" min="1" value="${item.qty}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท</label>
-                            <input type="text" id="m-exp-supplier" required value="${escapeHTML(item.supplier || '')}" placeholder="พิมพ์รหัสบริษัท เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท (พิมพ์รหัสบริษัทได้เลย)</label>
+                            <input type="text" id="m-exp-supplier" required list="sup-list-options-exp" value="${escapeHTML(item.supplier || '')}" placeholder="เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <datalist id="sup-list-options-exp">
+                                ${suppliersList.map(s => `<option value="${escapeHTML(s)}">`).join('')}
+                            </datalist>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
@@ -1584,8 +1587,8 @@
                             <td class="p-4 font-bold text-red-500">${escapeHTML(item.qty || 0)}</td>
                             <td class="p-4 text-slate-600">${escapeHTML(item.notes || '-')}</td>
                             <td class="p-4 text-center space-x-2">
-                                <button onclick="openEditClaimModal('${escapeHTML(item.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button onclick="promptDeleteClaim('${escapeHTML(item.id)}')" class="text-red-600 hover:text-red-800 p-1" title="ลบ"><i class="fa-solid fa-trash"></i></button>
+                                <button onclick="openEditClaimModal('${escapeHTML(item.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข">✏️</button>
+                                <button onclick="promptDeleteClaim('${escapeHTML(item.id)}')" class="text-red-600 hover:text-red-800 p-1" title="ลบ">🗑️</button>
                             </td>
                         </tr>
                     `;
@@ -1597,7 +1600,7 @@
             const todayStr = new Date().toISOString().split('T')[0];
             openModal(`
                 <div class="p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-triangle-exclamation text-blue-600 mr-2"></i>เพิ่มรายการเคลมและรีพอร์ต</h3>
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">เพิ่มรายการเคลมและรีพอร์ต</h3>
                     <form onsubmit="saveClaim(event)" class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">วันที่เคลม</label>
@@ -1612,8 +1615,11 @@
                             <input type="text" id="m-clm-lot" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm" placeholder="เช่น 29/09/69-209">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท</label>
-                            <input type="text" id="m-clm-supplier" required value="${suppliersList[0]}" placeholder="พิมพ์รหัสบริษัท เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท (พิมพ์รหัสบริษัทได้เลย)</label>
+                            <input type="text" id="m-clm-supplier" required list="sup-list-options-clm" value="${suppliersList[0]}" placeholder="เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <datalist id="sup-list-options-clm">
+                                ${suppliersList.map(s => `<option value="${escapeHTML(s)}">`).join('')}
+                            </datalist>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">ปัญหาที่พบ</label>
@@ -1675,7 +1681,7 @@
             if (!item) return;
             openModal(`
                 <div class="p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-pen text-blue-600 mr-2"></i>แก้ไขรายการเคลม</h3>
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">แก้ไขรายการเคลม</h3>
                     <form onsubmit="updateClaim(event, '${escapeHTML(id)}')" class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">วันที่เคลม</label>
@@ -1690,8 +1696,11 @@
                             <input type="text" id="m-clm-lot" value="${escapeHTML(item.lot)}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท</label>
-                            <input type="text" id="m-clm-supplier" required value="${escapeHTML(item.supplier || '')}" placeholder="พิมพ์รหัสบริษัท เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท (พิมพ์รหัสบริษัทได้เลย)</label>
+                            <input type="text" id="m-clm-supplier" required list="sup-list-options-clm" value="${escapeHTML(item.supplier || '')}" placeholder="เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <datalist id="sup-list-options-clm">
+                                ${suppliersList.map(s => `<option value="${escapeHTML(s)}">`).join('')}
+                            </datalist>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">ปัญหาที่พบ</label>
@@ -1789,8 +1798,8 @@
                             <td class="p-4 font-bold text-blue-600">${escapeHTML(itemCount)} รายการ</td>
                             <td class="p-4 text-slate-600">${escapeHTML(l.notes || '-')}</td>
                             <td class="p-4 text-center space-x-2">
-                                <button onclick="openEditIncomingLotModal('${escapeHTML(l.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button onclick="promptDeleteIncomingLot('${escapeHTML(l.id)}')" class="text-red-600 hover:text-red-800 p-1" title="ลบ"><i class="fa-solid fa-trash"></i></button>
+                                <button onclick="openEditIncomingLotModal('${escapeHTML(l.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข">✏️</button>
+                                <button onclick="promptDeleteIncomingLot('${escapeHTML(l.id)}')" class="text-red-600 hover:text-red-800 p-1" title="ลบ">🗑️</button>
                             </td>
                         </tr>
                     `;
@@ -1803,15 +1812,18 @@
             const countryList = getCountrySuppliers();
             openModal(`
                 <div class="p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-dolly text-blue-600 mr-2"></i>เพิ่มล็อตของเข้าใหม่</h3>
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">เพิ่มล็อตของเข้าใหม่</h3>
                     <form onsubmit="saveIncomingLot(event)" class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">วันที่รับเข้า (ปฏิทิน)</label>
                             <input type="text" id="m-inc-date" required value="${todayStr}" placeholder="เช่น 17/09/2026" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท</label>
-                            <input type="text" id="m-inc-supplier" required value="${suppliersList[0]}" placeholder="พิมพ์รหัสบริษัท เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท (พิมพ์รหัสบริษัทได้เลย)</label>
+                            <input type="text" id="m-inc-supplier" required list="sup-list-options-inc" value="${suppliersList[0]}" placeholder="เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <datalist id="sup-list-options-inc">
+                                ${suppliersList.map(s => `<option value="${escapeHTML(s)}">`).join('')}
+                            </datalist>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">ซัพประเทศ (เลือกหรือพิมพ์เพิ่มใหม่ได้)</label>
@@ -1872,15 +1884,18 @@
             const countryList = getCountrySuppliers();
             openModal(`
                 <div class="p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-pen text-blue-600 mr-2"></i>แก้ไขล็อตของเข้า</h3>
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">แก้ไขล็อตของเข้า</h3>
                     <form onsubmit="updateIncomingLot(event, '${escapeHTML(id)}')" class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">วันที่รับเข้า (ปฏิทิน)</label>
                             <input type="text" id="m-inc-date" required value="${escapeHTML(l.date || '')}" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท</label>
-                            <input type="text" id="m-inc-supplier" required value="${escapeHTML(l.supplier || '')}" placeholder="พิมพ์รหัสบริษัท เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท (พิมพ์รหัสบริษัทได้เลย)</label>
+                            <input type="text" id="m-inc-supplier" required list="sup-list-options-inc" value="${escapeHTML(l.supplier || '')}" placeholder="เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <datalist id="sup-list-options-inc">
+                                ${suppliersList.map(s => `<option value="${escapeHTML(s)}">`).join('')}
+                            </datalist>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">ซัพประเทศ (เลือกหรือพิมพ์เพิ่มใหม่ได้)</label>
@@ -1996,8 +2011,8 @@
                             <td class="p-4">${statusBadge}</td>
                             <td class="p-4 text-slate-600">${escapeHTML(item.notes || '-')}</td>
                             <td class="p-4 text-center space-x-2">
-                                <button onclick="openEditIncomingItemModal('${escapeHTML(item.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button onclick="promptDeleteIncomingItem('${escapeHTML(item.id)}')" class="text-red-600 hover:text-red-800 p-1" title="ลบ"><i class="fa-solid fa-trash"></i></button>
+                                <button onclick="openEditIncomingItemModal('${escapeHTML(item.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข">✏️</button>
+                                <button onclick="promptDeleteIncomingItem('${escapeHTML(item.id)}')" class="text-red-600 hover:text-red-800 p-1" title="ลบ">🗑️</button>
                             </td>
                         </tr>
                     `;
@@ -2008,7 +2023,7 @@
         function openAddIncomingItemModal() {
             openModal(`
                 <div class="p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-box-archive text-blue-600 mr-2"></i>เพิ่มรายการสินค้าในล็อต</h3>
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">เพิ่มรายการสินค้าในล็อต</h3>
                     <form onsubmit="saveIncomingItem(event)" class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อสินค้า (เช่น KH 123)</label>
@@ -2108,7 +2123,7 @@
             if (!item) return;
             openModal(`
                 <div class="p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-pen text-blue-600 mr-2"></i>แก้ไขรายการสินค้า</h3>
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">แก้ไขรายการสินค้า</h3>
                     <form onsubmit="updateIncomingItem(event, '${escapeHTML(id)}')" class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อสินค้า</label>
@@ -2258,7 +2273,7 @@
 
                     tbody.innerHTML += `
                         <tr class="hover:bg-slate-50 transition border-b border-slate-100 cursor-pointer" onclick="openInventoryDetail('${escapeHTML(encodedName)}')">
-                            <td class="p-4 font-semibold text-blue-600 hover:underline"><i class="fa-solid fa-box mr-2"></i>${escapeHTML(inv.name)}</td>
+                            <td class="p-4 font-semibold text-blue-600 hover:underline">${escapeHTML(inv.name)}</td>
                             <td class="p-4 font-bold text-blue-600">${escapeHTML(inv.totalIn)}</td>
                             <td class="p-4 font-bold text-amber-600">${escapeHTML(inv.totalOut)}</td>
                             <td class="p-4 font-bold text-red-500">${escapeHTML(inv.totalProb)}</td>
@@ -2426,8 +2441,8 @@
                             <td class="p-3 font-semibold ${t.completed ? 'line-through text-slate-400' : 'text-slate-800'}">${escapeHTML(t.text)}</td>
                             <td class="p-3 text-slate-600">${escapeHTML(t.notes || '-')}</td>
                             <td class="p-3 text-center space-x-1">
-                                <button onclick="openEditTodoModal('${escapeHTML(t.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข"><i class="fa-solid fa-pen"></i></button>
-                                <button onclick="promptDeleteTodo('${escapeHTML(t.id)}')" class="text-red-500 hover:text-red-700 p-1" title="ลบ"><i class="fa-solid fa-trash"></i></button>
+                                <button onclick="openEditTodoModal('${escapeHTML(t.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข">✏️</button>
+                                <button onclick="promptDeleteTodo('${escapeHTML(t.id)}')" class="text-red-500 hover:text-red-700 p-1" title="ลบ">🗑️</button>
                             </td>
                         </tr>
                     `;
@@ -2438,7 +2453,7 @@
         function openPersonalTodoModal() {
             openModal(`
                 <div class="p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-list-check text-blue-600 mr-2"></i>เพิ่มสิ่งที่ต้องทำ</h3>
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">เพิ่มสิ่งที่ต้องทำ</h3>
                     <form onsubmit="saveTodo(event)" class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">รายการสิ่งที่ต้องทำ</label>
@@ -2482,7 +2497,7 @@
             if (!item) return;
             openModal(`
                 <div class="p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-pen text-blue-600 mr-2"></i>แก้ไขสิ่งที่ต้องทำ</h3>
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">แก้ไขสิ่งที่ต้องทำ</h3>
                     <form onsubmit="updateTodo(event, '${escapeHTML(id)}')" class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">รายการสิ่งที่ต้องทำ</label>
@@ -2559,8 +2574,8 @@
                             <td class="p-3 font-bold text-blue-600">${escapeHTML(n.qty)}</td>
                             <td class="p-3 text-slate-600">${escapeHTML(n.note_text || '-')}</td>
                             <td class="p-3 text-center space-x-1">
-                                <button onclick="openEditNoteModal('${escapeHTML(n.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข"><i class="fa-solid fa-pen"></i></button>
-                                <button onclick="promptDeleteNote('${escapeHTML(n.id)}')" class="text-red-500 hover:text-red-700 p-1" title="ลบ"><i class="fa-solid fa-trash"></i></button>
+                                <button onclick="openEditNoteModal('${escapeHTML(n.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข">✏️</button>
+                                <button onclick="promptDeleteNote('${escapeHTML(n.id)}')" class="text-red-500 hover:text-red-700 p-1" title="ลบ">🗑️</button>
                             </td>
                         </tr>
                     `;
@@ -2571,7 +2586,7 @@
         function openPersonalNoteModal() {
             openModal(`
                 <div class="p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-note-sticky text-blue-600 mr-2"></i>เพิ่มบันทึกส่วนตัวสินค้า</h3>
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">เพิ่มบันทึกส่วนตัวสินค้า</h3>
                     <form onsubmit="saveNote(event)" class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อสินค้า</label>
@@ -2621,7 +2636,7 @@
             if (!item) return;
             openModal(`
                 <div class="p-6">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-pen text-blue-600 mr-2"></i>แก้ไขบันทึกส่วนตัวสินค้า</h3>
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">แก้ไขบันทึกส่วนตัวสินค้า</h3>
                     <form onsubmit="updateNote(event, '${escapeHTML(id)}')" class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อสินค้า</label>
@@ -2707,10 +2722,10 @@
                             <td class="p-3 text-slate-600 text-xs">${escapeHTML(optionsText || '-')}</td>
                             <td class="p-3 text-slate-600 text-xs">
                                 <div>${escapeHTML(item.notes || '-')}</div>
-                                <div class="text-[10px] text-slate-400 mt-1"><i class="fa-regular fa-clock mr-1"></i>${escapeHTML(formattedDate)}</div>
+                                <div class="text-[10px] text-slate-400 mt-1">${escapeHTML(formattedDate)}</div>
                             </td>
                             <td class="p-3 text-center">
-                                <button onclick="promptDeletePersonalExport('${escapeHTML(item.id)}')" class="text-red-500 hover:text-red-700 p-1" title="ลบ"><i class="fa-solid fa-trash"></i></button>
+                                <button onclick="promptDeletePersonalExport('${escapeHTML(item.id)}')" class="text-red-500 hover:text-red-700 p-1" title="ลบ">🗑️</button>
                             </td>
                         </tr>
                     `;
@@ -2721,7 +2736,7 @@
         function openPersonalExportModal() {
             openModal(`
                 <div class="p-6 max-h-[85vh] overflow-y-auto">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fa-solid fa-file-export text-blue-600 mr-2"></i>บันทึกข้อมูลส่งออกส่วนตัว</h3>
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">บันทึกข้อมูลส่งออกส่วนตัว</h3>
                     <form onsubmit="savePersonalExport(event)" class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อสินค้า</label>
