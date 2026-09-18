@@ -29,12 +29,2939 @@
                         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
                             <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18 8H17V6C17 3.24 14.76 1 12 1C9.24 1 7 3.24 7 6V8H6C4.9 8 4 8.9 4 10V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V10C20 8.9 19.1 8 18 8M12 3C13.65 3 15 4.35 15 6V8H9V6C9 4.35 10.35 3 12 3M18 20H6V10H18V20M12 16C13.1 16 14 15.1 14 14C14 12.9 13.1 12 12 12C10.9 12 10 12.9 10 14C10 15.1 10.9 16 12 16Z"/></svg>
                         </span>
-                        <input type="text" id="erp-code-input" required placeholder="" 
+                        <input type="text" id="erp-code-input" required 
                             class="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg uppercase font-semibold">
                     </div>
                 </div>
                 <div id="login-error" class="text-red-500 text-sm text-center hidden font-medium bg-red-50 p-2 rounded-lg">
                     <svg class="w-4 h-4 inline mr-1 fill-current" viewBox="0 0 24 24"><path d="M13 14H11V9H13M13 18H11V16H13M1 21H23L12 2L1 21Z"/></svg> รหัส ERP ไม่ถูกต้อง
+                </div>
+                <button type="submit" id="login-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition shadow-lg shadow-blue-600/30 text-lg flex items-center justify-center space-x-2">
+                    <span>เข้าสู่ระบบ</span> 
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M5 13H16.17L11.29 17.88C10.9 18.27 10.9 18.91 11.29 19.3C11.68 19.69 12.31 19.69 12.7 19.3L19.29 12.71C19.68 12.32 19.68 11.69 19.29 11.3L12.7 4.71C12.31 4.32 11.68 4.32 11.29 4.71C10.9 5.1 10.9 5.73 11.29 6.12L16.17 11H5C4.45 11 4 11.45 4 12C4 12.55 4.45 13 5 13Z"/></svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN APP CONTAINER -->
+    <div id="main-app" class="hidden flex-col min-h-screen">
+        <!-- HEADER -->
+        <header class="bg-blue-700 text-white shadow-md">
+            <div class="container mx-auto px-4 py-3 flex flex-wrap justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <span class="bg-blue-800 p-2 rounded-lg inline-flex items-center justify-center">
+                        <svg class="w-6 h-6 fill-current text-white" viewBox="0 0 24 24"><path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3M11 5V11H5V5H11M5 13H11V19H5V13M19 19H13V13H19V19M19 11H13V5H19V11Z"/></svg>
+                    </span>
+                    <span class="text-xl font-bold tracking-wider">ERP SYSTEM (LOCAL)</span>
+                </div>
+                <div class="flex items-center space-x-4 mt-2 sm:mt-0">
+                    <span id="user-badge" class="bg-blue-800 text-blue-100 px-3 py-1 rounded-full text-sm font-medium border border-blue-600 flex items-center">
+                        <svg class="w-4 h-4 mr-1.5 fill-current" viewBox="0 0 24 24"><path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1M12 11.99H19C18.47 16.11 15.72 19.78 12 20.92V12H5V6.3L12 3.19V11.99Z"/></svg> ผู้ใช้งาน: -
+                    </span>
+                    <button onclick="handleLogout()" class="bg-blue-800 hover:bg-blue-900 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition flex items-center space-x-1">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M16 17V14H9V10H16V7L21 12L16 17M14 2H5C3.9 2 3 2.9 3 4V20C3 21.1 3.9 22 5 22H14C15.1 22 16 21.1 16 20V18H14V20H5V4H14V6H16V4C16 2.9 15.1 2 14 2Z"/></svg> <span>ออกจากระบบ</span>
+                    </button>
+                </div>
+            </div>
+            <!-- NAVIGATION TABS -->
+            <div class="bg-blue-800 border-t border-blue-600">
+                <div class="container mx-auto px-4 flex overflow-x-auto space-x-2 py-2">
+                    <button onclick="switchTab(1)" id="tab-btn-1" class="tab-btn whitespace-nowrap px-4 py-2 rounded-lg text-sm font-medium bg-white text-blue-950 shadow transition flex items-center space-x-2">
+                        <svg class="w-4 h-4 fill-current inline" viewBox="0 0 24 24"><path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3M11 5V11H5V5H11M5 13H11V19H5V13M19 19H13V13H19V19M19 11H13V5H19V11Z"/></svg>
+                        <span>หน้า 1: ข้อมูลสินค้า</span>
+                    </button>
+                    <button onclick="switchTab(2)" id="tab-btn-2" class="tab-btn whitespace-nowrap px-4 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-700 transition flex items-center space-x-2">
+                        <svg class="w-4 h-4 fill-current inline" viewBox="0 0 24 24"><path d="M20 8H17V4H3C1.9 4 1 4.9 1 6V17H3C3 18.66 4.34 20 6 20S9 18.66 9 17H15C15 18.66 16.34 20 18 20S21 18.66 21 17H23V12L20 8M6 18.5C5.17 18.5 4.5 17.83 4.5 17S5.17 15.5 6 15.5 7.5 16.17 7.5 17 6.83 18.5 6 18.5M18 18.5C17.17 18.5 16.5 17.83 16.5 17S17.17 15.5 18 15.5 19.5 16.17 19.5 17 18.83 18.5 18 18.5M19.5 10.5L21.33 13H17V10.5H19.5Z"/></svg>
+                        <span>หน้า 2: การส่งออก</span>
+                    </button>
+                    <button onclick="switchTab(3)" id="tab-btn-3" class="tab-btn whitespace-nowrap px-4 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-700 transition flex items-center space-x-2">
+                        <svg class="w-4 h-4 fill-current inline" viewBox="0 0 24 24"><path d="M12 2L1 21H23M12 6L19.53 19H4.47M11 10V14H13V10M11 16V18H13V16Z"/></svg>
+                        <span>หน้า 3: เคลมและรีพอร์ต</span>
+                    </button>
+                    <button onclick="switchTab(4)" id="tab-btn-4" class="tab-btn whitespace-nowrap px-4 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-700 transition flex items-center space-x-2">
+                        <svg class="w-4 h-4 fill-current inline" viewBox="0 0 24 24"><path d="M18 18.5C16.62 18.5 15.5 17.38 15.5 16S16.62 13.5 18 13.5 20.5 14.62 20.5 16 19.38 18.5 18 18.5M19.5 9.5H17V6.5C17 5.67 16.33 5 15.5 5H3.5C2.67 5 2 5.67 2 6.5V17.5C2 18.33 2.67 19 3.5 19H6.18C6.68 20.16 7.84 21 9.2 21S11.72 20.16 12.22 19H14.78C15.28 20.16 16.44 21 17.8 21S20.32 20.16 20.82 19H22V13L19.5 9.5M4 7H15V14H4V7Z"/></svg>
+                        <span>หน้า 4: ของเข้า</span>
+                    </button>
+                    <button onclick="switchTab(5)" id="tab-btn-5" class="tab-btn whitespace-nowrap px-4 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-700 transition flex items-center space-x-2">
+                        <svg class="w-4 h-4 fill-current inline" viewBox="0 0 24 24"><path d="M12 3C7.03 3 3 7.03 3 12S7.03 21 12 21 21 16.97 21 12 16.97 3 12 3M12 19C8.13 19 5 15.87 5 12S8.13 5 12 5 19 8.13 19 12 15.87 19 12 19M11 7H13V13H11V7M11 15H13V17H11V15Z"/></svg>
+                        <span>หน้า 5: สินค้าคงเหลือ</span>
+                    </button>
+                    <button onclick="switchTab(6)" id="tab-btn-6" class="tab-btn whitespace-nowrap px-4 py-2 rounded-lg text-sm font-medium text-blue-100 hover:bg-blue-700 transition flex items-center space-x-2">
+                        <svg class="w-4 h-4 fill-current inline" viewBox="0 0 24 24"><path d="M12 4A4 4 0 0 1 16 8A4 4 0 0 1 12 12A4 4 0 0 1 8 8A4 4 0 0 1 12 4M12 14C16.42 14 20 15.79 20 18V20H4V18C4 15.79 7.58 14 12 14Z"/></svg>
+                        <span>ข้อมูลส่วนตัว/ตั้งค่า</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTENT AREA -->
+        <main class="container mx-auto px-4 py-6 flex-grow">
+            
+            <!-- PAGE 1: ข้อมูลสินค้า -->
+            <div id="page-1" class="page-content space-y-6">
+                <div id="p1-main-view" class="space-y-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-800">หน้า 1: ข้อมูลสินค้า</h2>
+                            <p class="text-sm text-slate-500">จัดการข้อมูลสินค้าและซัพพลายเออร์</p>
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                            <div class="relative flex-grow sm:w-64">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/></svg>
+                                </span>
+                                <input type="text" id="search-page-1" oninput="renderPage1()" placeholder="ค้นหาสินค้าหน้า 1..." 
+                                    class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                            </div>
+                            <button onclick="openAddProductModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition shadow-sm flex items-center justify-center space-x-1 whitespace-nowrap">
+                                <svg class="w-4 h-4 fill-current inline mr-1" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg> <span>เพิ่มสินค้า</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-100 text-slate-700 text-sm border-b border-slate-200">
+                                        <th class="p-4 font-semibold">ชื่อสินค้า</th>
+                                        <th class="p-4 font-semibold">เบอร์เทียบ</th>
+                                        <th class="p-4 font-semibold">ซัพประเทศ</th>
+                                        <th class="p-4 font-semibold">หมายเหตุ</th>
+                                        <th class="p-4 font-semibold text-center">จัดการ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="product-table-body" class="divide-y divide-slate-100 text-sm"></tbody>
+                            </table>
+                        </div>
+                        <div id="product-empty" class="text-center py-12 hidden">
+                            <p class="text-slate-500 font-medium">ไม่พบข้อมูลสินค้า</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="p1-detail-view" class="space-y-6 hidden">
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex justify-between items-center">
+                        <div class="flex items-center space-x-3">
+                            <button onclick="backToProductList()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg text-sm font-medium transition flex items-center">
+                                <svg class="w-4 h-4 mr-1 fill-current" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/></svg> ย้อนกลับ
+                            </button>
+                            <div>
+                                <h2 id="detail-product-title" class="text-xl font-bold text-slate-800">รายละเอียดสินค้า: -</h2>
+                                <p class="text-sm text-slate-500">ข้อมูลล็อตสินค้า</p>
+                            </div>
+                        </div>
+                        <button onclick="openAddLotModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition shadow-sm flex items-center space-x-1">
+                            <svg class="w-4 h-4 fill-current inline mr-1" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg> <span>เพิ่มล็อตสินค้า</span>
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-100 text-slate-700 text-sm border-b border-slate-200">
+                                        <th class="p-4 font-semibold">วันที่</th>
+                                        <th class="p-4 font-semibold">ซัพพลายเอ้อบริษัท</th>
+                                        <th class="p-4 font-semibold">หมายเหตุ</th>
+                                        <th class="p-4 font-semibold">จำนวนทั้งล็อต</th>
+                                        <th class="p-4 font-semibold">จำนวนปัญหา</th>
+                                        <th class="p-4 font-semibold text-center">จัดการ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="lot-table-body" class="divide-y divide-slate-100 text-sm"></tbody>
+                            </table>
+                        </div>
+                        <div id="lot-empty" class="text-center py-12 hidden">
+                            <p class="text-slate-500 font-medium">ยังไม่มีข้อมูลล็อตสำหรับสินค้านี้</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 2: การส่งออกจากระบบ -->
+            <div id="page-2" class="page-content space-y-6 hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800">หน้า 2: การส่งออกจากระบบ</h2>
+                        <p class="text-sm text-slate-500">บันทึกและตรวจสอบข้อมูลสินค้าที่ได้รับการส่งออก</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                        <div class="relative flex-grow sm:w-64">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/></svg>
+                            </span>
+                            <input type="text" id="search-page-2" oninput="renderPage2()" placeholder="ค้นหาข้อมูลส่งออกหน้า 2..." 
+                                class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                        </div>
+                        <button onclick="openAddExportModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition shadow-sm flex items-center justify-center space-x-1 whitespace-nowrap">
+                            <svg class="w-4 h-4 fill-current inline mr-1" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg> <span>เพิ่มรายการส่งออก</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700 text-sm border-b border-slate-200">
+                                    <th class="p-4 font-semibold">วันที่ส่งออก</th>
+                                    <th class="p-4 font-semibold">ชื่อสินค้า</th>
+                                    <th class="p-4 font-semibold">จำนวน</th>
+                                    <th class="p-4 font-semibold">ซัพพลายเอ้อบริษัท</th>
+                                    <th class="p-4 font-semibold">หมายเหตุ</th>
+                                    <th class="p-4 font-semibold text-center">จัดการ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="export-table-body" class="divide-y divide-slate-100 text-sm"></tbody>
+                        </table>
+                    </div>
+                    <div id="export-empty" class="text-center py-12 hidden">
+                        <p class="text-slate-500 font-medium">ไม่พบข้อมูลการส่งออก</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 3: เคลมและรีพอร์ต -->
+            <div id="page-3" class="page-content space-y-6 hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800">หน้า 3: เคลมและรีพอร์ต</h2>
+                        <p class="text-sm text-slate-500">บันทึกข้อมูลสินค้า ปัญหา และการเคลม/รีพอร์ต</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                        <div class="relative flex-grow sm:w-64">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/></svg>
+                            </span>
+                            <input type="text" id="search-page-3" oninput="renderPage3()" placeholder="ค้นหาข้อมูลหน้า 3..." 
+                                class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                        </div>
+                        <button onclick="openAddClaimModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition shadow-sm flex items-center justify-center space-x-1 whitespace-nowrap">
+                            <svg class="w-4 h-4 fill-current inline mr-1" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg> <span>เพิ่มรายการเคลม</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700 text-sm border-b border-slate-200">
+                                    <th class="p-4 font-semibold">วันที่เคลม</th>
+                                    <th class="p-4 font-semibold">ชื่อสินค้า</th>
+                                    <th class="p-4 font-semibold">ล็อตที่มา</th>
+                                    <th class="p-4 font-semibold">ซัพพลายเอ้อบริษัท</th>
+                                    <th class="p-4 font-semibold">ปัญหาที่พบ</th>
+                                    <th class="p-4 font-semibold">จำนวนที่มีปัญหา</th>
+                                    <th class="p-4 font-semibold">หมายเหตุ</th>
+                                    <th class="p-4 font-semibold text-center">จัดการ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="claim-table-body" class="divide-y divide-slate-100 text-sm"></tbody>
+                        </table>
+                    </div>
+                    <div id="claim-empty" class="text-center py-12 hidden">
+                        <p class="text-slate-500 font-medium">ไม่พบข้อมูลการเคลมและรีพอร์ต</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 4: ของเข้า -->
+            <div id="page-4" class="page-content space-y-6 hidden">
+                <div id="p4-main-view" class="space-y-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-800">หน้า 4: ของเข้า</h2>
+                            <p class="text-sm text-slate-500">บันทึกและตรวจสอบรายการล็อตของเข้าทั้งหมด</p>
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                            <div class="relative flex-grow sm:w-64">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/></svg>
+                                </span>
+                                <input type="text" id="search-page-4" oninput="renderPage4()" placeholder="ค้นหาล็อตของเข้า..." 
+                                    class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                            </div>
+                            <button onclick="openAddIncomingLotModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition shadow-sm flex items-center justify-center space-x-1 whitespace-nowrap">
+                                <svg class="w-4 h-4 fill-current inline mr-1" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg> <span>เพิ่มล็อตของเข้า</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-100 text-slate-700 text-sm border-b border-slate-200">
+                                        <th class="p-4 font-semibold">รูปแบบล็อต (วันที่-ซัพ)</th>
+                                        <th class="p-4 font-semibold">วันที่ตามปฏิทิน</th>
+                                        <th class="p-4 font-semibold">ซัพพลายเอ้อ (บริษัท/ประเทศ)</th>
+                                        <th class="p-4 font-semibold">มีกี่รายการ</th>
+                                        <th class="p-4 font-semibold">หมายเหตุ</th>
+                                        <th class="p-4 font-semibold text-center">จัดการ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="incoming-lot-table-body" class="divide-y divide-slate-100 text-sm"></tbody>
+                            </table>
+                        </div>
+                        <div id="incoming-lot-empty" class="text-center py-12 hidden">
+                            <p class="text-slate-500 font-medium">ไม่พบข้อมูลล็อตของเข้า</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="p4-detail-view" class="space-y-6 hidden">
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex justify-between items-center">
+                        <div class="flex items-center space-x-3">
+                            <button onclick="backToIncomingLotList()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg text-sm font-medium transition flex items-center">
+                                <svg class="w-4 h-4 mr-1 fill-current" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/></svg> ย้อนกลับ
+                            </button>
+                            <div>
+                                <h2 id="incoming-detail-title" class="text-xl font-bold text-slate-800">รายการในล็อต: -</h2>
+                                <p class="text-sm text-slate-500">ตรวจสอบสถานะสินค้าของเข้า</p>
+                            </div>
+                        </div>
+                        <button onclick="openAddIncomingItemModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition shadow-sm flex items-center space-x-1">
+                            <svg class="w-4 h-4 fill-current inline mr-1" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg> <span>เพิ่มรายการสินค้า</span>
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-100 text-slate-700 text-sm border-b border-slate-200">
+                                        <th class="p-4 font-semibold">รายการที่</th>
+                                        <th class="p-4 font-semibold">ชื่อสินค้า</th>
+                                        <th class="p-4 font-semibold">เบอร์เทียบ</th>
+                                        <th class="p-4 font-semibold">จำนวน</th>
+                                        <th class="p-4 font-semibold">รายละเอียดเพิ่มเติม</th>
+                                        <th class="p-4 font-semibold">สถานะ</th>
+                                        <th class="p-4 font-semibold">หมายเหตุ</th>
+                                        <th class="p-4 font-semibold text-center">จัดการ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="incoming-item-table-body" class="divide-y divide-slate-100 text-sm"></tbody>
+                            </table>
+                        </div>
+                        <div id="incoming-item-empty" class="text-center py-12 hidden">
+                            <p class="text-slate-500 font-medium">ยังไม่มีรายการสินค้าในล็อตนี้</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 5: สินค้าคงเหลือ -->
+            <div id="page-5" class="page-content space-y-6 hidden">
+                <div id="p5-main-view" class="space-y-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-800">หน้า 5: สินค้าคงเหลือ</h2>
+                            <p class="text-sm text-slate-500">คำนวณและตรวจสอบยอดสินค้าคงเหลือจากข้อมูลของเข้า (หน้า 4) และส่งออก (หน้า 2)</p>
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                            <div class="relative flex-grow sm:w-64">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/></svg>
+                                </span>
+                                <input type="text" id="search-page-5" oninput="renderPage5()" placeholder="ค้นหารหัสหรือชื่อสินค้า..." 
+                                    class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-100 text-slate-700 text-sm border-b border-slate-200">
+                                        <th class="p-4 font-semibold">รหัส / ชื่อสินค้า</th>
+                                        <th class="p-4 font-semibold">จำนวนของเข้าทั้งหมด</th>
+                                        <th class="p-4 font-semibold">จำนวนส่งออกทั้งหมด</th>
+                                        <th class="p-4 font-semibold">จำนวนปัญหา (จากหน้า 3)</th>
+                                        <th class="p-4 font-semibold">จำนวนคงเหลือ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inventory-table-body" class="divide-y divide-slate-100 text-sm"></tbody>
+                            </table>
+                        </div>
+                        <div id="inventory-empty" class="text-center py-12 hidden">
+                            <p class="text-slate-500 font-medium">ยังไม่มีข้อมูลสินค้าของเข้าสำหรับคำนวณสินค้าคงเหลือ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="p5-detail-view" class="space-y-6 hidden">
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex justify-between items-center">
+                        <div class="flex items-center space-x-3">
+                            <button onclick="backToInventoryList()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg text-sm font-medium transition flex items-center">
+                                <svg class="w-4 h-4 mr-1 fill-current" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/></svg> ย้อนกลับ
+                            </button>
+                            <div>
+                                <h2 id="inventory-detail-title" class="text-xl font-bold text-slate-800">รายละเอียดสินค้าคงเหลือ: -</h2>
+                                <p class="text-sm text-slate-500">สรุปยอดของเข้าและรายการส่งออกของสินค้ารหัสนี้โดยเฉพาะ</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 text-center">
+                            <div class="text-slate-500 text-sm mb-1">ยอดของเข้าทั้งหมด</div>
+                            <div id="inv-sum-in" class="text-2xl font-bold text-blue-600">0</div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 text-center">
+                            <div class="text-slate-500 text-sm mb-1">ยอดส่งออกทั้งหมด</div>
+                            <div id="inv-sum-out" class="text-2xl font-bold text-amber-600">0</div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 text-center">
+                            <div class="text-slate-500 text-sm mb-1">ยอดปัญหา (เคลม)</div>
+                            <div id="inv-sum-prob" class="text-2xl font-bold text-red-500">0</div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 text-center">
+                            <div class="text-slate-500 text-sm mb-1">ยอดคงเหลือสุทธิ</div>
+                            <div id="inv-sum-bal" class="text-2xl font-bold text-emerald-600">0</div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
+                            <h3 class="font-bold text-slate-800 text-md border-b pb-2">รายการของเข้าที่นำมาคำนวณ</h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse text-sm">
+                                    <thead>
+                                        <tr class="bg-slate-50 text-slate-600 border-b">
+                                            <th class="p-2.5 font-semibold">ล็อต / วันที่</th>
+                                            <th class="p-2.5 font-semibold">ซัพพลายเอ้อ</th>
+                                            <th class="p-2.5 font-semibold">จำนวน</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="inv-incoming-tbody" class="divide-y divide-slate-100"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
+                            <h3 class="font-bold text-slate-800 text-md border-b pb-2">รายการส่งออกที่นำมาคำนวณ</h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse text-sm">
+                                    <thead>
+                                        <tr class="bg-slate-50 text-slate-600 border-b">
+                                            <th class="p-2.5 font-semibold">วันที่ส่งออก</th>
+                                            <th class="p-2.5 font-semibold">ซัพพลายเอ้อ</th>
+                                            <th class="p-2.5 font-semibold">จำนวน</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="inv-export-tbody" class="divide-y divide-slate-100"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-4">
+                            <h3 class="font-bold text-slate-800 text-md border-b pb-2">รายการเคลม (จากหน้า 3)</h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse text-sm">
+                                    <thead>
+                                        <tr class="bg-slate-50 text-slate-600 border-b">
+                                            <th class="p-2.5 font-semibold">วันที่เคลม</th>
+                                            <th class="p-2.5 font-semibold">ซัพพลายเอ้อ</th>
+                                            <th class="p-2.5 font-semibold">จำนวนปัญหา</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="inv-claim-tbody" class="divide-y divide-slate-100"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 6: ข้อมูลส่วนตัว และ การตั้งค่า -->
+            <div id="page-6" class="page-content space-y-8 hidden">
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                    <h2 class="text-xl font-bold text-slate-800">หน้าข้อมูลส่วนตัวและตั้งค่า (Workspace & Settings)</h2>
+                    <p class="text-sm text-slate-500">ข้อมูลส่วนตัวและรายการสำหรับรหัส <span id="current-user-tag" class="font-bold text-blue-600"></span> (ทุกรหัสใช้งานร่วมกันได้แบบซิงค์อัตโนมัติ)</p>
+                </div>
+
+                <!-- Database Management Section (Backup & Restore) -->
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-slate-800 text-lg">จัดการข้อมูลระบบ (Backup & Restore)</h3>
+                    </div>
+                    <p class="text-sm text-slate-500">สำรองข้อมูลทั้งหมดของระบบเก็บไว้ในรูปแบบไฟล์ JSON เพื่อป้องกันข้อมูลสูญหาย หรือใช้สำหรับย้ายเครื่อง</p>
+                    <div class="flex flex-col sm:flex-row gap-3 pt-2 border-t border-slate-100">
+                        <button onclick="exportDatabase()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition flex items-center justify-center space-x-2">
+                            <span>สำรองข้อมูล (Export Data)</span>
+                        </button>
+                        <label class="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition flex items-center justify-center space-x-2 cursor-pointer">
+                            <span>กู้คืนข้อมูล (Import Data)</span>
+                            <input type="file" id="import-file" class="hidden" accept=".json" onchange="importDatabase(event)">
+                        </label>
+                        <button onclick="clearDatabase()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition flex items-center justify-center space-x-2 sm:ml-auto">
+                            <span>ล้างข้อมูลทั้งหมด</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Section 1: สิ่งที่ต้องทำ -->
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-slate-800 text-lg">สิ่งที่ต้องทำ</h3>
+                        <button onclick="openPersonalTodoModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-2 rounded-lg text-sm font-medium transition flex items-center space-x-1">
+                            <svg class="w-4 h-4 fill-current inline mr-1" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg> <span>เพิ่มสิ่งที่ต้องทำ</span>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700 text-sm border-b border-slate-200">
+                                    <th class="p-3 font-semibold text-center w-16">สถานะ</th>
+                                    <th class="p-3 font-semibold">รายการสิ่งที่ต้องทำ</th>
+                                    <th class="p-3 font-semibold">ผู้บันทึก</th>
+                                    <th class="p-3 font-semibold">หมายเหตุ</th>
+                                    <th class="p-3 font-semibold text-center w-24">จัดการ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="personal-todo-table-body" class="divide-y divide-slate-100 text-sm"></tbody>
+                        </table>
+                    </div>
+                    <div id="todo-empty" class="text-center py-8 text-slate-400 text-sm hidden">ไม่มีรายการสิ่งที่ต้องทำ</div>
+                </div>
+
+                <!-- Section 2: บันทึกส่วนตัวของสินค้า -->
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-slate-800 text-lg">บันทึกส่วนตัวสินค้า</h3>
+                        <button onclick="openPersonalNoteModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-2 rounded-lg text-sm font-medium transition flex items-center space-x-1">
+                            <svg class="w-4 h-4 fill-current inline mr-1" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg> <span>เพิ่มบันทึกสินค้า</span>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700 text-sm border-b border-slate-200">
+                                    <th class="p-3 font-semibold text-center w-16">สถานะ</th>
+                                    <th class="p-3 font-semibold">ชื่อสินค้า</th>
+                                    <th class="p-3 font-semibold">จำนวน</th>
+                                    <th class="p-3 font-semibold">ผู้บันทึก</th>
+                                    <th class="p-3 font-semibold">หมายเหตุ</th>
+                                    <th class="p-3 font-semibold text-center w-24">จัดการ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="personal-note-table-body" class="divide-y divide-slate-100 text-sm"></tbody>
+                        </table>
+                    </div>
+                    <div id="note-empty" class="text-center py-8 text-slate-400 text-sm hidden">ไม่มีบันทึกส่วนตัวสินค้า</div>
+                </div>
+
+                <!-- Section 3: บันทึกข้อมูลส่งออก -->
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-slate-800 text-lg">บันทึกข้อมูลส่งออกส่วนตัว (รวมทุกรหัสอุปกรณ์)</h3>
+                        <button onclick="openPersonalExportModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-2 rounded-lg text-sm font-medium transition flex items-center space-x-1">
+                            <svg class="w-4 h-4 fill-current inline mr-1" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg> <span>เพิ่มข้อมูลส่งออก</span>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700 text-sm border-b border-slate-200">
+                                    <th class="p-3 font-semibold">ชื่อสินค้า</th>
+                                    <th class="p-3 font-semibold">จำนวน</th>
+                                    <th class="p-3 font-semibold">กล่อง</th>
+                                    <th class="p-3 font-semibold">สติ้กเกอร์</th>
+                                    <th class="p-3 font-semibold">ถุง</th>
+                                    <th class="p-3 font-semibold">ตัวเลือกเพิ่มเติม</th>
+                                    <th class="p-3 font-semibold">ผู้บันทึก</th>
+                                    <th class="p-3 font-semibold">หมายเหตุ / วันเวลา</th>
+                                    <th class="p-3 font-semibold text-center w-24">จัดการ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="personal-export-table-body" class="divide-y divide-slate-100 text-sm"></tbody>
+                        </table>
+                    </div>
+                    <div id="p-export-empty" class="text-center py-8 text-slate-400 text-sm hidden">ไม่มีข้อมูลส่งออกส่วนตัว</div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- MODALS CONTAINER -->
+    <div id="app-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div id="modal-content" class="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden border border-slate-200"></div>
+    </div>
+
+    <!-- CONFIRMATION MODAL -->
+    <div id="confirm-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center z-[70] p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 text-center space-y-4 border border-slate-200">
+            <h3 class="text-lg font-bold text-slate-800">ยืนยันการทำรายการ</h3>
+            <p id="confirm-message" class="text-sm text-slate-600">ยืนยันการทำรายการนี้หรือไม่?</p>
+            <div class="flex space-x-3 pt-2">
+                <button onclick="closeConfirmModal()" class="w-1/2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2.5 rounded-xl transition">ยกเลิก</button>
+                <button id="confirm-yes-btn" class="w-1/2 bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 rounded-xl transition">ยืนยัน</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CUSTOM NOTIFICATION MODAL -->
+    <div id="alert-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center z-[60] p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 text-center space-y-4 border border-slate-200">
+            <div id="alert-icon" class="w-12 h-12 rounded-full flex items-center justify-center mx-auto text-xl font-bold"></div>
+            <h3 id="alert-title" class="text-lg font-bold text-slate-800">แจ้งเตือน</h3>
+            <p id="alert-message" class="text-sm text-slate-600"></p>
+            <button onclick="closeAlert()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl transition">ตกลง</button>
+        </div>
+    </div>
+
+    <!-- SCRIPT APPLICATION LOGIC -->
+    <script>
+        let currentUser = null;
+        let currentTab = 1;
+        let selectedProductForLots = null;
+        let selectedIncomingLot = null;
+        let selectedInventoryItem = null;
+        let suppliersList = ['209', '211', '252', '216', '100'];
+        let countrySuppliersList = ['10', '11', '12', '13', '14', '15'];
+
+        let dbData = {
+            products: [],
+            lots: [],
+            exports: [],
+            claims: [],
+            incoming_lots: [],
+            incoming_items: [],
+            todos: [],
+            notes: [],
+            personal_exports: [],
+            country_suppliers: [],
+            suppliers: []
+        };
+
+        // Initialize and sync data using localStorage cross-tab event sync & fallback
+        function loadFromLocalDB() {
+            try {
+                const stored = localStorage.getItem('erp_master_shared_db');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (parsed && typeof parsed === 'object') {
+                        dbData = {
+                            products: Array.isArray(parsed.products) ? parsed.products : [],
+                            lots: Array.isArray(parsed.lots) ? parsed.lots : [],
+                            exports: Array.isArray(parsed.exports) ? parsed.exports : [],
+                            claims: Array.isArray(parsed.claims) ? parsed.claims : [],
+                            incoming_lots: Array.isArray(parsed.incoming_lots) ? parsed.incoming_lots : [],
+                            incoming_items: Array.isArray(parsed.incoming_items) ? parsed.incoming_items : [],
+                            todos: Array.isArray(parsed.todos) ? parsed.todos : [],
+                            notes: Array.isArray(parsed.notes) ? parsed.notes : [],
+                            personal_exports: Array.isArray(parsed.personal_exports) ? parsed.personal_exports : [],
+                            country_suppliers: Array.isArray(parsed.country_suppliers) ? parsed.country_suppliers : [],
+                            suppliers: Array.isArray(parsed.suppliers) ? parsed.suppliers : []
+                        };
+                    }
+                }
+            } catch(e) {
+                console.error('Failed to parse local DB:', e);
+            }
+        }
+
+        function saveToLocalDB() {
+            try {
+                localStorage.setItem('erp_master_shared_db', JSON.stringify(dbData));
+            } catch (e) {
+                console.error('LocalStorage error:', e);
+            }
+        }
+
+        // Listen for storage changes across windows/devices/tabs
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'erp_master_shared_db') {
+                loadFromLocalDB();
+                refreshCurrentView();
+            }
+        });
+
+        function getSuppliers() {
+            const set = new Set([...suppliersList, ...(dbData.suppliers || [])]);
+            return Array.from(set);
+        }
+
+        function getCountrySuppliers() {
+            const set = new Set([...countrySuppliersList, ...(dbData.country_suppliers || [])]);
+            return Array.from(set);
+        }
+
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+        }
+
+        function initLocalData() {
+            loadFromLocalDB();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedUser = localStorage.getItem('erp_current_user');
+            if (savedUser) {
+                currentUser = savedUser;
+                initLocalData();
+                showMainApp();
+            }
+        });
+
+        // Security function to prevent XSS
+        function escapeHTML(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        window.exportDatabase = function() {
+            try {
+                const dataStr = JSON.stringify(dbData, null, 2);
+                const blob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `erp_backup_${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                showAlert('สำเร็จ', 'ดาวน์โหลดข้อมูลสำรองเรียบร้อยแล้ว');
+            } catch (err) {
+                showAlert('ผิดพลาด', 'ไม่สามารถสร้างไฟล์สำรองข้อมูลได้', true);
+            }
+        };
+
+        window.importDatabase = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    if (importedData && typeof importedData === 'object' && Array.isArray(importedData.products)) {
+                        showConfirmModal('ระบบจะนำเข้าข้อมูลและอัปเดตข้อมูลในระบบ ยืนยันหรือไม่?', () => {
+                            dbData = {
+                                products: Array.isArray(importedData.products) ? importedData.products : [],
+                                lots: Array.isArray(importedData.lots) ? importedData.lots : [],
+                                exports: Array.isArray(importedData.exports) ? importedData.exports : [],
+                                claims: Array.isArray(importedData.claims) ? importedData.claims : [],
+                                incoming_lots: Array.isArray(importedData.incoming_lots) ? importedData.incoming_lots : [],
+                                incoming_items: Array.isArray(importedData.incoming_items) ? importedData.incoming_items : [],
+                                todos: Array.isArray(importedData.todos) ? importedData.todos : [],
+                                notes: Array.isArray(importedData.notes) ? importedData.notes : [],
+                                personal_exports: Array.isArray(importedData.personal_exports) ? importedData.personal_exports : [],
+                                country_suppliers: Array.isArray(importedData.country_suppliers) ? importedData.country_suppliers : [],
+                                suppliers: Array.isArray(importedData.suppliers) ? importedData.suppliers : []
+                            };
+                            saveToLocalDB();
+                            refreshCurrentView();
+                            showAlert('สำเร็จ', 'กู้คืนข้อมูลระบบเรียบร้อยแล้ว');
+                        });
+                    } else {
+                        showAlert('ผิดพลาด', 'รูปแบบไฟล์ JSON ไม่ถูกต้องสำหรับระบบนี้', true);
+                    }
+                } catch (error) {
+                    showAlert('ผิดพลาด', 'ไม่สามารถอ่านไฟล์ได้ หรือไฟล์เสียหาย', true);
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        };
+
+        window.clearDatabase = function() {
+            showConfirmModal('คำเตือน: คุณต้องการล้างข้อมูลทั้งหมดในระบบใช่หรือไม่?', () => {
+                dbData = {
+                    products: [], lots: [], exports: [], claims: [],
+                    incoming_lots: [], incoming_items: [], todos: [],
+                    notes: [], personal_exports: [], country_suppliers: [], suppliers: []
+                };
+                saveToLocalDB();
+                refreshCurrentView();
+                showAlert('สำเร็จ', 'ล้างข้อมูลระบบเรียบร้อยแล้ว');
+            });
+        };
+
+        window.handleLogin = function(e) {
+            e.preventDefault();
+            const codeInput = document.getElementById('erp-code-input');
+            if (!codeInput) return;
+            const code = codeInput.value.trim().toUpperCase();
+            const validCodes = ['ERP1', 'ERP2', 'ERP3', 'ERP4'];
+
+            if (validCodes.includes(code)) {
+                currentUser = code;
+                localStorage.setItem('erp_current_user', code);
+                const errDiv = document.getElementById('login-error');
+                if (errDiv) errDiv.classList.add('hidden');
+                
+                initLocalData();
+                showMainApp();
+            } else {
+                const errDiv = document.getElementById('login-error');
+                if (errDiv) errDiv.classList.remove('hidden');
+            }
+        };
+
+        window.handleLogout = function() {
+            localStorage.removeItem('erp_current_user');
+            currentUser = null;
+            const mainApp = document.getElementById('main-app');
+            const loginScreen = document.getElementById('login-screen');
+            if (mainApp) mainApp.classList.add('hidden');
+            if (loginScreen) loginScreen.style.display = 'flex';
+            const codeInput = document.getElementById('erp-code-input');
+            if (codeInput) codeInput.value = '';
+        };
+
+        function showMainApp() {
+            const loginScreen = document.getElementById('login-screen');
+            const mainApp = document.getElementById('main-app');
+            if (loginScreen) loginScreen.style.display = 'none';
+            if (mainApp) {
+                mainApp.classList.remove('hidden');
+                mainApp.classList.add('flex');
+            }
+            const userBadge = document.getElementById('user-badge');
+            const userTag = document.getElementById('current-user-tag');
+            if (userBadge) userBadge.innerHTML = `<svg class="w-4 h-4 mr-1.5 inline fill-current" viewBox="0 0 24 24"><path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1M12 11.99H19C18.47 16.11 15.72 19.78 12 20.92V12H5V6.3L12 3.19V11.99Z"/></svg> ผู้ใช้งาน: ${escapeHTML(currentUser)}`;
+            if (userTag) userTag.innerText = escapeHTML(currentUser);
+            window.switchTab(1);
+        }
+
+        window.switchTab = function(tabIndex) {
+            currentTab = tabIndex;
+            document.querySelectorAll('.page-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('bg-white', 'text-blue-950', 'shadow');
+                el.classList.add('text-blue-100', 'hover:bg-blue-700');
+            });
+
+            const targetPage = document.getElementById(`page-${tabIndex}`);
+            if (targetPage) targetPage.classList.remove('hidden');
+            
+            const activeBtn = document.getElementById(`tab-btn-${tabIndex}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-blue-100', 'hover:bg-blue-700');
+                activeBtn.classList.add('bg-white', 'text-blue-950', 'shadow');
+            }
+
+            if (tabIndex === 1) window.renderPage1();
+            if (tabIndex === 2) window.renderPage2();
+            if (tabIndex === 3) window.renderPage3();
+            if (tabIndex === 4) window.renderPage4();
+            if (tabIndex === 5) window.renderPage5();
+            if (tabIndex === 6) window.renderPage6();
+        };
+
+        function refreshCurrentView() {
+            loadFromLocalDB();
+            if (currentTab === 1) {
+                if (selectedProductForLots) window.renderLotsView();
+                else window.renderPage1();
+            }
+            if (currentTab === 2) window.renderPage2();
+            if (currentTab === 3) window.renderPage3();
+            if (currentTab === 4) {
+                if (selectedIncomingLot) window.renderIncomingItemsView();
+                else window.renderPage4();
+            }
+            if (currentTab === 5) {
+                if (selectedInventoryItem) window.openInventoryDetail(encodeURIComponent(selectedInventoryItem));
+                else window.renderPage5();
+            }
+            if (currentTab === 6) window.renderPage6();
+        }
+
+        window.showAlert = function(title, message, isError = false) {
+            const modal = document.getElementById('alert-modal');
+            const icon = document.getElementById('alert-icon');
+            const titleEl = document.getElementById('alert-title');
+            const msgEl = document.getElementById('alert-message');
+            if (!modal || !icon || !titleEl || !msgEl) return;
+
+            titleEl.innerText = title;
+            msgEl.innerText = message;
+            if (isError) {
+                icon.className = "w-12 h-12 rounded-full flex items-center justify-center mx-auto text-xl font-bold bg-red-100 text-red-600";
+                icon.innerHTML = '<svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M13 14H11V9H13M13 18H11V16H13M1 21H23L12 2L1 21Z"/></svg>';
+            } else {
+                icon.className = "w-12 h-12 rounded-full flex items-center justify-center mx-auto text-xl font-bold bg-emerald-100 text-emerald-600";
+                icon.innerHTML = '<svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>';
+            }
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        };
+
+        window.closeAlert = function() {
+            const modal = document.getElementById('alert-modal');
+            if (!modal) return;
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        };
+
+        function showConfirmModal(message, onConfirmCallback) {
+            const modal = document.getElementById('confirm-modal');
+            const msgEl = document.getElementById('confirm-message');
+            const yesBtn = document.getElementById('confirm-yes-btn');
+            if (!modal || !msgEl || !yesBtn) return;
+
+            msgEl.innerText = message || 'ยืนยันการทำรายการนี้หรือไม่?';
+            
+            const newYesBtn = yesBtn.cloneNode(true);
+            yesBtn.parentNode.replaceChild(newYesBtn, yesBtn);
+
+            newYesBtn.addEventListener('click', () => {
+                closeConfirmModal();
+                if (typeof onConfirmCallback === 'function') onConfirmCallback();
+            });
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        window.closeConfirmModal = function() {
+            const modal = document.getElementById('confirm-modal');
+            if (!modal) return;
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        };
+
+        function matchSearch(query, target) {
+            if (!query) return true;
+            const cleanQuery = (query || '').replace(/\s+/g, '').toLowerCase();
+            const cleanTarget = (target || '').replace(/\s+/g, '').toLowerCase();
+            return cleanTarget.includes(cleanQuery);
+        }
+
+        window.openModal = function(htmlContent) {
+            const modal = document.getElementById('app-modal');
+            const content = document.getElementById('modal-content');
+            if (!modal || !content) return;
+            content.innerHTML = htmlContent;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        };
+
+        window.closeModal = function() {
+            const modal = document.getElementById('app-modal');
+            if (!modal) return;
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        };
+
+        // ================= PAGE 1: ข้อมูลสินค้า =================
+        window.renderPage1 = function() {
+            loadFromLocalDB();
+            const searchQuery = document.getElementById('search-page-1')?.value || '';
+            const tbody = document.getElementById('product-table-body');
+            const emptyEl = document.getElementById('product-empty');
+            
+            if (!tbody || !emptyEl) return;
+
+            const filtered = dbData.products.filter(p => {
+                return matchSearch(searchQuery, p.name) || matchSearch(searchQuery, p.compare_code) || matchSearch(searchQuery, String(p.supplier_type || ''));
+            });
+
+            filtered.sort((a, b) => b.name.localeCompare(a.name));
+
+            tbody.innerHTML = '';
+            if (filtered.length === 0) {
+                emptyEl.classList.remove('hidden');
+            } else {
+                emptyEl.classList.add('hidden');
+                filtered.forEach(p => {
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+                            <td class="p-4 font-semibold text-blue-600 cursor-pointer hover:underline" onclick="openProductLots('${escapeHTML(p.id)}')">${escapeHTML(p.name)}</td>
+                            <td class="p-4 text-slate-600">${escapeHTML(p.compare_code || '-')}</td>
+                            <td class="p-4"><span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-1 rounded-md">ซัพประเทศ ${escapeHTML(p.supplier_type || '10')}</span></td>
+                            <td class="p-4 text-slate-600">${escapeHTML(p.notes || '-')}</td>
+                            <td class="p-4 text-center space-x-2">
+                                <button onclick="openEditProductModal('${escapeHTML(p.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข">✏️</button>
+                                <button onclick="promptDeleteProduct('${escapeHTML(p.id)}')" class="text-red-600 hover:text-red-800 p-1" title="ลบ">🗑️</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+        };
+
+        window.openAddProductModal = function() {
+            const countryList = getCountrySuppliers();
+            window.openModal(`
+                <div class="p-6">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">เพิ่มสินค้าใหม่</h3>
+                    <form onsubmit="saveProduct(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อสินค้า</label>
+                            <input type="text" id="m-prod-name" required placeholder="เช่น KH 123" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">เบอร์เทียบ</label>
+                            <input type="text" id="m-prod-compare" placeholder="เช่น COMP-001" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพประเทศ (พิมพ์หรือเลือกเพิ่มใหม่ได้)</label>
+                            <input type="text" id="m-prod-supplier" list="country-list-options" value="10" required placeholder="พิมพ์หรือเลือกซัพประเทศ" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <datalist id="country-list-options">
+                                ${countryList.map(c => `<option value="${escapeHTML(c)}">`).join('')}
+                            </datalist>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
+                            <textarea id="m-prod-notes" rows="3" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm"></textarea>
+                        </div>
+                        <div class="flex justify-end space-x-2 pt-2">
+                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">ยกเลิก</button>
+                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">บันทึก</button>
+                        </div>
+                    </form>
+                </div>
+            `);
+        };
+
+        window.saveProduct = function(e) {
+            e.preventDefault();
+            const nameEl = document.getElementById('m-prod-name');
+            const compareEl = document.getElementById('m-prod-compare');
+            const supplierEl = document.getElementById('m-prod-supplier');
+            const notesEl = document.getElementById('m-prod-notes');
+            if (!nameEl || !supplierEl) return;
+
+            const supVal = supplierEl.value.trim();
+            if (supVal && !dbData.country_suppliers.includes(supVal) && !countrySuppliersList.includes(supVal)) {
+                dbData.country_suppliers.push(supVal);
+            }
+
+            const productData = {
+                id: generateId(),
+                created_at: new Date().toISOString(),
+                name: nameEl.value.trim().toUpperCase(),
+                compare_code: compareEl ? compareEl.value.trim() : '',
+                supplier_type: supVal || '10',
+                notes: notesEl ? notesEl.value.trim() : ''
+            };
+
+            dbData.products.push(productData);
+            saveToLocalDB();
+            window.closeModal();
+            window.renderPage1();
+            window.showAlert('สำเร็จ', 'เพิ่มสินค้าใหม่เรียบร้อยแล้ว');
+        };
+
+        window.openEditProductModal = function(id) {
+            const p = dbData.products.find(x => String(x.id) === String(id));
+            if (!p) return;
+            const countryList = getCountrySuppliers();
+            window.openModal(`
+                <div class="p-6">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">แก้ไขข้อมูลสินค้า</h3>
+                    <form onsubmit="updateProduct(event, '${escapeHTML(id)}')" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อสินค้า</label>
+                            <input type="text" id="m-prod-name" value="${escapeHTML(p.name)}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">เบอร์เทียบ</label>
+                            <input type="text" id="m-prod-compare" value="${escapeHTML(p.compare_code || '')}" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพประเทศ (พิมพ์หรือเลือกเพิ่มใหม่ได้)</label>
+                            <input type="text" id="m-prod-supplier" list="country-list-options" value="${escapeHTML(p.supplier_type || '10')}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <datalist id="country-list-options">
+                                ${countryList.map(c => `<option value="${escapeHTML(c)}">`).join('')}
+                            </datalist>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
+                            <textarea id="m-prod-notes" rows="3" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">${escapeHTML(p.notes || '')}</textarea>
+                        </div>
+                        <div class="flex justify-end space-x-2 pt-2">
+                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">ยกเลิก</button>
+                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">บันทึกการแก้ไข</button>
+                        </div>
+                    </form>
+                </div>
+            `);
+        };
+
+        window.updateProduct = function(e, id) {
+            e.preventDefault();
+            const nameEl = document.getElementById('m-prod-name');
+            const compareEl = document.getElementById('m-prod-compare');
+            const supplierEl = document.getElementById('m-prod-supplier');
+            const notesEl = document.getElementById('m-prod-notes');
+            if (!nameEl || !supplierEl) return;
+
+            const supVal = supplierEl.value.trim();
+            if (supVal && !dbData.country_suppliers.includes(supVal) && !countrySuppliersList.includes(supVal)) {
+                dbData.country_suppliers.push(supVal);
+            }
+
+            const updated = {
+                name: nameEl.value.trim().toUpperCase(),
+                compare_code: compareEl ? compareEl.value.trim() : '',
+                supplier_type: supVal || '10',
+                notes: notesEl ? notesEl.value.trim() : ''
+            };
+            const idx = dbData.products.findIndex(x => String(x.id) === String(id));
+            if (idx !== -1) {
+                dbData.products[idx] = { ...dbData.products[idx], ...updated };
+                saveToLocalDB();
+            }
+            window.closeModal();
+            window.renderPage1();
+            window.showAlert('สำเร็จ', 'แก้ไขข้อมูลสินค้าเรียบร้อยแล้ว');
+        };
+
+        window.promptDeleteProduct = function(id) {
+            showConfirmModal('ยืนยันการลบสินค้านี้หรือไม่? (ข้อมูลล็อตที่เกี่ยวข้องจะถูกลบด้วย)', () => {
+                dbData.products = dbData.products.filter(x => String(x.id) !== String(id));
+                dbData.lots = dbData.lots.filter(x => String(x.product_id) !== String(id));
+                saveToLocalDB();
+                window.renderPage1();
+                window.showAlert('สำเร็จ', 'ลบสินค้าเรียบร้อยแล้ว');
+            });
+        };
+
+        window.openProductLots = function(productId) {
+            selectedProductForLots = dbData.products.find(x => String(x.id) === String(productId));
+            if (!selectedProductForLots) return;
+            const mainView = document.getElementById('p1-main-view');
+            const detailView = document.getElementById('p1-detail-view');
+            const titleEl = document.getElementById('detail-product-title');
+            if (mainView) mainView.classList.add('hidden');
+            if (detailView) detailView.classList.remove('hidden');
+            if (titleEl) titleEl.innerText = `รายละเอียดสินค้า: ${selectedProductForLots.name}`;
+            window.renderLotsView();
+        };
+
+        window.backToProductList = function() {
+            selectedProductForLots = null;
+            const mainView = document.getElementById('p1-main-view');
+            const detailView = document.getElementById('p1-detail-view');
+            if (detailView) detailView.classList.add('hidden');
+            if (mainView) mainView.classList.remove('hidden');
+            window.renderPage1();
+        };
+
+        window.renderLotsView = function() {
+            loadFromLocalDB();
+            if (!selectedProductForLots) return;
+            const tbody = document.getElementById('lot-table-body');
+            const emptyEl = document.getElementById('lot-empty');
+            if (!tbody || !emptyEl) return;
+            
+            const standardLots = dbData.lots.filter(l => String(l.product_id) === String(selectedProductForLots.id))
+                .map(l => ({ ...l, source: 'page1' }));
+
+            const incomingLots = [];
+            dbData.incoming_items.forEach(item => {
+                if ((item.name || '').toUpperCase() === (selectedProductForLots.name || '').toUpperCase()) {
+                    const parentLot = dbData.incoming_lots.find(l => String(l.id) === String(item.lot_id));
+                    if (parentLot) {
+                        incomingLots.push({
+                            id: item.id,
+                            lot_date: parentLot.date,
+                            company_supplier: parentLot.supplier,
+                            total_qty: item.qty || 1,
+                            problem_qty: item.status === 'ไม่ผ่าน' ? (item.qty || 1) : 0,
+                            notes: item.notes ? (item.details ? item.details + ' | ' + item.notes : item.notes) : (item.details || '-'),
+                            source: 'page4'
+                        });
+                    }
+                }
+            });
+
+            const allLots = [...standardLots, ...incomingLots];
+
+            tbody.innerHTML = '';
+            if (allLots.length === 0) {
+                emptyEl.classList.remove('hidden');
+            } else {
+                emptyEl.classList.add('hidden');
+                allLots.forEach(l => {
+                    let sourceBadge = '';
+                    let actionButtons = '';
+
+                    if (l.source === 'page1') {
+                        actionButtons = `
+                            <button onclick="openEditLotModal('${escapeHTML(l.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข">✏️</button>
+                            <button onclick="promptDeleteLot('${escapeHTML(l.id)}')" class="text-red-600 hover:text-red-800 p-1" title="ลบ">🗑️</button>
+                        `;
+                    } else {
+                        sourceBadge = `<span class="ml-2 bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded text-[10px] font-bold">ซิงค์จากหน้า 4</span>`;
+                        actionButtons = `<span class="text-[11px] text-slate-400 bg-slate-50 px-2 py-1 rounded border border-slate-200 cursor-not-allowed">แก้ไขในหน้า 4</span>`;
+                    }
+
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+                            <td class="p-4 font-semibold text-slate-700">${escapeHTML(l.lot_date || '-')} ${sourceBadge}</td>
+                            <td class="p-4 font-semibold text-slate-800"><span class="bg-slate-100 px-2 py-1 rounded text-xs">บริษัท ${escapeHTML(l.company_supplier)}</span></td>
+                            <td class="p-4 text-slate-600">${escapeHTML(l.notes || '-')}</td>
+                            <td class="p-4 font-bold text-blue-600">${escapeHTML(l.total_qty)}</td>
+                            <td class="p-4 font-bold text-red-500">${escapeHTML(l.problem_qty)}</td>
+                            <td class="p-4 text-center space-x-2">
+                                ${actionButtons}
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+        };
+
+        window.openAddLotModal = function() {
+            if (!selectedProductForLots) return;
+            const todayStr = new Date().toLocaleDateString('th-TH');
+            const supList = getSuppliers();
+            window.openModal(`
+                <div class="p-6">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">เพิ่มล็อตสินค้าสำหรับ ${escapeHTML(selectedProductForLots.name)}</h3>
+                    <form onsubmit="saveLot(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">วันที่ล็อต</label>
+                            <input type="text" id="m-lot-date" required value="${todayStr}" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท (พิมพ์หรือเลือกรหัสบริษัท)</label>
+                            <input type="text" id="m-lot-supplier" required list="sup-list-options-lot" value="${supList[0]}" placeholder="เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <datalist id="sup-list-options-lot">
+                                ${supList.map(s => `<option value="${escapeHTML(s)}">`).join('')}
+                            </datalist>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">จำนวนทั้งล็อต</label>
+                            <input type="number" id="m-lot-total" min="1" value="10" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">จำนวนปัญหา</label>
+                            <input type="number" id="m-lot-problem" min="0" value="0" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
+                            <textarea id="m-lot-notes" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm"></textarea>
+                        </div>
+                        <div class="flex justify-end space-x-2 pt-2">
+                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">ยกเลิก</button>
+                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">บันทึก</button>
+                        </div>
+                    </form>
+                </div>
+            `);
+        };
+
+        window.saveLot = function(e) {
+            e.preventDefault();
+            if (!selectedProductForLots) return;
+            const dateEl = document.getElementById('m-lot-date');
+            const supEl = document.getElementById('m-lot-supplier');
+            const totEl = document.getElementById('m-lot-total');
+            const probEl = document.getElementById('m-lot-problem');
+            const notesEl = document.getElementById('m-lot-notes');
+            if (!dateEl || !supEl) return;
+
+            const supVal = supEl.value.trim().toUpperCase();
+            if (supVal && !suppliersList.includes(supVal) && !dbData.suppliers.includes(supVal)) {
+                dbData.suppliers.push(supVal);
+            }
+
+            const lotData = {
+                id: generateId(),
+                created_at: new Date().toISOString(),
+                product_id: selectedProductForLots.id,
+                lot_date: dateEl.value.trim(),
+                company_supplier: supVal || suppliersList[0],
+                total_qty: totEl ? (parseInt(totEl.value) || 1) : 1,
+                problem_qty: probEl ? (parseInt(probEl.value) || 0) : 0,
+                notes: notesEl ? notesEl.value.trim() : ''
+            };
+            dbData.lots.push(lotData);
+            saveToLocalDB();
+            window.closeModal();
+            window.renderLotsView();
+            window.showAlert('สำเร็จ', 'เพิ่มล็อตสินค้าเรียบร้อยแล้ว');
+        };
+
+        window.openEditLotModal = function(id) {
+            const l = dbData.lots.find(x => String(x.id) === String(id));
+            if (!l) return;
+            const supList = getSuppliers();
+            window.openModal(`
+                <div class="p-6">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">แก้ไขล็อตสินค้า</h3>
+                    <form onsubmit="updateLot(event, '${escapeHTML(id)}')" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">วันที่ล็อต</label>
+                            <input type="text" id="m-lot-date" required value="${escapeHTML(l.lot_date || '')}" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท (พิมพ์หรือเลือกรหัสบริษัท)</label>
+                            <input type="text" id="m-lot-supplier" required list="sup-list-options-lot" value="${escapeHTML(l.company_supplier || '')}" placeholder="เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <datalist id="sup-list-options-lot">
+                                ${supList.map(s => `<option value="${escapeHTML(s)}">`).join('')}
+                            </datalist>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">จำนวนทั้งล็อต</label>
+                            <input type="number" id="m-lot-total" min="1" value="${l.total_qty}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">จำนวนปัญหา</label>
+                            <input type="number" id="m-lot-problem" min="0" value="${l.problem_qty}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
+                            <textarea id="m-lot-notes" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">${escapeHTML(l.notes || '')}</textarea>
+                        </div>
+                        <div class="flex justify-end space-x-2 pt-2">
+                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">ยกเลิก</button>
+                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">บันทึกการแก้ไข</button>
+                        </div>
+                    </form>
+                </div>
+            `);
+        };
+
+        window.updateLot = function(e, id) {
+            e.preventDefault();
+            const dateEl = document.getElementById('m-lot-date');
+            const supEl = document.getElementById('m-lot-supplier');
+            const totEl = document.getElementById('m-lot-total');
+            const probEl = document.getElementById('m-lot-problem');
+            const notesEl = document.getElementById('m-lot-notes');
+            if (!dateEl || !supEl) return;
+
+            const supVal = supEl.value.trim().toUpperCase();
+            if (supVal && !suppliersList.includes(supVal) && !dbData.suppliers.includes(supVal)) {
+                dbData.suppliers.push(supVal);
+            }
+
+            const updated = {
+                lot_date: dateEl.value.trim(),
+                company_supplier: supVal || suppliersList[0],
+                total_qty: totEl ? (parseInt(totEl.value) || 1) : 1,
+                problem_qty: probEl ? (parseInt(probEl.value) || 0) : 0,
+                notes: notesEl ? notesEl.value.trim() : ''
+            };
+            const idx = dbData.lots.findIndex(x => String(x.id) === String(id));
+            if (idx !== -1) {
+                dbData.lots[idx] = { ...dbData.lots[idx], ...updated };
+                saveToLocalDB();
+            }
+            window.closeModal();
+            window.renderLotsView();
+            window.showAlert('สำเร็จ', 'แก้ไขล็อตสินค้าเรียบร้อยแล้ว');
+        };
+
+        window.promptDeleteLot = function(id) {
+            showConfirmModal('ยืนยันการลบล็อตสินค้านี้หรือไม่?', () => {
+                dbData.lots = dbData.lots.filter(x => String(x.id) !== String(id));
+                saveToLocalDB();
+                window.renderLotsView();
+                window.showAlert('สำเร็จ', 'ลบล็อตสินค้าเรียบร้อยแล้ว');
+            });
+        };
+
+        // ================= PAGE 2: การส่งออกจากระบบ =================
+        window.renderPage2 = function() {
+            loadFromLocalDB();
+            const searchQuery = document.getElementById('search-page-2')?.value || '';
+            const tbody = document.getElementById('export-table-body');
+            const emptyEl = document.getElementById('export-empty');
+            
+            if (!tbody || !emptyEl) return;
+
+            const filtered = dbData.exports.filter(item => {
+                return matchSearch(searchQuery, item.product_name) || matchSearch(searchQuery, item.supplier) || matchSearch(searchQuery, item.notes) || matchSearch(searchQuery, item.export_date);
+            });
+
+            filtered.sort((a, b) => (b.export_date || '').localeCompare(a.export_date || ''));
+
+            tbody.innerHTML = '';
+            if (filtered.length === 0) {
+                emptyEl.classList.remove('hidden');
+            } else {
+                emptyEl.classList.add('hidden');
+                filtered.forEach(item => {
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+                            <td class="p-4 font-semibold text-slate-700">${escapeHTML(item.export_date || '-')}</td>
+                            <td class="p-4 font-semibold text-slate-800">${escapeHTML(item.product_name)}</td>
+                            <td class="p-4 font-bold text-blue-600">${escapeHTML(item.qty)}</td>
+                            <td class="p-4"><span class="bg-slate-100 px-2.5 py-1 rounded text-xs font-semibold">บริษัท ${escapeHTML(item.supplier)}</span></td>
+                            <td class="p-4 text-slate-600">${escapeHTML(item.notes || '-')}</td>
+                            <td class="p-4 text-center space-x-2">
+                                <button onclick="openEditExportModal('${escapeHTML(item.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข">✏️</button>
+                                <button onclick="promptDeleteExport('${escapeHTML(item.id)}')" class="text-red-600 hover:text-red-800 p-1" title="ลบ">🗑️</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+        };
+
+        window.openAddExportModal = function() {
+            const todayStr = new Date().toLocaleDateString('th-TH');
+            const supList = getSuppliers();
+            window.openModal(`
+                <div class="p-6">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">เพิ่มรายการส่งออก</h3>
+                    <form onsubmit="saveExport(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">วันที่ส่งออก</label>
+                            <input type="text" id="m-exp-date" required value="${todayStr}" placeholder="เช่น 17/09/2026" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อสินค้า</label>
+                            <input type="text" id="m-exp-name" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">จำนวน</label>
+                            <input type="number" id="m-exp-qty" min="1" value="1" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท (พิมพ์หรือเลือกรหัสบริษัท)</label>
+                            <input type="text" id="m-exp-supplier" required list="sup-list-options-exp" value="${supList[0]}" placeholder="เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <datalist id="sup-list-options-exp">
+                                ${supList.map(s => `<option value="${escapeHTML(s)}">`).join('')}
+                            </datalist>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
+                            <textarea id="m-exp-notes" rows="3" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm"></textarea>
+                        </div>
+                        <div class="flex justify-end space-x-2 pt-2">
+                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">ยกเลิก</button>
+                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">บันทึก</button>
+                        </div>
+                    </form>
+                </div>
+            `);
+        };
+
+        window.saveExport = function(e) {
+            e.preventDefault();
+            const dateEl = document.getElementById('m-exp-date');
+            const nameEl = document.getElementById('m-exp-name');
+            const qtyEl = document.getElementById('m-exp-qty');
+            const supEl = document.getElementById('m-exp-supplier');
+            const notesEl = document.getElementById('m-exp-notes');
+            if (!dateEl || !nameEl || !supEl) return;
+
+            const supVal = supEl.value.trim().toUpperCase();
+            if (supVal && !suppliersList.includes(supVal) && !dbData.suppliers.includes(supVal)) {
+                dbData.suppliers.push(supVal);
+            }
+
+            const item = {
+                id: generateId(),
+                created_at: new Date().toISOString(),
+                export_date: dateEl.value.trim(),
+                product_name: nameEl.value.trim().toUpperCase(),
+                qty: qtyEl ? (parseInt(qtyEl.value) || 0) : 0,
+                supplier: supVal || suppliersList[0],
+                notes: notesEl ? notesEl.value.trim() : ''
+            };
+            dbData.exports.push(item);
+            saveToLocalDB();
+            window.closeModal();
+            window.renderPage2();
+            window.showAlert('สำเร็จ', 'เพิ่มรายการส่งออกเรียบร้อยแล้ว');
+        };
+
+        window.openEditExportModal = function(id) {
+            const item = dbData.exports.find(x => String(x.id) === String(id));
+            if (!item) return;
+            const supList = getSuppliers();
+            window.openModal(`
+                <div class="p-6">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">แก้ไขรายการส่งออก</h3>
+                    <form onsubmit="updateExport(event, '${escapeHTML(id)}')" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">วันที่ส่งออก</label>
+                            <input type="text" id="m-exp-date" required value="${escapeHTML(item.export_date || '')}" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อสินค้า</label>
+                            <input type="text" id="m-exp-name" value="${escapeHTML(item.product_name)}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">จำนวน</label>
+                            <input type="number" id="m-exp-qty" min="1" value="${item.qty}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท (พิมพ์หรือเลือกรหัสบริษัท)</label>
+                            <input type="text" id="m-exp-supplier" required list="sup-list-options-exp" value="${escapeHTML(item.supplier || '')}" placeholder="เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <datalist id="sup-list-options-exp">
+                                ${supList.map(s => `<option value="${escapeHTML(s)}">`).join('')}
+                            </datalist>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
+                            <textarea id="m-exp-notes" rows="3" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">${escapeHTML(item.notes || '')}</textarea>
+                        </div>
+                        <div class="flex justify-end space-x-2 pt-2">
+                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">ยกเลิก</button>
+                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">บันทึกการแก้ไข</button>
+                        </div>
+                    </form>
+                </div>
+            `);
+        };
+
+        window.updateExport = function(e, id) {
+            e.preventDefault();
+            const dateEl = document.getElementById('m-exp-date');
+            const nameEl = document.getElementById('m-exp-name');
+            const qtyEl = document.getElementById('m-exp-qty');
+            const supEl = document.getElementById('m-exp-supplier');
+            const notesEl = document.getElementById('m-exp-notes');
+            if (!dateEl || !nameEl || !supEl) return;
+
+            const supVal = supEl.value.trim().toUpperCase();
+            if (supVal && !suppliersList.includes(supVal) && !dbData.suppliers.includes(supVal)) {
+                dbData.suppliers.push(supVal);
+            }
+
+            const updated = {
+                export_date: dateEl.value.trim(),
+                product_name: nameEl.value.trim().toUpperCase(),
+                qty: qtyEl ? (parseInt(qtyEl.value) || 0) : 0,
+                supplier: supVal || suppliersList[0],
+                notes: notesEl ? notesEl.value.trim() : ''
+            };
+            const idx = dbData.exports.findIndex(x => String(x.id) === String(id));
+            if (idx !== -1) {
+                dbData.exports[idx] = { ...dbData.exports[idx], ...updated };
+                saveToLocalDB();
+            }
+            window.closeModal();
+            window.renderPage2();
+            window.showAlert('สำเร็จ', 'แก้ไขรายการส่งออกเรียบร้อยแล้ว');
+        };
+
+        window.promptDeleteExport = function(id) {
+            showConfirmModal('ยืนยันการลบรายการส่งออกนี้หรือไม่?', () => {
+                dbData.exports = dbData.exports.filter(x => String(x.id) !== String(id));
+                saveToLocalDB();
+                window.renderPage2();
+                window.showAlert('สำเร็จ', 'ลบรายการส่งออกเรียบร้อยแล้ว');
+            });
+        };
+
+        // ================= PAGE 3: เคลมและรีพอร์ต =================
+        window.renderPage3 = function() {
+            loadFromLocalDB();
+            const searchQuery = document.getElementById('search-page-3')?.value || '';
+            const tbody = document.getElementById('claim-table-body');
+            const emptyEl = document.getElementById('claim-empty');
+            
+            if (!tbody || !emptyEl) return;
+
+            const filtered = dbData.claims.filter(c => {
+                return matchSearch(searchQuery, c.claim_date) || matchSearch(searchQuery, c.product_name) || matchSearch(searchQuery, c.lot) || matchSearch(searchQuery, c.supplier) || matchSearch(searchQuery, c.problem) || matchSearch(searchQuery, c.notes);
+            });
+
+            filtered.sort((a, b) => (b.claim_date || '').localeCompare(a.claim_date || ''));
+
+            tbody.innerHTML = '';
+            if (filtered.length === 0) {
+                emptyEl.classList.remove('hidden');
+            } else {
+                emptyEl.classList.add('hidden');
+                filtered.forEach(item => {
+                    const displayDate = item.claim_date ? item.claim_date.split('-').reverse().join('/') : '-';
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+                            <td class="p-4 font-semibold text-slate-700">${escapeHTML(displayDate)}</td>
+                            <td class="p-4 font-semibold text-slate-800">${escapeHTML(item.product_name)}</td>
+                            <td class="p-4 text-slate-600">${escapeHTML(item.lot)}</td>
+                            <td class="p-4"><span class="bg-slate-100 px-2.5 py-1 rounded text-xs font-semibold">บริษัท ${escapeHTML(item.supplier)}</span></td>
+                            <td class="p-4 text-red-600 font-medium">${escapeHTML(item.problem)}</td>
+                            <td class="p-4 font-bold text-red-500">${escapeHTML(item.qty || 0)}</td>
+                            <td class="p-4 text-slate-600">${escapeHTML(item.notes || '-')}</td>
+                            <td class="p-4 text-center space-x-2">
+                                <button onclick="openEditClaimModal('${escapeHTML(item.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข">✏️</button>
+                                <button onclick="promptDeleteClaim('${escapeHTML(item.id)}')" class="text-red-600 hover:text-red-800 p-1" title="ลบ">🗑️</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+        };
+
+        window.openAddClaimModal = function() {
+            const todayStr = new Date().toISOString().split('T')[0];
+            const supList = getSuppliers();
+            window.openModal(`
+                <div class="p-6">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">เพิ่มรายการเคลมและรีพอร์ต</h3>
+                    <form onsubmit="saveClaim(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">วันที่เคลม</label>
+                            <input type="date" id="m-clm-date" required value="${todayStr}" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อสินค้า</label>
+                            <input type="text" id="m-clm-name" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ล็อตที่มา</label>
+                            <input type="text" id="m-clm-lot" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm" placeholder="เช่น 29/09/69-209">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท (พิมพ์หรือเลือกรหัสบริษัท)</label>
+                            <input type="text" id="m-clm-supplier" required list="sup-list-options-clm" value="${supList[0]}" placeholder="เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <datalist id="sup-list-options-clm">
+                                ${supList.map(s => `<option value="${escapeHTML(s)}">`).join('')}
+                            </datalist>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ปัญหาที่พบ</label>
+                            <textarea id="m-clm-problem" rows="2" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">จำนวนที่มีปัญหา</label>
+                            <input type="number" id="m-clm-qty" min="1" value="1" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
+                            <textarea id="m-clm-notes" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm"></textarea>
+                        </div>
+                        <div class="flex justify-end space-x-2 pt-2">
+                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">ยกเลิก</button>
+                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">บันทึก</button>
+                        </div>
+                    </form>
+                </div>
+            `);
+        };
+
+        window.saveClaim = function(e) {
+            e.preventDefault();
+            const dateEl = document.getElementById('m-clm-date');
+            const nameEl = document.getElementById('m-clm-name');
+            const lotEl = document.getElementById('m-clm-lot');
+            const supEl = document.getElementById('m-clm-supplier');
+            const probEl = document.getElementById('m-clm-problem');
+            const qtyEl = document.getElementById('m-clm-qty');
+            const notesEl = document.getElementById('m-clm-notes');
+            if (!dateEl || !nameEl || !supEl) return;
+
+            const supVal = supEl.value.trim().toUpperCase();
+            if (supVal && !suppliersList.includes(supVal) && !dbData.suppliers.includes(supVal)) {
+                dbData.suppliers.push(supVal);
+            }
+
+            const item = {
+                id: generateId(),
+                created_at: new Date().toISOString(),
+                claim_date: dateEl.value,
+                product_name: nameEl.value.trim().toUpperCase(),
+                lot: lotEl ? lotEl.value.trim() : '',
+                supplier: supVal || suppliersList[0],
+                problem: probEl ? probEl.value.trim() : '',
+                qty: qtyEl ? (parseInt(qtyEl.value) || 0) : 0,
+                notes: notesEl ? notesEl.value.trim() : ''
+            };
+            dbData.claims.push(item);
+            saveToLocalDB();
+            window.closeModal();
+            window.renderPage3();
+            window.showAlert('สำเร็จ', 'เพิ่มรายการเคลมเรียบร้อยแล้ว');
+        };
+
+        window.openEditClaimModal = function(id) {
+            const item = dbData.claims.find(x => String(x.id) === String(id));
+            if (!item) return;
+            const supList = getSuppliers();
+            window.openModal(`
+                <div class="p-6">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">แก้ไขรายการเคลม</h3>
+                    <form onsubmit="updateClaim(event, '${escapeHTML(id)}')" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">วันที่เคลม</label>
+                            <input type="date" id="m-clm-date" required value="${escapeHTML(item.claim_date || '')}" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อสินค้า</label>
+                            <input type="text" id="m-clm-name" value="${escapeHTML(item.product_name)}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ล็อตที่มา</label>
+                            <input type="text" id="m-clm-lot" value="${escapeHTML(item.lot)}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท (พิมพ์หรือเลือกรหัสบริษัท)</label>
+                            <input type="text" id="m-clm-supplier" required list="sup-list-options-clm" value="${escapeHTML(item.supplier || '')}" placeholder="เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <datalist id="sup-list-options-clm">
+                                ${supList.map(s => `<option value="${escapeHTML(s)}">`).join('')}
+                            </datalist>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ปัญหาที่พบ</label>
+                            <textarea id="m-clm-problem" rows="2" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">${escapeHTML(item.problem)}</textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">จำนวนที่มีปัญหา</label>
+                            <input type="number" id="m-clm-qty" min="1" value="${item.qty || 1}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
+                            <textarea id="m-clm-notes" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">${escapeHTML(item.notes || '')}</textarea>
+                        </div>
+                        <div class="flex justify-end space-x-2 pt-2">
+                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">ยกเลิก</button>
+                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">บันทึกการแก้ไข</button>
+                        </div>
+                    </form>
+                </div>
+            `);
+        };
+
+        window.updateClaim = function(event, id) {
+            event.preventDefault();
+            const dateEl = document.getElementById('m-clm-date');
+            const nameEl = document.getElementById('m-clm-name');
+            const lotEl = document.getElementById('m-clm-lot');
+            const supEl = document.getElementById('m-clm-supplier');
+            const probEl = document.getElementById('m-clm-problem');
+            const qtyEl = document.getElementById('m-clm-qty');
+            const notesEl = document.getElementById('m-clm-notes');
+            if (!dateEl || !nameEl || !supEl) return;
+
+            const supVal = supEl.value.trim().toUpperCase();
+            if (supVal && !suppliersList.includes(supVal) && !dbData.suppliers.includes(supVal)) {
+                dbData.suppliers.push(supVal);
+            }
+
+            const updated = {
+                claim_date: dateEl.value,
+                product_name: nameEl.value.trim().toUpperCase(),
+                lot: lotEl ? lotEl.value.trim() : '',
+                supplier: supVal || suppliersList[0],
+                problem: probEl ? probEl.value.trim() : '',
+                qty: qtyEl ? (parseInt(qtyEl.value) || 0) : 0,
+                notes: notesEl ? notesEl.value.trim() : ''
+            };
+            const idx = dbData.claims.findIndex(x => String(x.id) === String(id));
+            if (idx !== -1) {
+                dbData.claims[idx] = { ...dbData.claims[idx], ...updated };
+                saveToLocalDB();
+            }
+            window.closeModal();
+            window.renderPage3();
+            window.showAlert('สำเร็จ', 'แก้ไขรายการเคลมเรียบร้อยแล้ว');
+        };
+
+        window.promptDeleteClaim = function(id) {
+            showConfirmModal('ยืนยันการลบรายการเคลมนี้หรือไม่?', () => {
+                dbData.claims = dbData.claims.filter(x => String(x.id) !== String(id));
+                saveToLocalDB();
+                window.renderPage3();
+                window.showAlert('สำเร็จ', 'ลบรายการเคลมเรียบร้อยแล้ว');
+            });
+        };
+
+        // ================= PAGE 4: ของเข้า =================
+        window.renderPage4 = function() {
+            loadFromLocalDB();
+            const searchQuery = document.getElementById('search-page-4')?.value || '';
+            const tbody = document.getElementById('incoming-lot-table-body');
+            const emptyEl = document.getElementById('incoming-lot-empty');
+            
+            if (!tbody || !emptyEl) return;
+
+            const filtered = dbData.incoming_lots.filter(l => {
+                const lotFormat = `${l.date}-${l.supplier}`;
+                return matchSearch(searchQuery, lotFormat) || matchSearch(searchQuery, l.date) || matchSearch(searchQuery, l.supplier) || matchSearch(searchQuery, l.notes) || matchSearch(searchQuery, l.country_supplier);
+            });
+
+            filtered.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+
+            tbody.innerHTML = '';
+            if (filtered.length === 0) {
+                emptyEl.classList.remove('hidden');
+            } else {
+                emptyEl.classList.add('hidden');
+                filtered.forEach(l => {
+                    const lotFormatName = `${l.date}-${l.supplier}`;
+                    const itemCount = dbData.incoming_items.filter(i => String(i.lot_id) === String(l.id)).length;
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+                            <td class="p-4 font-semibold text-blue-600 cursor-pointer hover:underline" onclick="openIncomingLotDetail('${escapeHTML(l.id)}')">${escapeHTML(lotFormatName)}</td>
+                            <td class="p-4 text-slate-600">${escapeHTML(l.date)}</td>
+                            <td class="p-4"><span class="bg-slate-100 px-2.5 py-1 rounded text-xs font-semibold">บริษัท ${escapeHTML(l.supplier)} / ป.${escapeHTML(l.country_supplier || '-')}</span></td>
+                            <td class="p-4 font-bold text-blue-600">${escapeHTML(itemCount)} รายการ</td>
+                            <td class="p-4 text-slate-600">${escapeHTML(l.notes || '-')}</td>
+                            <td class="p-4 text-center space-x-2">
+                                <button onclick="openEditIncomingLotModal('${escapeHTML(l.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข">✏️</button>
+                                <button onclick="promptDeleteIncomingLot('${escapeHTML(l.id)}')" class="text-red-600 hover:text-red-800 p-1" title="ลบ">🗑️</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+        };
+
+        window.openAddIncomingLotModal = function() {
+            const todayStr = new Date().toLocaleDateString('th-TH');
+            const countryList = getCountrySuppliers();
+            const supList = getSuppliers();
+            window.openModal(`
+                <div class="p-6">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">เพิ่มล็อตของเข้าใหม่</h3>
+                    <form onsubmit="saveIncomingLot(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">วันที่รับเข้า (ปฏิทิน)</label>
+                            <input type="text" id="m-inc-date" required value="${todayStr}" placeholder="เช่น 17/09/2026" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท (พิมพ์หรือเลือกรหัสบริษัท)</label>
+                            <input type="text" id="m-inc-supplier" required list="sup-list-options-inc" value="${supList[0]}" placeholder="เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <datalist id="sup-list-options-inc">
+                                ${supList.map(s => `<option value="${escapeHTML(s)}">`).join('')}
+                            </datalist>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพประเทศ (เลือกหรือพิมพ์เพิ่มใหม่ได้)</label>
+                            <input type="text" id="m-inc-country" list="country-list-options-inc" value="10" required placeholder="พิมพ์หรือเลือกซัพประเทศ" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <datalist id="country-list-options-inc">
+                                ${countryList.map(c => `<option value="${escapeHTML(c)}">`).join('')}
+                            </datalist>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
+                            <textarea id="m-inc-notes" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm"></textarea>
+                        </div>
+                        <div class="flex justify-end space-x-2 pt-2">
+                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">ยกเลิก</button>
+                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">บันทึก</button>
+                        </div>
+                    </form>
+                </div>
+            `);
+        };
+
+        window.saveIncomingLot = function(e) {
+            e.preventDefault();
+            const dateEl = document.getElementById('m-inc-date');
+            const supEl = document.getElementById('m-inc-supplier');
+            const countryEl = document.getElementById('m-inc-country');
+            const notesEl = document.getElementById('m-inc-notes');
+            if (!dateEl || !supEl || !countryEl) return;
+
+            const supVal = supEl.value.trim().toUpperCase();
+            if (supVal && !suppliersList.includes(supVal) && !dbData.suppliers.includes(supVal)) {
+                dbData.suppliers.push(supVal);
+            }
+
+            const countryVal = countryEl.value.trim();
+            if (countryVal && !dbData.country_suppliers.includes(countryVal) && !countrySuppliersList.includes(countryVal)) {
+                dbData.country_suppliers.push(countryVal);
+            }
+
+            const item = {
+                id: generateId(),
+                created_at: new Date().toISOString(),
+                date: dateEl.value.trim(),
+                supplier: supVal || suppliersList[0],
+                country_supplier: countryVal || '10',
+                notes: notesEl ? notesEl.value.trim() : ''
+            };
+            dbData.incoming_lots.push(item);
+            saveToLocalDB();
+            window.closeModal();
+            window.renderPage4();
+            window.showAlert('สำเร็จ', 'เพิ่มล็อตของเข้าเรียบร้อยแล้ว');
+        };
+
+        window.openEditIncomingLotModal = function(id) {
+            const l = dbData.incoming_lots.find(x => String(x.id) === String(id));
+            if (!l) return;
+            const countryList = getCountrySuppliers();
+            const supList = getSuppliers();
+            window.openModal(`
+                <div class="p-6">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">แก้ไขล็อตของเข้า</h3>
+                    <form onsubmit="updateIncomingLot(event, '${escapeHTML(id)}')" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">วันที่รับเข้า (ปฏิทิน)</label>
+                            <input type="text" id="m-inc-date" required value="${escapeHTML(l.date || '')}" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพพลายเอ้อบริษัท (พิมพ์หรือเลือกรหัสบริษัท)</label>
+                            <input type="text" id="m-inc-supplier" required list="sup-list-options-inc" value="${escapeHTML(l.supplier || '')}" placeholder="เช่น 209" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <datalist id="sup-list-options-inc">
+                                ${supList.map(s => `<option value="${escapeHTML(s)}">`).join('')}
+                            </datalist>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ซัพประเทศ (เลือกหรือพิมพ์เพิ่มใหม่ได้)</label>
+                            <input type="text" id="m-inc-country" list="country-list-options-inc" value="${escapeHTML(l.country_supplier || '10')}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                            <datalist id="country-list-options-inc">
+                                ${countryList.map(c => `<option value="${escapeHTML(c)}">`).join('')}
+                            </datalist>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
+                            <textarea id="m-inc-notes" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">${escapeHTML(l.notes || '')}</textarea>
+                        </div>
+                        <div class="flex justify-end space-x-2 pt-2">
+                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">ยกเลิก</button>
+                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">บันทึกการแก้ไข</button>
+                        </div>
+                    </form>
+                </div>
+            `);
+        };
+
+        window.updateIncomingLot = function(e, id) {
+            e.preventDefault();
+            const dateEl = document.getElementById('m-inc-date');
+            const supEl = document.getElementById('m-inc-supplier');
+            const countryEl = document.getElementById('m-inc-country');
+            const notesEl = document.getElementById('m-inc-notes');
+            if (!dateEl || !supEl || !countryEl) return;
+
+            const supVal = supEl.value.trim().toUpperCase();
+            if (supVal && !suppliersList.includes(supVal) && !dbData.suppliers.includes(supVal)) {
+                dbData.suppliers.push(supVal);
+            }
+
+            const countryVal = countryEl.value.trim();
+            if (countryVal && !dbData.country_suppliers.includes(countryVal) && !countrySuppliersList.includes(countryVal)) {
+                dbData.country_suppliers.push(countryVal);
+            }
+
+            const updated = {
+                date: dateEl.value.trim(),
+                supplier: supVal || suppliersList[0],
+                country_supplier: countryVal || '10',
+                notes: notesEl ? notesEl.value.trim() : ''
+            };
+            const idx = dbData.incoming_lots.findIndex(x => String(x.id) === String(id));
+            if (idx !== -1) {
+                dbData.incoming_lots[idx] = { ...dbData.incoming_lots[idx], ...updated };
+                saveToLocalDB();
+            }
+            window.closeModal();
+            window.renderPage4();
+            window.showAlert('สำเร็จ', 'แก้ไขล็อตของเข้าเรียบร้อยแล้ว');
+        };
+
+        window.promptDeleteIncomingLot = function(id) {
+            showConfirmModal('ยืนยันการลบล็อตของเข้านี้หรือไม่? (รายการสินค้าภายในจะถูกลบด้วย)', () => {
+                dbData.incoming_lots = dbData.incoming_lots.filter(x => String(x.id) !== String(id));
+                dbData.incoming_items = dbData.incoming_items.filter(x => String(x.lot_id) !== String(id));
+                saveToLocalDB();
+                window.renderPage4();
+                window.showAlert('สำเร็จ', 'ลบล็อตของเข้าเรียบร้อยแล้ว');
+            });
+        };
+
+        window.openIncomingLotDetail = function(lotId) {
+            selectedIncomingLot = dbData.incoming_lots.find(x => String(x.id) === String(lotId));
+            if (!selectedIncomingLot) return;
+            const mainView = document.getElementById('p4-main-view');
+            const detailView = document.getElementById('p4-detail-view');
+            const titleEl = document.getElementById('incoming-detail-title');
+            if (mainView) mainView.classList.add('hidden');
+            if (detailView) detailView.classList.remove('hidden');
+            if (titleEl) titleEl.innerText = `รายการในล็อต: ${escapeHTML(selectedIncomingLot.date)}-${escapeHTML(selectedIncomingLot.supplier)}`;
+            window.renderIncomingItemsView();
+        };
+
+        window.backToIncomingLotList = function() {
+            selectedIncomingLot = null;
+            const mainView = document.getElementById('p4-main-view');
+            const detailView = document.getElementById('p4-detail-view');
+            if (detailView) detailView.classList.add('hidden');
+            if (mainView) mainView.classList.remove('hidden');
+            window.renderPage4();
+        };
+
+        window.renderIncomingItemsView = function() {
+            loadFromLocalDB();
+            if (!selectedIncomingLot) return;
+            const tbody = document.getElementById('incoming-item-table-body');
+            const emptyEl = document.getElementById('incoming-item-empty');
+            if (!tbody || !emptyEl) return;
+
+            const items = dbData.incoming_items.filter(i => String(i.lot_id) === String(selectedIncomingLot.id));
+
+            tbody.innerHTML = '';
+            if (items.length === 0) {
+                emptyEl.classList.remove('hidden');
+            } else {
+                emptyEl.classList.add('hidden');
+                items.forEach((item, index) => {
+                    let statusBadge = '';
+                    if (item.status === 'ผ่าน') statusBadge = '<span class="bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded text-xs font-bold">ผ่าน</span>';
+                    else if (item.status === 'ไม่ผ่าน') statusBadge = '<span class="bg-red-100 text-red-800 px-2.5 py-1 rounded text-xs font-bold">ไม่ผ่าน</span>';
+                    else statusBadge = '<span class="bg-amber-100 text-amber-800 px-2.5 py-1 rounded text-xs font-bold">ไม่ทราบ</span>';
+
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+                            <td class="p-4 font-semibold text-slate-700">${index + 1}</td>
+                            <td class="p-4 font-semibold text-slate-800">${escapeHTML(item.name)}</td>
+                            <td class="p-4 text-slate-600">${escapeHTML(item.compare_code || '-')}</td>
+                            <td class="p-4 font-bold text-blue-600">${escapeHTML(item.qty || 1)}</td>
+                            <td class="p-4 text-slate-600">${escapeHTML(item.details || '-')}</td>
+                            <td class="p-4">${statusBadge}</td>
+                            <td class="p-4 text-slate-600">${escapeHTML(item.notes || '-')}</td>
+                            <td class="p-4 text-center space-x-2">
+                                <button onclick="openEditIncomingItemModal('${escapeHTML(item.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข">✏️</button>
+                                <button onclick="promptDeleteIncomingItem('${escapeHTML(item.id)}')" class="text-red-600 hover:text-red-800 p-1" title="ลบ">🗑️</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+        };
+
+        window.openAddIncomingItemModal = function() {
+            window.openModal(`
+                <div class="p-6">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">เพิ่มรายการสินค้าในล็อต</h3>
+                    <form onsubmit="saveIncomingItem(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อสินค้า (เช่น KH 123)</label>
+                            <input type="text" id="m-item-name" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">เบอร์เทียบ</label>
+                            <input type="text" id="m-item-compare" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm" placeholder="เช่น COMP-999">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">จำนวน</label>
+                            <input type="number" id="m-item-qty" min="1" value="1" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">รายละเอียดเพิ่มเติม</label>
+                            <input type="text" id="m-item-details" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">สถานะ</label>
+                            <select id="m-item-status" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                                <option value="ผ่าน">ผ่าน</option><option value="ไม่ทราบ" selected>ไม่ทราบ</option><option value="ไม่ผ่าน">ไม่ผ่าน</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
+                            <textarea id="m-item-notes" rows="3" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm"></textarea>
+                        </div>
+                        <div class="flex justify-end space-x-2 pt-2">
+                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">ยกเลิก</button>
+                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">บันทึก</button>
+                        </div>
+                    </form>
+                </div>
+            `);
+        };
+
+        function syncProductFromIncoming(name, compare_code, country_supplier) {
+            if (!name) return;
+            const upperName = name.toUpperCase();
+            let existing = dbData.products.find(p => p.name.toUpperCase() === upperName);
+            if (!existing) {
+                dbData.products.push({
+                    id: generateId(),
+                    created_at: new Date().toISOString(),
+                    name: upperName,
+                    compare_code: compare_code || '',
+                    supplier_type: country_supplier || '10',
+                    notes: ''
+                });
+            } else {
+                if (!existing.compare_code && compare_code) {
+                    existing.compare_code = compare_code;
+                }
+            }
+        }
+
+        window.saveIncomingItem = function(e) {
+            e.preventDefault();
+            if (!selectedIncomingLot) return;
+            const nameEl = document.getElementById('m-item-name');
+            const compareEl = document.getElementById('m-item-compare');
+            const qtyEl = document.getElementById('m-item-qty');
+            const detailsEl = document.getElementById('m-item-details');
+            const statusEl = document.getElementById('m-item-status');
+            const notesEl = document.getElementById('m-item-notes');
+            if (!nameEl) return;
+
+            const productName = nameEl.value.trim().toUpperCase();
+            const productCompare = compareEl ? compareEl.value.trim() : '';
+            const itemQty = qtyEl ? (parseInt(qtyEl.value) || 1) : 1;
+            const itemDetails = detailsEl ? detailsEl.value.trim() : '';
+            const itemStatus = statusEl ? statusEl.value : 'ไม่ทราบ';
+            const itemNotes = notesEl ? notesEl.value.trim() : '';
+
+            syncProductFromIncoming(productName, productCompare, selectedIncomingLot.country_supplier);
+
+            const item = {
+                id: generateId(),
+                created_at: new Date().toISOString(),
+                lot_id: selectedIncomingLot.id,
+                name: productName,
+                compare_code: productCompare,
+                qty: itemQty,
+                details: itemDetails,
+                status: itemStatus,
+                notes: itemNotes
+            };
+            dbData.incoming_items.push(item);
+            saveToLocalDB();
+            window.closeModal();
+            window.renderIncomingItemsView();
+            window.showAlert('สำเร็จ', 'เพิ่มรายการสินค้าเรียบร้อยแล้ว');
+        };
+
+        window.openEditIncomingItemModal = function(id) {
+            const item = dbData.incoming_items.find(x => String(x.id) === String(id));
+            if (!item) return;
+            window.openModal(`
+                <div class="p-6">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">แก้ไขรายการสินค้า</h3>
+                    <form onsubmit="updateIncomingItem(event, '${escapeHTML(id)}')" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อสินค้า</label>
+                            <input type="text" id="m-item-name" value="${escapeHTML(item.name)}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">เบอร์เทียบ</label>
+                            <input type="text" id="m-item-compare" value="${escapeHTML(item.compare_code || '')}" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">จำนวน</label>
+                            <input type="number" id="m-item-qty" min="1" value="${item.qty || 1}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">รายละเอียดเพิ่มเติม</label>
+                            <input type="text" id="m-item-details" value="${escapeHTML(item.details || '')}" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">สถานะ</label>
+                            <select id="m-item-status" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                                <option value="ผ่าน" ${item.status === 'ผ่าน' ? 'selected' : ''}>ผ่าน</option>
+                                <option value="ไม่ทราบ" ${item.status === 'ไม่ทราบ' ? 'selected' : ''}>ไม่ทราบ</option>
+                                <option value="ไม่ผ่าน" ${item.status === 'ไม่ผ่าน' ? 'selected' : ''}>ไม่ผ่าน</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
+                            <textarea id="m-item-notes" rows="3" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">${escapeHTML(item.notes || '')}</textarea>
+                        </div>
+                        <div class="flex justify-end space-x-2 pt-2">
+                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">ยกเลิก</button>
+                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">บันทึกการแก้ไข</button>
+                        </div>
+                    </form>
+                </div>
+            `);
+        };
+
+        window.updateIncomingItem = function(e, id) {
+            e.preventDefault();
+            const nameEl = document.getElementById('m-item-name');
+            const compareEl = document.getElementById('m-item-compare');
+            const qtyEl = document.getElementById('m-item-qty');
+            const detailsEl = document.getElementById('m-item-details');
+            const statusEl = document.getElementById('m-item-status');
+            const notesEl = document.getElementById('m-item-notes');
+            if (!nameEl) return;
+
+            const updated = {
+                name: nameEl.value.trim().toUpperCase(),
+                compare_code: compareEl ? compareEl.value.trim() : '',
+                qty: qtyEl ? (parseInt(qtyEl.value) || 1) : 1,
+                details: detailsEl ? detailsEl.value.trim() : '',
+                status: statusEl ? statusEl.value : 'ไม่ทราบ',
+                notes: notesEl ? notesEl.value.trim() : ''
+            };
+            const idx = dbData.incoming_items.findIndex(x => String(x.id) === String(id));
+            if (idx !== -1) {
+                dbData.incoming_items[idx] = { ...dbData.incoming_items[idx], ...updated };
+                
+                const itemLot = dbData.incoming_lots.find(x => String(x.id) === String(dbData.incoming_items[idx].lot_id));
+                if (itemLot) {
+                    syncProductFromIncoming(updated.name, updated.compare_code, itemLot.country_supplier);
+                }
+
+                saveToLocalDB();
+            }
+            window.closeModal();
+            window.renderIncomingItemsView();
+            window.showAlert('สำเร็จ', 'แก้ไขรายการสินค้าเรียบร้อยแล้ว');
+        };
+
+        window.promptDeleteIncomingItem = function(id) {
+            showConfirmModal('ยืนยันการลบรายการสินค้านี้หรือไม่?', () => {
+                dbData.incoming_items = dbData.incoming_items.filter(x => String(x.id) !== String(id));
+                saveToLocalDB();
+                window.renderIncomingItemsView();
+                window.showAlert('สำเร็จ', 'ลบรายการสินค้าเรียบร้อยแล้ว');
+            });
+        };
+
+        // ================= PAGE 5: สินค้าคงเหลือ =================
+        window.renderPage5 = function() {
+            loadFromLocalDB();
+            const searchQuery = document.getElementById('search-page-5')?.value || '';
+            const tbody = document.getElementById('inventory-table-body');
+            const emptyEl = document.getElementById('inventory-empty');
+            if (!tbody || !emptyEl) return;
+
+            const inventoryMap = {};
+
+            dbData.incoming_items.forEach(item => {
+                const rawName = (item.name || '').trim();
+                const key = rawName.toLowerCase();
+                if (!key) return;
+
+                if (!inventoryMap[key]) {
+                    inventoryMap[key] = {
+                        name: rawName,
+                        totalIn: 0,
+                        totalOut: 0,
+                        totalProb: 0
+                    };
+                }
+                inventoryMap[key].totalIn += (item.qty || 0);
+            });
+
+            dbData.exports.forEach(exp => {
+                const expName = (exp.product_name || '').trim();
+                const key = expName.toLowerCase();
+                
+                if (!inventoryMap[key]) {
+                    inventoryMap[key] = { name: expName, totalIn: 0, totalOut: 0, totalProb: 0 };
+                }
+                inventoryMap[key].totalOut += (exp.qty || 0);
+            });
+
+            dbData.claims.forEach(claim => {
+                const claimName = (claim.product_name || '').trim();
+                const key = claimName.toLowerCase();
+
+                if (!inventoryMap[key]) {
+                    inventoryMap[key] = { name: claimName, totalIn: 0, totalOut: 0, totalProb: 0 };
+                }
+                inventoryMap[key].totalProb += (claim.qty || 0);
+            });
+
+            let inventoryList = Object.values(inventoryMap);
+
+            if (searchQuery) {
+                inventoryList = inventoryList.filter(inv => matchSearch(searchQuery, inv.name));
+            }
+
+            inventoryList.sort((a, b) => b.name.localeCompare(a.name));
+
+            tbody.innerHTML = '';
+            if (inventoryList.length === 0) {
+                emptyEl.classList.remove('hidden');
+            } else {
+                emptyEl.classList.add('hidden');
+                inventoryList.forEach(inv => {
+                    const balance = inv.totalIn - inv.totalOut;
+                    let balColor = 'text-emerald-600 font-bold';
+                    if (balance < 0) balColor = 'text-red-600 font-bold';
+                    else if (balance === 0) balColor = 'text-slate-600 font-bold';
+
+                    const encodedName = encodeURIComponent(inv.name);
+
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-slate-50 transition border-b border-slate-100 cursor-pointer" onclick="openInventoryDetail('${escapeHTML(encodedName)}')">
+                            <td class="p-4 font-semibold text-blue-600 hover:underline">${escapeHTML(inv.name)}</td>
+                            <td class="p-4 font-bold text-blue-600">${escapeHTML(inv.totalIn)}</td>
+                            <td class="p-4 font-bold text-amber-600">${escapeHTML(inv.totalOut)}</td>
+                            <td class="p-4 font-bold text-red-500">${escapeHTML(inv.totalProb)}</td>
+                            <td class="p-4 ${balColor}">${escapeHTML(balance)}</td>
+                        </tr>
+                    `;
+                });
+            }
+        };
+
+        window.openInventoryDetail = function(encodedName) {
+            const productName = decodeURIComponent(encodedName);
+            const key = productName.toLowerCase();
+
+            let totalIn = 0;
+            let totalOut = 0;
+            let totalProb = 0;
+            const incomingRecords = [];
+            const exportRecords = [];
+            const claimRecords = [];
+
+            dbData.incoming_items.forEach(item => {
+                if ((item.name || '').trim().toLowerCase() === key) {
+                    totalIn += (item.qty || 0);
+                    const lot = dbData.incoming_lots.find(l => String(l.id) === String(item.lot_id));
+                    incomingRecords.push({
+                        lotName: lot ? lot.date : '-',
+                        supplier: lot ? lot.supplier : '-',
+                        qty: item.qty || 0
+                    });
+                }
+            });
+
+            dbData.exports.forEach(exp => {
+                if ((exp.product_name || '').trim().toLowerCase() === key) {
+                    totalOut += (exp.qty || 0);
+                    exportRecords.push({
+                        date: exp.export_date || '-',
+                        supplier: exp.supplier || '-',
+                        qty: exp.qty || 0
+                    });
+                }
+            });
+
+            dbData.claims.forEach(claim => {
+                if ((claim.product_name || '').trim().toLowerCase() === key) {
+                    totalProb += (claim.qty || 0);
+                    const displayDate = claim.claim_date ? claim.claim_date.split('-').reverse().join('/') : '-';
+                    claimRecords.push({
+                        date: displayDate,
+                        supplier: claim.supplier || '-',
+                        qty: claim.qty || 0
+                    });
+                }
+            });
+
+            const balance = totalIn - totalOut;
+
+            selectedInventoryItem = productName;
+            const mainView = document.getElementById('p5-main-view');
+            const detailView = document.getElementById('p5-detail-view');
+            const titleEl = document.getElementById('inventory-detail-title');
+            if (mainView) mainView.classList.add('hidden');
+            if (detailView) detailView.classList.remove('hidden');
+            if (titleEl) titleEl.innerText = `รายละเอียดสินค้าคงเหลือ: ${escapeHTML(productName)}`;
+
+            const sumIn = document.getElementById('inv-sum-in');
+            const sumOut = document.getElementById('inv-sum-out');
+            const sumProb = document.getElementById('inv-sum-prob');
+            const sumBal = document.getElementById('inv-sum-bal');
+            if (sumIn) sumIn.innerText = escapeHTML(totalIn);
+            if (sumOut) sumOut.innerText = escapeHTML(totalOut);
+            if (sumProb) sumProb.innerText = escapeHTML(totalProb);
+            if (sumBal) sumBal.innerText = escapeHTML(balance);
+
+            const inTbody = document.getElementById('inv-incoming-tbody');
+            if (inTbody) {
+                inTbody.innerHTML = '';
+                if (incomingRecords.length === 0) {
+                    inTbody.innerHTML = `<tr><td colspan="3" class="p-3 text-center text-slate-400">ไม่มีข้อมูลของเข้า</td></tr>`;
+                } else {
+                    incomingRecords.forEach(r => {
+                        inTbody.innerHTML += `
+                            <tr class="border-b border-slate-50">
+                                <td class="p-2.5 font-medium text-slate-700">ล็อต ${escapeHTML(r.lotName)}</td>
+                                <td class="p-2.5 text-slate-600">บริษัท ${escapeHTML(r.supplier)}</td>
+                                <td class="p-2.5 font-bold text-blue-600">${escapeHTML(r.qty)}</td>
+                            </tr>
+                        `;
+                    });
+                }
+            }
+
+            const outTbody = document.getElementById('inv-export-tbody');
+            if (outTbody) {
+                outTbody.innerHTML = '';
+                if (exportRecords.length === 0) {
+                    outTbody.innerHTML = `<tr><td colspan="3" class="p-3 text-center text-slate-400">ยังไม่มีการส่งออก</td></tr>`;
+                } else {
+                    exportRecords.forEach(r => {
+                        outTbody.innerHTML += `
+                            <tr class="border-b border-slate-50">
+                                <td class="p-2.5 font-medium text-slate-700">${escapeHTML(r.date)}</td>
+                                <td class="p-2.5 text-slate-600">บริษัท ${escapeHTML(r.supplier)}</td>
+                                <td class="p-2.5 font-bold text-amber-600">${escapeHTML(r.qty)}</td>
+                            </tr>
+                        `;
+                    });
+                }
+            }
+
+            const claimTbody = document.getElementById('inv-claim-tbody');
+            if (claimTbody) {
+                claimTbody.innerHTML = '';
+                if (claimRecords.length === 0) {
+                    claimTbody.innerHTML = `<tr><td colspan="3" class="p-3 text-center text-slate-400">ยังไม่มีการเคลม</td></tr>`;
+                } else {
+                    claimRecords.forEach(r => {
+                        claimTbody.innerHTML += `
+                            <tr class="border-b border-slate-50">
+                                <td class="p-2.5 font-medium text-slate-700">${escapeHTML(r.date)}</td>
+                                <td class="p-2.5 text-slate-600">บริษัท ${escapeHTML(r.supplier)}</td>
+                                <td class="p-2.5 font-bold text-red-500">${escapeHTML(r.qty)}</td>
+                            </tr>
+                        `;
+                    });
+                }
+            }
+        };
+
+        window.backToInventoryList = function() {
+            selectedInventoryItem = null;
+            const mainView = document.getElementById('p5-main-view');
+            const detailView = document.getElementById('p5-detail-view');
+            if (detailView) detailView.classList.add('hidden');
+            if (mainView) mainView.classList.remove('hidden');
+            window.renderPage5();
+        };
+
+        // ================= PAGE 6: ข้อมูลส่วนตัว =================
+        window.renderPage6 = function() {
+            loadFromLocalDB();
+            renderTodosTable();
+            renderNotesTable();
+            renderPersonalExportsTable();
+        };
+
+        function renderTodosTable() {
+            const tbody = document.getElementById('personal-todo-table-body');
+            const emptyEl = document.getElementById('todo-empty');
+            if (!tbody || !emptyEl) return;
+            tbody.innerHTML = '';
+            
+            const todos = dbData.todos || [];
+
+            if (todos.length === 0) {
+                emptyEl.classList.remove('hidden');
+            } else {
+                emptyEl.classList.add('hidden');
+                todos.forEach(t => {
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+                            <td class="p-3 text-center">
+                                <input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTodo('${escapeHTML(t.id)}', this.checked)" class="h-4 w-4 text-blue-600 rounded">
+                            </td>
+                            <td class="p-3 font-semibold ${t.completed ? 'line-through text-slate-400' : 'text-slate-800'}">${escapeHTML(t.text)}</td>
+                            <td class="p-3"><span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs font-bold">${escapeHTML(t.user_id || '-')}</span></td>
+                            <td class="p-3 text-slate-600">${escapeHTML(t.notes || '-')}</td>
+                            <td class="p-3 text-center space-x-1">
+                                <button onclick="openEditTodoModal('${escapeHTML(t.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข">✏️</button>
+                                <button onclick="promptDeleteTodo('${escapeHTML(t.id)}')" class="text-red-500 hover:text-red-700 p-1" title="ลบ">🗑️</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+        }
+
+        window.openPersonalTodoModal = function() {
+            window.openModal(`
+                <div class="p-6">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">เพิ่มสิ่งที่ต้องทำ</h3>
+                    <form onsubmit="saveTodo(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">รายการสิ่งที่ต้องทำ</label>
+                            <input type="text" id="m-todo-text" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
+                            <textarea id="m-todo-notes" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm"></textarea>
+                        </div>
+                        <div class="flex justify-end space-x-2 pt-2">
+                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">ยกเลิก</button>
+                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">บันทึก</button>
+                        </div>
+                    </form>
+                </div>
+            `);
+        };
+
+        window.saveTodo = function(e) {
+            e.preventDefault();
+            const textEl = document.getElementById('m-todo-text');
+            const notesEl = document.getElementById('m-todo-notes');
+            if (!textEl) return;
+
+            const item = {
+                id: generateId(),
+                created_at: new Date().toISOString(),
+                user_id: currentUser,
+                text: textEl.value.trim(),
+                notes: notesEl ? notesEl.value.trim() : '',
+                completed: false
+            };
+            dbData.todos.push(item);
+            saveToLocalDB();
+            window.closeModal();
+            renderTodosTable();
+        };
+
+        window.openEditTodoModal = function(id) {
+            const item = dbData.todos.find(x => String(x.id) === String(id));
+            if (!item) return;
+            window.openModal(`
+                <div class="p-6">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">แก้ไขสิ่งที่ต้องทำ</h3>
+                    <form onsubmit="updateTodo(event, '${escapeHTML(id)}')" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">รายการสิ่งที่ต้องทำ</label>
+                            <input type="text" id="m-todo-text" value="${escapeHTML(item.text)}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
+                            <textarea id="m-todo-notes" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">${escapeHTML(item.notes || '')}</textarea>
+                        </div>
+                        <div class="flex justify-end space-x-2 pt-2">
+                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">ยกเลิก</button>
+                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">บันทึก</button>
+                        </div>
+                    </form>
+                </div>
+            `);
+        };
+
+        window.updateTodo = function(e, id) {
+            e.preventDefault();
+            const textEl = document.getElementById('m-todo-text');
+            const notesEl = document.getElementById('m-todo-notes');
+            if (!textEl) return;
+
+            const updated = {
+                text: textEl.value.trim(),
+                notes: notesEl ? notesEl.value.trim() : ''
+            };
+            const idx = dbData.todos.findIndex(x => String(x.id) === String(id));
+            if (idx !== -1) {
+                dbData.todos[idx] = { ...dbData.todos[idx], ...updated };
+                saveToLocalDB();
+            }
+            window.closeModal();
+            renderTodosTable();
+        };
+
+        window.toggleTodo = function(id, completed) {
+            const idx = dbData.todos.findIndex(x => String(x.id) === String(id));
+            if (idx !== -1) {
+                dbData.todos[idx].completed = completed;
+                saveToLocalDB();
+            }
+            renderTodosTable();
+        };
+
+        window.promptDeleteTodo = function(id) {
+            showConfirmModal('ยืนยันการลบสิ่งที่ต้องทำนี้หรือไม่?', () => {
+                dbData.todos = dbData.todos.filter(x => String(x.id) !== String(id));
+                saveToLocalDB();
+                renderTodosTable();
+            });
+        };
+
+        function renderNotesTable() {
+            const tbody = document.getElementById('personal-note-table-body');
+            const emptyEl = document.getElementById('note-empty');
+            if (!tbody || !emptyEl) return;
+            tbody.innerHTML = '';
+            
+            const notes = dbData.notes || [];
+
+            if (notes.length === 0) {
+                emptyEl.classList.add('hidden'); // keep container or show empty
+                emptyEl.classList.remove('hidden');
+            } else {
+                emptyEl.classList.add('hidden');
+                notes.forEach(n => {
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+                            <td class="p-3 text-center">
+                                <input type="checkbox" ${n.completed ? 'checked' : ''} onchange="toggleNote('${escapeHTML(n.id)}', this.checked)" class="h-4 w-4 text-blue-600 rounded">
+                            </td>
+                            <td class="p-3 font-semibold ${n.completed ? 'line-through text-slate-400' : 'text-slate-800'}">${escapeHTML(n.product_name)}</td>
+                            <td class="p-3 font-bold text-blue-600">${escapeHTML(n.qty)}</td>
+                            <td class="p-3"><span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs font-bold">${escapeHTML(n.user_id || '-')}</span></td>
+                            <td class="p-3 text-slate-600">${escapeHTML(n.note_text || '-')}</td>
+                            <td class="p-3 text-center space-x-1">
+                                <button onclick="openEditNoteModal('${escapeHTML(n.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข">✏️</button>
+                                <button onclick="promptDeleteNote('${escapeHTML(n.id)}')" class="text-red-500 hover:text-red-700 p-1" title="ลบ">🗑️</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+        }
+
+        window.openPersonalNoteModal = function() {
+            window.openModal(`
+                <div class="p-6">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">เพิ่มบันทึกส่วนตัวสินค้า</h3>
+                    <form onsubmit="saveNote(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อสินค้า</label>
+                            <input type="text" id="m-note-name" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">จำนวน (รองรับตัวเลขหรือข้อความ)</label>
+                            <input type="text" id="m-note-qty" value="1" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
+                            <textarea id="m-note-text" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm"></textarea>
+                        </div>
+                        <div class="flex justify-end space-x-2 pt-2">
+                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">ยกเลิก</button>
+                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">บันทึก</button>
+                        </div>
+                    </form>
+                </div>
+            `);
+        };
+
+        window.saveNote = function(e) {
+            e.preventDefault();
+            const nameEl = document.getElementById('m-note-name');
+            const qtyEl = document.getElementById('m-note-qty');
+            const textEl = document.getElementById('m-note-text');
+            if (!nameEl) return;
+
+            const item = {
+                id: generateId(),
+                created_at: new Date().toISOString(),
+                user_id: currentUser,
+                product_name: nameEl.value.trim(),
+                qty: qtyEl ? qtyEl.value.trim() : '1',
+                note_text: textEl ? textEl.value.trim() : '',
+                completed: false
+            };
+            dbData.notes.push(item);
+            saveToLocalDB();
+            window.closeModal();
+            renderNotesTable();
+        };
+
+        window.openEditNoteModal = function(id) {
+            const item = dbData.notes.find(x => String(x.id) === String(id));
+            if (!item) return;
+            window.openModal(`
+                <div class="p-6">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">แก้ไขบันทึกส่วนตัวสินค้า</h3>
+                    <form onsubmit="updateNote(event, '${escapeHTML(id)}')" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อสินค้า</label>
+                            <input type="text" id="m-note-name" value="${escapeHTML(item.product_name)}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">จำนวน (รองรับตัวเลขหรือข้อความ)</label>
+                            <input type="text" id="m-note-qty" value="${escapeHTML(item.qty || '1')}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
+                            <textarea id="m-note-text" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">${escapeHTML(item.note_text || '')}</textarea>
+                        </div>
+                        <div class="flex justify-end space-x-2 pt-2">
+                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">ยกเลิก</button>
+                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">บันทึก</button>
+                        </div>
+                    </form>
+                </div>
+            `);
+        };
+
+        window.updateNote = function(e, id) {
+            e.preventDefault();
+            const nameEl = document.getElementById('m-note-name');
+            const qtyEl = document.getElementById('m-note-qty');
+            const textEl = document.getElementById('m-note-text');
+            if (!nameEl) return;
+
+            const updated = {
+                product_name: nameEl.value.trim(),
+                qty: qtyEl ? qtyEl.value.trim() : '1',
+                note_text: textEl ? textEl.value.trim() : ''
+            };
+            const idx = dbData.notes.findIndex(x => String(x.id) === String(id));
+            if (idx !== -1) {
+                dbData.notes[idx] = { ...dbData.notes[idx], ...updated };
+                saveToLocalDB();
+            }
+            window.closeModal();
+            renderNotesTable();
+        };
+
+        window.toggleNote = function(id, completed) {
+            const idx = dbData.notes.findIndex(x => String(x.id) === String(id));
+            if (idx !== -1) {
+                dbData.notes[idx].completed = completed;
+                saveToLocalDB();
+            }
+            renderNotesTable();
+        };
+
+        window.promptDeleteNote = function(id) {
+            showConfirmModal('ยืนยันการลบบันทึกสินค้านี้หรือไม่?', () => {
+                dbData.notes = dbData.notes.filter(x => String(x.id) !== String(id));
+                saveToLocalDB();
+                renderNotesTable();
+            });
+        };
+
+        function renderPersonalExportsTable() {
+            const tbody = document.getElementById('personal-export-table-body');
+            const emptyEl = document.getElementById('p-export-empty');
+            if (!tbody || !emptyEl) return;
+            tbody.innerHTML = '';
+            
+            const pExports = dbData.personal_exports || [];
+
+            if (pExports.length === 0) {
+                emptyEl.classList.remove('hidden');
+            } else {
+                emptyEl.classList.add('hidden');
+                pExports.forEach(item => {
+                    const formattedDate = new Date(item.created_at).toLocaleString('th-TH');
+                    const optionsText = (item.options || []).join(', ');
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+                            <td class="p-3 font-semibold text-slate-800">${escapeHTML(item.product_name)}</td>
+                            <td class="p-3 font-bold text-blue-600">${escapeHTML(item.qty || '1')}</td>
+                            <td class="p-3 text-slate-700">${escapeHTML(item.box_type)} ${item.box_detail ? '('+escapeHTML(item.box_detail)+')' : ''}</td>
+                            <td class="p-3"><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-xs font-bold">${escapeHTML(item.sticker)}</span></td>
+                            <td class="p-3"><span class="bg-slate-100 text-slate-800 px-2 py-0.5 rounded text-xs font-bold">${escapeHTML(item.bag)}</span></td>
+                            <td class="p-3 text-slate-600 text-xs">${escapeHTML(optionsText || '-')}</td>
+                            <td class="p-3"><span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs font-bold">${escapeHTML(item.user_id || '-')}</span></td>
+                            <td class="p-3 text-slate-600 text-xs">
+                                <div>${escapeHTML(item.notes || '-')}</div>
+                                <div class="text-[10px] text-slate-400 mt-1">${escapeHTML(formattedDate)}</div>
+                            </td>
+                            <td class="p-3 text-center space-x-1">
+                                <button onclick="openEditPersonalExportModal('${escapeHTML(item.id)}')" class="text-amber-600 hover:text-amber-800 p-1" title="แก้ไข">✏️</button>
+                                <button onclick="promptDeletePersonalExport('${escapeHTML(item.id)}')" class="text-red-500 hover:text-red-700 p-1" title="ลบ">🗑️</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+        }
+
+        window.openPersonalExportModal = function() {
+            window.openModal(`
+                <div class="p-6 max-h-[85vh] overflow-y-auto">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">บันทึกข้อมูลส่งออกส่วนตัว</h3>
+                    <form onsubmit="savePersonalExport(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อสินค้า</label>
+                            <input type="text" id="m-pe-name" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">จำนวน (รองรับตัวเลขหรือข้อความ)</label>
+                            <input type="text" id="m-pe-qty" value="1" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">กล่องเล็กบริษัทหรือโรงงาน</label>
+                            <div class="space-y-2 mt-1">
+                                <label class="flex items-center space-x-2 text-sm">
+                                    <input type="radio" name="m-pe-box" value="โรงงาน" checked onchange="toggleBoxDetailInput(false)"> <span>โรงงาน</span>
+                                </label>
+                                <label class="flex items-center space-x-2 text-sm">
+                                    <input type="radio" name="m-pe-box" value="บริษัท" onchange="toggleBoxDetailInput(true)"> <span>บริษัท</span>
+                                </label>
+                            </div>
+                            <div id="m-pe-box-detail-container" class="mt-2 hidden">
+                                <input type="text" id="m-pe-box-detail" placeholder="พิมพ์ข้อความชื่อบริษัท..." class="w-full p-2 border border-slate-300 rounded-lg text-sm">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">สติ้กเกอร์</label>
+                            <input type="text" id="m-pe-sticker" required placeholder="เช่น A2, A3B, A4R" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ถุง</label>
+                            <select id="m-pe-bag" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                                <option value="PF12">PF12</option><option value="PF14">PF14</option><option value="PF20">PF20</option><option value="PE30">PE30</option><option value="2PE30">2PE30</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ตัวเลือกเพิ่มเติม</label>
+                            <div class="space-y-1.5 text-sm">
+                                <label class="flex items-center space-x-2"><input type="checkbox" name="m-pe-opt" value="ไม่มี" class="rounded"> <span>ไม่มี</span></label>
+                                <label class="flex items-center space-x-2"><input type="checkbox" name="m-pe-opt" value="กล่องเรา" class="rounded"> <span>กล่องเรา</span></label>
+                                <label class="flex items-center space-x-2"><input type="checkbox" name="m-pe-opt" value="สติ้กเกอร์(มีแค่A4B)" class="rounded"> <span>สติ้กเกอร์(มีแค่A4B)</span></label>
+                                <label class="flex items-center space-x-2"><input type="checkbox" name="m-pe-opt" value="เทป" class="rounded"> <span>เทป</span></label>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
+                            <textarea id="m-pe-notes" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm"></textarea>
+                        </div>
+                        <div class="flex justify-end space-x-2 pt-2">
+                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">ยกเลิก</button>
+                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">บันทึก</button>
+                        </div>
+                    </form>
+                </div>
+            `);
+        };
+
+        window.toggleBoxDetailInput = function(show) {
+            const container = document.getElementById('m-pe-box-detail-container');
+            if (!container) return;
+            if (show) container.classList.remove('hidden');
+            else container.classList.add('hidden');
+        };
+
+        window.savePersonalExport = function(e) {
+            e.preventDefault();
+            const boxRadio = document.querySelector('input[name="m-pe-box"]:checked');
+            const boxDetailEl = document.getElementById('m-pe-box-detail');
+            const nameEl = document.getElementById('m-pe-name');
+            const qtyEl = document.getElementById('m-pe-qty');
+            const stickerEl = document.getElementById('m-pe-sticker');
+            const bagEl = document.getElementById('m-pe-bag');
+            const notesEl = document.getElementById('m-pe-notes');
+            if (!boxRadio || !nameEl) return;
+
+            const boxType = boxRadio.value;
+            const boxDetail = boxType === 'บริษัท' && boxDetailEl ? boxDetailEl.value.trim() : '';
+            const checkedOpts = Array.from(document.querySelectorAll('input[name="m-pe-opt"]:checked')).map(el => el.value);
+
+            const item = {
+                id: generateId(),
+                user_id: currentUser,
+                product_name: nameEl.value.trim().toUpperCase(),
+                qty: qtyEl ? qtyEl.value.trim() : '1',
+                box_type: boxType,
+                box_detail: boxDetail,
+                sticker: stickerEl ? stickerEl.value.trim() : '',
+                bag: bagEl ? bagEl.value : 'PF12',
+                options: checkedOpts,
+                notes: notesEl ? notesEl.value.trim() : '',
+                created_at: new Date().toISOString()
+            };
+
+            dbData.personal_exports.push(item);
+            saveToLocalDB();
+            window.closeModal();
+            renderPersonalExportsTable();
+        };
+
+        window.openEditPersonalExportModal = function(id) {
+            const item = dbData.personal_exports.find(x => String(x.id) === String(id));
+            if (!item) return;
+            const isComp = item.box_type === 'บริษัท';
+            window.openModal(`
+                <div class="p-6 max-h-[85vh] overflow-y-auto">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">แก้ไขข้อมูลส่งออกส่วนตัว</h3>
+                    <form onsubmit="updatePersonalExport(event, '${escapeHTML(id)}')" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อสินค้า</label>
+                            <input type="text" id="m-pe-name" value="${escapeHTML(item.product_name)}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm uppercase">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">จำนวน (รองรับตัวเลขหรือข้อความ)</label>
+                            <input type="text" id="m-pe-qty" value="${escapeHTML(item.qty || '1')}" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">กล่องเล็กบริษัทหรือโรงงาน</label>
+                            <div class="space-y-2 mt-1">
+                                <label class="flex items-center space-x-2 text-sm">
+                                    <input type="radio" name="m-pe-box" value="โรงงาน" ${!isComp ? 'checked' : ''} onchange="toggleBoxDetailInput(false)"> <span>โรงงาน</span>
+                                </label>
+                                <label class="flex items-center space-x-2 text-sm">
+                                    <input type="radio" name="m-pe-box" value="บริษัท" ${isComp ? 'checked' : ''} onchange="toggleBoxDetailInput(true)"> <span>บริษัท</span>
+                                </label>
+                            </div>
+                            <div id="m-pe-box-detail-container" class="mt-2 ${isComp ? '' : 'hidden'}">
+                                <input type="text" id="m-pe-box-detail" value="${escapeHTML(item.box_detail || '')}" placeholder="พิมพ์ข้อความชื่อบริษัท..." class="w-full p-2 border border-slate-300 rounded-lg text-sm">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">สติ้กเกอร์</label>
+                            <input type="text" id="m-pe-sticker" value="${escapeHTML(item.sticker || '')}" required placeholder="เช่น A2, A3B, A4R" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ถุง</label>
+                            <select id="m-pe-bag" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                                <option value="PF12" ${item.bag === 'PF12' ? 'selected' : ''}>PF12</option>
+                                <option value="PF14" ${item.bag === 'PF14' ? 'selected' : ''}>PF14</option>
+                                <option value="PF20" ${item.bag === 'PF20' ? 'selected' : ''}>PF20</option>
+                                <option value="PE30" ${item.bag === 'PE30' ? 'selected' : ''}>PE30</option>
+                                <option value="2PE30" ${item.bag === '2PE30' ? 'selected' : ''}>2PE30</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ตัวเลือกเพิ่มเติม</label>
+                            <div class="space-y-1.5 text-sm">
+                                <label class="flex items-center space-x-2"><input type="checkbox" name="m-pe-opt" value="ไม่มี" ${(item.options || []).includes('ไม่มี') ? 'checked' : ''} class="rounded"> <span>ไม่มี</span></label>
+                                <label class="flex items-center space-x-2"><input type="checkbox" name="m-pe-opt" value="กล่องเรา" ${(item.options || []).includes('กล่องเรา') ? 'checked' : ''} class="rounded"> <span>กล่องเรา</span></label>
+                                <label class="flex items-center space-x-2"><input type="checkbox" name="m-pe-opt" value="สติ้กเกอร์(มีแค่A4B)" ${(item.options || []).includes('สติ้กเกอร์(มีแค่A4B)') ? 'checked' : ''} class="rounded"> <span>สติ้กเกอร์(มีแค่A4B)</span></label>
+                                <label class="flex items-center space-x-2"><input type="checkbox" name="m-pe-opt" value="เทป" ${(item.options || []).includes('เทป') ? 'checked' : ''} class="rounded"> <span>เทป</span></label>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">หมายเหตุ</label>
+                            <textarea id="m-pe-notes" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">${escapeHTML(item.notes || '')}</textarea>
+                        </div>
+                        <div class="flex justify-end space-x-2 pt-2">
+                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">ยกเลิก</button>
+                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">บันทึกการแก้ไข</button>
+                        </div>
+                    </form>
+                </div>
+            `);
+        };
+
+        window.updatePersonalExport = function(e, id) {
+            e.preventDefault();
+            const boxRadio = document.querySelector('input[name="m-pe-box"]:checked');
+            const boxDetailEl = document.getElementById('m-pe-box-detail');
+            const nameEl = document.getElementById('m-pe-name');
+            const qtyEl = document.getElementById('m-pe-qty');
+            const stickerEl = document.getElementById('m-pe-sticker');
+            const bagEl = document.getElementById('m-pe-bag');
+            const notesEl = document.getElementById('m-pe-notes');
+            if (!boxRadio || !nameEl) return;
+
+            const boxType = boxRadio.value;
+            const boxDetail = boxType === 'บริษัท' && boxDetailEl ? boxDetailEl.value.trim() : '';
+            const checkedOpts = Array.from(document.querySelectorAll('input[name="m-pe-opt"]:checked')).map(el => el.value);
+
+            const updated = {
+                product_name: nameEl.value.trim().toUpperCase(),
+                qty: qtyEl ? qtyEl.value.trim() : '1',
+                box_type: boxType,
+                box_detail: boxDetail,
+                sticker: stickerEl ? stickerEl.value.trim() : '',
+                bag: bagEl ? bagEl.value : 'PF12',
+                options: checkedOpts,
+                notes: notesEl ? notesEl.value.trim() : ''
+            };
+
+            const idx = dbData.personal_exports.findIndex(x => String(x.id) === String(id));
+            if (idx !== -1) {
+                dbData.personal_exports[idx] = { ...dbData.personal_exports[idx], ...updated };
+                saveToLocalDB();
+            }
+            window.closeModal();
+            renderPersonalExportsTable();
+        };
+
+        window.promptDeletePersonalExport = function(id) {
+            showConfirmModal('ยืนยันการลบข้อมูลส่งออกส่วนตัวนี้หรือไม่?', () => {
+                dbData.personal_exports = dbData.personal_exports.filter(x => String(x.id) !== String(id));
+                saveToLocalDB();
+                renderPersonalExportsTable();
+            });
+        };
+    </script>
+</body>
+</html>                    <svg class="w-4 h-4 inline mr-1 fill-current" viewBox="0 0 24 24"><path d="M13 14H11V9H13M13 18H11V16H13M1 21H23L12 2L1 21Z"/></svg> รหัส ERP ไม่ถูกต้อง
                 </div>
                 <button type="submit" id="login-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition shadow-lg shadow-blue-600/30 text-lg flex items-center justify-center space-x-2">
                     <span>เข้าสู่ระบบ</span> 
